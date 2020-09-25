@@ -128,7 +128,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_RAMPS_14_EFB
+  #define MOTHERBOARD BOARD_TENLOG_D3_PRO_PLR
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu

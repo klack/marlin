@@ -93,11 +93,19 @@
 //
 // Misc. Functions
 //
-#define PS_ON_PIN               40
+#ifdef PSU_CONTROL
+   #define PS_ON_PIN               40
+   #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
+#endif
+
 //#define POWER_LOSS_PIN          32
 //#define POWER_LOSS_STATE        LOW
-//#define FILAMENT_FAIL_DETECT_PIN		15	
-//#define FILAMENT_FAIL_DETECT_TRIGGER	LOW
+
+#ifdef FILAMENT_RUNOUT_SENSOR
+  #define FIL_RUNOUT_PIN       15
+  #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
+#endif
+
 #define SD_DETECT_PIN           49
 #define SDSS                    53
 

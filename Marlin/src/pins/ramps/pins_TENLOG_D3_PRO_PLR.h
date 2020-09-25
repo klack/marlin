@@ -94,8 +94,8 @@
 // Misc. Functions
 //
 #define PS_ON_PIN               40
-#define POWER_LOSS_PIN          32
-#define POWER_LOSS_STATE        LOW
+//#define POWER_LOSS_PIN          32
+//#define POWER_LOSS_STATE        LOW
 //#define FILAMENT_FAIL_DETECT_PIN		15	
 //#define FILAMENT_FAIL_DETECT_TRIGGER	LOW
 #define SD_DETECT_PIN           49

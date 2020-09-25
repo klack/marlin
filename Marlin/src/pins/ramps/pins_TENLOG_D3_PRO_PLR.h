@@ -22,17 +22,11 @@
 #pragma once
 
 /**
- * Tenlog D3 Hero pins. 
+ * Tenlog D3 Pro PLR pins. 
  */
 
-//#ifndef __AVR_ATmega2560__
-//  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
-#if HOTENDS > 2 || E_STEPPERS > 2
-  #error "Tenlog supports up to 2 hotends / E-steppers. Comment out this line to continue."
-#endif
-
 #define BOARD_INFO_NAME      "Tenlog"
-#define DEFAULT_MACHINE_NAME "Tenlog D3 Hero"
+#define DEFAULT_MACHINE_NAME "Tenlog D3 Pro w/ Powerloss Resume"
 
 //
 // Limit Switches
@@ -99,8 +93,10 @@
 //
 // Misc. Functions
 //
-#define SD_DETECT_PIN      49
-#define SDSS               53
+#define PS_ON_PIN               40
+#define POWER_LOSS_PIN          32
+#define SD_DETECT_PIN           49
+#define SDSS                    53
 
  #if HAS_SPI_LCD
  #if SERIAL_PORT_2 == 2 || SERIAL_PORT == 2

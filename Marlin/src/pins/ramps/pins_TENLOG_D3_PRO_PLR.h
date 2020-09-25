@@ -100,7 +100,7 @@
 
 #ifdef POWER_LOSS_RECOVERY
    #define POWER_LOSS_PIN          32
-   #define POWER_LOSS_STATE        LOW
+   #define POWER_LOSS_STATE        HIGH
 #endif
 
 //

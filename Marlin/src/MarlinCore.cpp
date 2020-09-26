@@ -559,6 +559,10 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
+  if (power_off_state()) {
+    SERIAL_ERROR_MSG("Power-off button pressed");
+  }
+    
   #if HAS_HOME
     // Handle a standalone HOME button
     constexpr millis_t HOME_DEBOUNCE_DELAY = 1000UL;

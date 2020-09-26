@@ -98,10 +98,14 @@
    #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
 #endif
 
-#ifdef POWER_LOSS_RECOVERY
-   #define POWER_LOSS_PIN          32
-   #define POWER_LOSS_STATE        HIGH
-#endif
+// #ifdef POWER_LOSS_RECOVERY
+//    #define POWER_LOSS_PIN          32
+//    #define POWER_LOSS_STATE        HIGH
+// #endif
+
+
+#define POWER_OFF_PIN 32
+#define POWER_OFF_STATE HIGH
 
 //
 // Filament Runout Sensor

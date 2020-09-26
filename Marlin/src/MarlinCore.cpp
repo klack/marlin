@@ -279,6 +279,10 @@ void setup_killpin() {
   #endif
 }
 
+void setup_poweroff() {
+  SET_INPUT_PULLDOWN(POWER_OFF_PIN);
+}
+
 void setup_powerhold() {
   #if HAS_SUICIDE
     OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_INVERTING);
@@ -559,10 +563,17 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
-  if (power_off_state()) {
-    SERIAL_ERROR_MSG("Power-off button pressed");
+  static bool hadPower = false;
+  if (power_off_state() == false) { //Power is on
+    hadPower = true;
+  } else {
+    if (hadPower == true) {
+      SERIAL_ERROR_MSG("Power off button pressed");
+      PSU_OFF();
+      hadPower = false;
+    }
   }
-    
+
   #if HAS_HOME
     // Handle a standalone HOME button
     constexpr millis_t HOME_DEBOUNCE_DELAY = 1000UL;
@@ -1005,6 +1016,8 @@ void setup() {
   #endif
 
   SETUP_RUN(setup_killpin());
+
+  SETUP_RUN(setup_poweroff());
 
   #if HAS_TMC220x
     SETUP_RUN(tmc_serial_begin());

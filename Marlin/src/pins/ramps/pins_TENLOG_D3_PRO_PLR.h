@@ -54,13 +54,13 @@
 #define Z_DIR_PIN          48
 #define Z_ENABLE_PIN       62
 
-#define E0_STEP_PIN        26
-#define E0_DIR_PIN         28
-#define E0_ENABLE_PIN      24
+#define E0_STEP_PIN        57  
+#define E0_DIR_PIN         58  
+#define E0_ENABLE_PIN      59  
 
-#define E1_STEP_PIN        57
-#define E1_DIR_PIN         58
-#define E1_ENABLE_PIN      59
+#define E1_STEP_PIN        26
+#define E1_DIR_PIN         28
+#define E1_ENABLE_PIN      24
 
 #define Z2_STEP_PIN        65
 #define Z2_DIR_PIN         66
@@ -73,15 +73,15 @@
 //
 // Temperature Sensors
 //
-#define TEMP_0_PIN          13   // Analog Input
-#define TEMP_1_PIN          15   // Analog Input
+#define TEMP_0_PIN          15   // Analog Input
+#define TEMP_1_PIN          13   // Analog Input
 #define TEMP_BED_PIN        14   // Analog Input
 
 //
 // Heaters
 //
-#define HEATER_0_PIN        10
-#define HEATER_1_PIN        11
+#define HEATER_0_PIN        11
+#define HEATER_1_PIN        10
 #define HEATER_BED_PIN      8
 
 //
@@ -115,26 +115,20 @@
   #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
 #endif
 
-#define SD_DETECT_PIN           49
-#define SDSS                    53
+//
+// Misc. Functions
+//
+#define SD_DETECT_PIN      49
+#define SDSS               53
 
- #if HAS_SPI_LCD
- #if SERIAL_PORT_2 == 2 || SERIAL_PORT == 2
-    #define LCD_PINS_RS                    6
-    #define LCD_PINS_ENABLE                7
- #else
+#define LCD_PINS_RS                    6
+#define LCD_PINS_ENABLE                7
 
-  //#define KILL_PIN                      41
-    #define LCD_PINS_RS                   16
-    #define LCD_PINS_ENABLE               17
- #endif
-    #define LCD_PINS_D4                   23
-    #define LCD_PINS_D5                   25
-    #define LCD_PINS_D6                   27
-    #define LCD_PINS_D7                   29
-    #define BEEPER_PIN                    37
-    #define BTN_ENC                       35
-
-    #define BTN_EN1                       31
-    #define BTN_EN2                       33
-#endif
+#define LCD_PINS_D4                   23
+#define LCD_PINS_D5                   25
+#define LCD_PINS_D6                   27
+#define LCD_PINS_D7                   29
+#define BEEPER_PIN                    37
+#define BTN_ENC                       35
+#define BTN_EN1                       31
+#define BTN_EN2                       33

@@ -29,8 +29,18 @@
 void GcodeSuite::M117() {
 
   if (parser.string_arg && parser.string_arg[0])
-    ui.set_status(parser.string_arg);
+    {
+      ui.set_status(parser.string_arg);
+
+      #if SERIAL_PORT_2 == 2
+        MYSERIAL1.print("echo:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+      #endif
+
+      #if SERIAL_PORT == 2
+        MYSERIAL.print("echo:M117 "); MYSERIAL.print(parser.string_arg);MYSERIAL.write(13);
+      #endif
+    }
   else
     ui.reset_status();
-
+    
 }

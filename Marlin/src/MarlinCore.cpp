@@ -568,7 +568,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     hadPower = true;
   } else {
     if (hadPower == true) {
-      SERIAL_ERROR_MSG("Power off button pressed");
+      SERIAL_ECHO_MSG("Power off button pressed");
       PSU_OFF();
       hadPower = false;
     }

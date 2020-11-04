@@ -563,15 +563,22 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
+  //Power Pin dectection
   static bool hadPower = false;
   if (power_off_state() == false) { //Power is on
     hadPower = true;
   } else {
     if (hadPower == true) {
-      //PSU_OFF();
+      SERIAL_ECHO_MSG("//notice:power_pin");
+      #if SERIAL_PORT == 2
+        MYSERIAL.print("//notice:power_pin"); MYSERIAL.print(parser.string_arg);MYSERIAL.write(13);
+      #endif
+      #if SERIAL_PORT_2 == 2
+        MYSERIAL1.print("//notice:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+      #endif
+      PSU_OFF();
       hadPower = false;
     }
-    SERIAL_ECHO_MSG("Power off button pressed");
   }
 
   #if HAS_HOME

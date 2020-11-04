@@ -576,7 +576,28 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
       #if SERIAL_PORT_2 == 2
         MYSERIAL1.print("//notice:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
       #endif
-      PSU_OFF();
+      
+      //Safe Power off
+      thermalManager.disable_all_heaters();
+      print_job_timer.stop();
+      planner.finish_and_disable();
+
+      #if HAS_FAN
+        thermalManager.zero_fan_speeds();
+        #if ENABLED(PROBING_FANS_OFF)
+          thermalManager.fans_paused = false;
+          ZERO(thermalManager.saved_fan_speed);
+        #endif
+      #endif
+
+      safe_delay(1000); // Wait 1 second before switching off
+
+      #if HAS_SUICIDE
+        suicide();
+      #elif ENABLED(PSU_CONTROL)
+        PSU_OFF();
+      #endif
+
       hadPower = false;
     }
   }

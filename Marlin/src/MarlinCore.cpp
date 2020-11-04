@@ -563,7 +563,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
-  //Power Pin dectection
+  //Po Pin dectection
   static bool hadPower = false;
   if (power_off_state() == false) { //Power is on
     hadPower = true;
@@ -596,6 +596,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
         suicide();
       #elif ENABLED(PSU_CONTROL)
         PSU_OFF();
+        kill(M112_KILL_STR, nullptr, true);
       #endif
 
       hadPower = false;

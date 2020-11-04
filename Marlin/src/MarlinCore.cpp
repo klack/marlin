@@ -563,7 +563,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
-  //Po Pin dectection
+  //Poweroff Pin dectection
   static bool hadPower = false;
   if (power_off_state() == false) { //Power is on
     hadPower = true;

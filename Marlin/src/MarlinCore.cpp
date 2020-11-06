@@ -596,7 +596,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
         suicide();
       #elif ENABLED(PSU_CONTROL)
         PSU_OFF();
-        //kill(M112_KILL_STR, nullptr, true);
+        kill(M112_KILL_STR, nullptr, true);
       #endif
 
       hadPower = false;

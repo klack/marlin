@@ -487,9 +487,9 @@
   #if ENABLED(PID_PARAMS_PER_HOTEND)
     // Specify between 1 and HOTENDS values per array.
     // If fewer than EXTRUDER values are provided, the last element will be repeated.
-    #define DEFAULT_Kp_LIST {  22.23,  22.23 }
-    #define DEFAULT_Ki_LIST {   1.61,   1.61 }
-    #define DEFAULT_Kd_LIST { 76.95, 76.95 }
+    #define DEFAULT_Kp_LIST {  18.36,  16.80 }
+    #define DEFAULT_Ki_LIST {   1.55,   1.32 }
+    #define DEFAULT_Kd_LIST { 54.53, 53.34 }
   #else
     #define DEFAULT_Kp 19.15
     #define DEFAULT_Ki 1.73
@@ -532,9 +532,10 @@
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 10.00
-  #define DEFAULT_bedKi .023
-  #define DEFAULT_bedKd 305.4
+  #define DEFAULT_bedKp 154.01
+  #define DEFAULT_bedKi 17.73
+  #define DEFAULT_bedKd 892.09
+
 
   //120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   //from pidautotune
@@ -739,14 +740,14 @@
  * Override with M92quick
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 792, 92.6 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 792, 92.6, 92.6 }
 
 /**
  * Default Max Feed Rate (mm/s)
  * Override with M203
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 1000, 1000, 10, 500 }
+#define DEFAULT_MAX_FEEDRATE          { 80, 80, 3, 25, 25 }
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -759,7 +760,7 @@
  * Override with M201
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      {500, 500, 100, 1000, 1000}
+#define DEFAULT_MAX_ACCELERATION      {500, 500, 100, 1000, 1000} 
 
 #define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)

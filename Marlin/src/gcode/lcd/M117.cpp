@@ -36,13 +36,7 @@ void GcodeSuite::M117() {
       SERIAL_ECHOPGM("//lux:M117 ");
       SERIAL_ECHOLN(parser.string_arg);
 
-      #if SERIAL_PORT_2 == 2
-        MYSERIAL1.print("//lux:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-      #endif
-
-      #if SERIAL_PORT == 2
-        MYSERIAL.print("//lux:M117 "); MYSERIAL.print(parser.string_arg);MYSERIAL.write(13);
-      #endif
+      MYSERIAL1.print("//lux:M117 ");MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
     }
   else
     ui.reset_status();

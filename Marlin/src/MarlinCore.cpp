@@ -578,9 +578,10 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
       #endif
       
       //Safe Power off
+      stepper.quick_stop();
       thermalManager.disable_all_heaters();
-      print_job_timer.stop();
-      planner.finish_and_disable();
+      // print_job_timer.stop();
+      // planner.finish_and_disable();
 
       #if HAS_FAN
         thermalManager.zero_fan_speeds();
@@ -590,7 +591,7 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
         #endif
       #endif
 
-      safe_delay(1000); // Wait 1 second before switching off
+      // safe_delay(1000); // Wait 1 second before switching off
 
       #if HAS_SUICIDE
         suicide();

@@ -570,9 +570,6 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
   } else {
     if (hadPower == true) {
       SERIAL_ECHO_MSG("//lux:power_pin");
-      #if SERIAL_PORT == 2
-        MYSERIAL.print("//lux:power_pin"); MYSERIAL.print(parser.string_arg);MYSERIAL.write(13);
-      #endif
       #if SERIAL_PORT_2 == 2
         MYSERIAL1.print("//lux:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
       #endif

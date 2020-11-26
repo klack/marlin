@@ -22,7 +22,6 @@
 #pragma once
 
 #include "../inc/MarlinConfig.h"
-
 /**
  * Define debug bit-masks
  */

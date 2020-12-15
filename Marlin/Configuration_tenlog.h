@@ -7,7 +7,7 @@
   #define INVERT_E1_DIR true
 #endif
 
-#if ENABLED(MachineTL_D3)
+#if ENABLED(MachineTLD3)
   #define X_BED_SIZE        300
   #define Y_BED_SIZE        300
   #define TOOL_CHANGE_AREA  25 

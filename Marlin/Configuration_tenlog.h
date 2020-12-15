@@ -7,6 +7,15 @@
   #define INVERT_E1_DIR true
 #endif
 
+#if ENABLED(Driver2208)
+  #define DriverType TMC2208_STANDALONE
+	#define INVERT_X_DIR false   
+  #define INVERT_Y_DIR true 
+	#define INVERT_Z_DIR false   
+	#define INVERT_E0_DIR true  
+	#define INVERT_E1_DIR false  
+#endif
+
 #if ENABLED(MachineTLD3)
   #define X_BED_SIZE        300
   #define Y_BED_SIZE        300

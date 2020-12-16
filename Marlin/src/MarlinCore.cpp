@@ -563,43 +563,45 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
-  //Poweroff Pin dectection
-  static bool hadPower = false;
-  if (power_off_state() == false) { //Power is on
-    hadPower = true;
-  } else {
-    if (hadPower == true) {
-      SERIAL_ECHO_MSG("//lux:power_pin");
-      #if SERIAL_PORT_2 == 2
-        MYSERIAL1.print("//lux:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-      #endif
-      
-      //Safe Power off
-      stepper.quick_stop();
-      thermalManager.disable_all_heaters();
-      // print_job_timer.stop();
-      // planner.finish_and_disable();
-
-      #if HAS_FAN
-        thermalManager.zero_fan_speeds();
-        #if ENABLED(PROBING_FANS_OFF)
-          thermalManager.fans_paused = false;
-          ZERO(thermalManager.saved_fan_speed);
+  #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+    //Poweroff Pin dectection
+    static bool hadPower = false;
+    if (power_off_state() == false) { //Power is on
+      hadPower = true;
+    } else {
+      if (hadPower == true) {
+        SERIAL_ECHO_MSG("//lux:power_pin");
+        #if SERIAL_PORT_2 == 2
+          MYSERIAL1.print("//lux:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
         #endif
-      #endif
+        
+        //Safe Power off
+        stepper.quick_stop();
+        thermalManager.disable_all_heaters();
+        // print_job_timer.stop();
+        // planner.finish_and_disable();
 
-      // safe_delay(1000); // Wait 1 second before switching off
+        #if HAS_FAN
+          thermalManager.zero_fan_speeds();
+          #if ENABLED(PROBING_FANS_OFF)
+            thermalManager.fans_paused = false;
+            ZERO(thermalManager.saved_fan_speed);
+          #endif
+        #endif
 
-      #if HAS_SUICIDE
-        suicide();
-      #elif ENABLED(PSU_CONTROL)
-        PSU_OFF();
-        kill(M112_KILL_STR, nullptr, true);
-      #endif
+        // safe_delay(1000); // Wait 1 second before switching off
 
-      hadPower = false;
+        #if HAS_SUICIDE
+          suicide();
+        #elif ENABLED(PSU_CONTROL)
+          PSU_OFF();
+          kill(M112_KILL_STR, nullptr, true);
+        #endif
+
+        hadPower = false;
+      }
     }
-  }
+  #endif
 
   #if HAS_HOME
     // Handle a standalone HOME button

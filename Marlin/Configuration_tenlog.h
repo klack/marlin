@@ -1,22 +1,7 @@
-#if ENABLED(DriverA4988)
-  #define DriverType A4988
-  #define INVERT_X_DIR true
-  #define INVERT_Y_DIR false
-  #define INVERT_Z_DIR true
-  #define INVERT_E0_DIR false
-  #define INVERT_E1_DIR true
-#endif
+#define SHORT_BUILD_VERSION "bugfix-2.0.x lux-0.7"
 
-#if ENABLED(Driver2208)
-  #define DriverType TMC2208_STANDALONE
-	#define INVERT_X_DIR false   
-  #define INVERT_Y_DIR true 
-	#define INVERT_Z_DIR false   
-	#define INVERT_E0_DIR true  
-	#define INVERT_E1_DIR false  
-#endif
-
-#if ENABLED(MachineTLD3)
+#if ENABLED(MachineTLD3P)
+  #define verS1 "Tenlog TL-D3 Pro"
   #define X_BED_SIZE        300
   #define Y_BED_SIZE        300
   #define TOOL_CHANGE_AREA  25 
@@ -31,6 +16,34 @@
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define DEFAULT_DUPLICATION_X_OFFSET 150  
 #endif
+
+#if ENABLED(DriverA4988)
+  #define verS2 "A4988"
+
+  
+  #define DriverType A4988
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR false
+  #define INVERT_E1_DIR true
+#endif
+
+#if ENABLED(Driver2208)
+  #define verS2 "2208"
+  #define DriverType TMC2208_STANDALONE
+	#define INVERT_X_DIR false   
+  #define INVERT_Y_DIR true 
+	#define INVERT_Z_DIR false   
+	#define INVERT_E0_DIR true  
+	#define INVERT_E1_DIR false  
+#endif
+
+#if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+  #define verS3 "PLR"
+#endif
+
+#define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
 
 // Common
 #define DUAL_X_CARRIAGE

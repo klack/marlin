@@ -19,8 +19,6 @@
 
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
-
-  
   #define DriverType A4988
   #define INVERT_X_DIR true
   #define INVERT_Y_DIR false
@@ -41,6 +39,14 @@
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
+#endif
+
+#define X_HOME_DIR -1
+#define Y_HOME_DIR -1
+#define Z_HOME_DIR -1
+
+#if ENABLED(ReverseYHome)
+  #define Y_HOME_DIR 1
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

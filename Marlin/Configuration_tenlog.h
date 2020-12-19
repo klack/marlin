@@ -42,11 +42,13 @@
 #endif
 
 #define X_HOME_DIR -1
-#define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
 
 #if ENABLED(ReverseYHome)
   #define Y_HOME_DIR 1
+  #define USE_YMAX_PLUG
+#else
+  #define Y_HOME_DIR -1
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

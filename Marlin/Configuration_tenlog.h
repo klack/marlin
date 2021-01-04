@@ -37,18 +37,18 @@
 	#define INVERT_E1_DIR false  
 #endif
 
-#if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
-  #define verS3 "PLR"
+#if ENABLED(Driver2209_Titan_TGCustom)
+  #define verS2 "2209_Titan_TGCustom"
+  #define DriverType TMC2209_STANDALONE
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR false
+  #define INVERT_E1_DIR true
 #endif
 
-#define X_HOME_DIR -1
-#define Z_HOME_DIR -1
-
-#if ENABLED(ReverseYHome)
-  #define Y_HOME_DIR 1
-  #define USE_YMAX_PLUG
-#else
-  #define Y_HOME_DIR -1
+#if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+  #define verS3 "PLR"
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

@@ -37,7 +37,7 @@
 	#define INVERT_E1_DIR false  
 #endif
 
-#if ENABLED(Driver2209_Titan_TGCustom)
+#if ENABLED(TGCustom_2209_Titan)
   #define verS2 "2209_Titan_TGCustom"
   #define DriverType TMC2209_STANDALONE
   #define INVERT_X_DIR true
@@ -45,6 +45,7 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
   #define INVERT_E1_DIR true
+  #define X2_MIN_POS     15
 #endif
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)

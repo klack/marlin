@@ -48,6 +48,11 @@
   #define X2_MIN_POS     15
 #endif
 
+#if ENABLED(TitanExtruder)
+{
+  #define X2_MIN_POS     15
+}
+
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
 #endif

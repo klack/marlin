@@ -56,6 +56,14 @@
   #define verS3 "PLR"
 #endif
 
+#if ENABLED(InvertY)
+  #if INVERT_Y_DIR == true
+    #define INVERT_Y_DIR false
+  #else
+    #define INVERT_Y_DIR true
+  #endif
+#endif
+
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
 
 // Common

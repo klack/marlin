@@ -49,6 +49,7 @@
 #endif
 
 #if ENABLED(TitanExtruder)
+  #undef X2_MIN_POS
   #define X2_MIN_POS     15
 #endif
 
@@ -58,8 +59,10 @@
 
 #if ENABLED(InvertY)
   #if INVERT_Y_DIR == true
+    #undef INVERT_Y_DIR
     #define INVERT_Y_DIR false
   #else
+    #undef INVERT_Y_DIR
     #define INVERT_Y_DIR true
   #endif
 #endif

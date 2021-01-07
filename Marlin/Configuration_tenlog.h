@@ -57,14 +57,10 @@
   #define verS3 "PLR"
 #endif
 
-#if ENABLED(InvertY)
-  #if INVERT_Y_DIR == true
-    #undef INVERT_Y_DIR
-    #define INVERT_Y_DIR false
-  #else
-    #undef INVERT_Y_DIR
-    #define INVERT_Y_DIR true
-  #endif
+#if ENABLED(OpticalY)
+  #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#else
+  #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

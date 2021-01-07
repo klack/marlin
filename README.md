@@ -1,4 +1,5 @@
 THIS WILL VOID YOUR MANUFACTURER WARRANTY
+
 Do not run this firmware on production machines.
 
 This firmware is a community effort and is not affiliated with Tenlog, Hictop, Copymaster or other distributers.

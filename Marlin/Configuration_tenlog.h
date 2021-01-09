@@ -1,9 +1,20 @@
 #define SHORT_BUILD_VERSION "bugfix-2.0.x lux-0.7"
 
+//Uncomment to enable BLTouch and disable filament runout sensor.
+//#define BLTOUCH
+
+//#define BLTouch Options   
+#ifdef BLTOUCH
+  #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+  #define Z_SAFE_HOMING
+#else
+  #define FILAMENT_RUNOUT_SENSOR
+#endif
+
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define X_BED_SIZE        300
-  #define Y_BED_SIZE        300
+  #define X_BED_SIZE        310
+  #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  25 
   #define X_MIN_POS -48 // Travel limits (mm) after homing, corresponding to endstop positions.
   #define Y_MIN_POS 0
@@ -11,10 +22,10 @@
   #define X_MAX_POS X_BED_SIZE
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MAX_POS 350
-  #define X2_MIN_POS     5      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
+  #define X2_MIN_POS     0      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
   #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define DEFAULT_DUPLICATION_X_OFFSET 150  
+  #define DEFAULT_DUPLICATION_X_OFFSET 155  
 #endif
 
 #if ENABLED(DriverA4988)

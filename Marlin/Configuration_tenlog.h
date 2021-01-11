@@ -49,18 +49,30 @@
 	#define INVERT_E1_DIR false  
 #endif
 
+#if ENABLED(TGCustom_2209_Titan)
+  #define verS2 "2209_Titan_TGCustom"
+  #define DriverType TMC2209_STANDALONE
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR true
+  #define INVERT_E0_DIR false
+  #define INVERT_E1_DIR true
+  #define X2_MIN_POS     15
+#endif
+
+#if ENABLED(TitanExtruder)
+  #undef X2_MIN_POS
+  #define X2_MIN_POS     15
+#endif
+
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
 #endif
 
-#define X_HOME_DIR -1
-#define Z_HOME_DIR -1
-
-#if ENABLED(ReverseYHome)
-  #define Y_HOME_DIR 1
-  #define USE_YMAX_PLUG
+#if ENABLED(OpticalY)
+  #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #else
-  #define Y_HOME_DIR -1
+  #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #endif
 
 #if ENABLED(BL_Touch)

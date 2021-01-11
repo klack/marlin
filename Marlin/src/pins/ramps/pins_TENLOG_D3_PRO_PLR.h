@@ -37,16 +37,13 @@
 #define Y_MIN_PIN          14
 #define Y_MAX_PIN          -1
 #define Z_MIN_PIN          18
-#define Z_MAX_PIN          19
 
-//#define BLTouch Options   
-#ifdef BLTOUCH
-  #define SERVO0_PIN         15
+#if ENABLED(BL_Touch)
+  #define SERVO0_PIN         19
+  #define Z_MAX_PIN          -1
+#else
+  #define Z_MAX_PIN          19
 #endif
-
-//52 //SCK
-//51 //MOSI
-//50 //MISO
 
 //
 // Steppers
@@ -128,14 +125,6 @@
 
 #define LCD_PINS_RS                    6
 #define LCD_PINS_ENABLE                7
-
-//#define LCD_PINS_D4                   23
-//#define LCD_PINS_D5                   25
-//#define LCD_PINS_D6                   27
-//#define LCD_PINS_D7                   29
-
-//#define LCD_PINS_RS                    -1
-//#define LCD_PINS_ENABLE                -1
 
 #define LCD_PINS_D4                   25
 #define LCD_PINS_D5                   -1

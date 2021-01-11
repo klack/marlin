@@ -33,7 +33,7 @@ void GcodeSuite::M117() {
       ui.set_status(parser.string_arg);
 
       SERIAL_ECHO_START();SERIAL_ECHOPGM("//lux:M117 ");SERIAL_ECHOLN(parser.string_arg);
-      MYSERIAL1.print("//lux:M117 ");MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+      //MYSERIAL1.print("//lux:M117 ");MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
     }
   else
     ui.reset_status();

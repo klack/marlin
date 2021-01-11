@@ -45,6 +45,7 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
   #define INVERT_E1_DIR true
+  #undef X2_MIN_POS
   #define X2_MIN_POS     15
 #endif
 
@@ -58,7 +59,7 @@
 #endif
 
 #if ENABLED(InvertY)
-  #if INVERT_Y_DIR == true
+  #if INVERT_Y_DIR true
     #undef INVERT_Y_DIR
     #define INVERT_Y_DIR false
   #else

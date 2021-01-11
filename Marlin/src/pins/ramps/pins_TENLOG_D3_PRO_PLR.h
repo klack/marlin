@@ -98,14 +98,10 @@
    #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
 #endif
 
-// #ifdef POWER_LOSS_RECOVERY
-//    #define POWER_LOSS_PIN          32
-//    #define POWER_LOSS_STATE        HIGH
-// #endif
-
-
-#define POWER_OFF_PIN 32
-#define POWER_OFF_STATE HIGH
+#ifdef POWER_LOSS_TRIGGER_BY_PIN
+  #define POWER_OFF_PIN 32
+  #define POWER_OFF_STATE HIGH
+#endif
 
 //
 // Filament Runout Sensor
@@ -128,7 +124,7 @@
 #define LCD_PINS_D5                   25
 #define LCD_PINS_D6                   27
 #define LCD_PINS_D7                   29
-#define BEEPER_PIN                    37
+// #define BEEPER_PIN                    37
 #define BTN_ENC                       35
 #define BTN_EN1                       31
 #define BTN_EN2                       33

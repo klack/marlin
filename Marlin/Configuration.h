@@ -20,9 +20,7 @@
  *
  */
 #include "Configuration_tenlog.h"
-#if __has_include("Configuration_personal.h") && __has_include(<stdint.h>)
-# include "Configuration_personal.h"
-#endif
+
 #pragma once
 
 /**

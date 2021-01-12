@@ -1,5 +1,5 @@
 // Use for personal preferences, will be ignored by git
-// Remove .example from filename to enable
+// Copy and remove .example from filename to enable
 //
 // DISABLE WHEN TESTING FOR BUGS
 #undef TOOL_CHANGE_AREA

@@ -20,6 +20,9 @@
  *
  */
 #include "Configuration_tenlog.h"
+#if __has_include("Configuration_personal.h") && __has_include(<stdint.h>)
+# include "Configuration_personal.h"
+#endif
 #pragma once
 
 /**
@@ -122,7 +125,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 9600
+#define BAUDRATE 115200
 
 // Enable the Bluetooth serial interface on AT90USB devices
 //#define BLUETOOTH

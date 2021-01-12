@@ -120,10 +120,10 @@
 #define LCD_PINS_RS                    6
 #define LCD_PINS_ENABLE                7
 
-#define LCD_PINS_D4                   23
-#define LCD_PINS_D5                   25
-#define LCD_PINS_D6                   27
-#define LCD_PINS_D7                   29
+#define LCD_PINS_D4                   25
+#define LCD_PINS_D5                   -1
+#define LCD_PINS_D6                   -1
+#define LCD_PINS_D7                   -1
 // #define BEEPER_PIN                    37
 #define BTN_ENC                       35
 #define BTN_EN1                       31

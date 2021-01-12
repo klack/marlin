@@ -1018,15 +1018,15 @@ void GcodeSuite::process_subcommands_now(char * gcode) {
         case IN_HANDLER:
         case IN_PROCESS:
           SERIAL_ECHO_MSG(STR_BUSY_PROCESSING);
-          // MYSERIAL1.print(STR_BUSY_PROCESSING);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+          MYSERIAL1.print(STR_BUSY_PROCESSING);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
           break;
         case PAUSED_FOR_USER:
           SERIAL_ECHO_MSG(STR_BUSY_PAUSED_FOR_USER);
-          // MYSERIAL1.print(STR_BUSY_PAUSED_FOR_USER);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+          MYSERIAL1.print(STR_BUSY_PAUSED_FOR_USER);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
           break;
         case PAUSED_FOR_INPUT:
           SERIAL_ECHO_MSG(STR_BUSY_PAUSED_FOR_INPUT);
-          // MYSERIAL1.print(STR_BUSY_PAUSED_FOR_INPUT);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+          MYSERIAL1.print(STR_BUSY_PAUSED_FOR_INPUT);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
           break;
         default:
           break;

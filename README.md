@@ -35,27 +35,27 @@ And that's it!
 
 - Mount the BL-Touch to E1.
   Depending on your extruder type, you need to print out a BL-Touch mount!
-  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://thingiverse.com)
+  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/BL-Touch/docs/Titan-BL_Touch-Mount.stl)
   - [![Website](https://img.shields.io/badge/Stock-black?style=flat-square)](https://thingiverse.com)
   - Attach the BL-Touch to the mount.
-  <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+  https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202053715.jpg
   - Attach the mount to the extruder side.
-  <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+  https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202102498.jpg
 - Run your cables from the BL-Touch along the extruder serial cable to the back of the printer. It is nice to use the same color wires as on the BL-Touch.
-<img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202004002.jpg
+https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202015256.jpg
 - Run the Power(Red), Servo(orange), and Ground(Brown) to the left Z endstop. Run the Sensor(white) to the right Z endstop.
-<img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202037819.jpg
 - Unplug your Z endstops. Yep, both of them. You won't need them with the Z-alignment option and we are using the probe as our endstop!
-<img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
 - Plug the wires into each endstop to the correct matchup.
-  - Left Endstop
+  - Right Endstop
     - Red->Red
     - Brown->White
     - Orange->Black
-    <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
-  - Right Endstop
+    https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_201922725.jpg
+  - Left Endstop
     - White->Black
-    <img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" width="25px">
+    https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_201846120.jpg
     
 That's it! I taped multiple jumper wires together to make the right length cables. All the plugging in is done above the printer!
     

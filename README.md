@@ -38,24 +38,24 @@ And that's it!
   - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/BL-Touch/docs/Titan-BL_Touch-Mount.stl)
   - [![Website](https://img.shields.io/badge/Stock-black?style=flat-square)](https://thingiverse.com)
   - Attach the BL-Touch to the mount.
-  https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202053715.jpg
+  ![Mount touch](docs/PXL_20210112_202053715.jpg)
   - Attach the mount to the extruder side.
-  https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202102498.jpg
+  ![Mount mount](docs/PXL_20210112_202102498.jpg)
 - Run your cables from the BL-Touch along the extruder serial cable to the back of the printer. It is nice to use the same color wires as on the BL-Touch.
-https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202004002.jpg
-https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202015256.jpg
+![Mount mount](docs/PXL_20210112_202004002.jpg)
+![Mount mount](docs/PXL_20210112_202015256.jpg)
 - Run the Power(Red), Servo(orange), and Ground(Brown) to the left Z endstop. Run the Sensor(white) to the right Z endstop.
-https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_202037819.jpg
+![Mount mount](docs/PXL_20210112_202037819.jpg)
 - Unplug your Z endstops. Yep, both of them. You won't need them with the Z-alignment option and we are using the probe as our endstop!
 - Plug the wires into each endstop to the correct matchup.
   - Right Endstop
     - Red->Red
-    - Brown->White
-    - Orange->Black
-    https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_201922725.jpg
+    - Green->Orange
+    - White->Brown
+    ![Mount mount](docs/PXL_20210112_201922725.jpg)
   - Left Endstop
-    - White->Black
-    https://raw.githubusercontent.com/klack/marlin/BL-Touch/docs/PXL_20210112_201846120.jpg
+    - Black->White
+    ![Mount mount](docs/PXL_20210112_201846120.jpg)
     
 That's it! I taped multiple jumper wires together to make the right length cables. All the plugging in is done above the printer!
     

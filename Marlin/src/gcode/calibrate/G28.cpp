@@ -378,19 +378,24 @@ void GcodeSuite::G28() {
 
       if (doZ) {
         //TERN_(BLTOUCH, bltouch.init());
-        if (ENABLED(BLTOUCH)) {
-          const float currentXpos = current_position.x;
-          const float currentYpos = current_position.y;
-          bltouch.init();
-          process_subcommands_now_P(PSTR("G34"));
-          destination.set(currentXpos, currentYpos, current_position.z);
-          if (position_is_reachable(destination)) {
-            do_blocking_move_to_xy(destination);
+        if (home_all) {
+        
+          if (ENABLED(BLTOUCH)) {
+            const float currentXpos = current_position.x;
+            const float currentYpos = current_position.y;
+            bltouch.init();
+            process_subcommands_now_P(PSTR("G34"));
+            destination.set(currentXpos, currentYpos, current_position.z);
+            if (position_is_reachable(destination)) {
+              do_blocking_move_to_xy(destination);
+            }
+          } else if (ENABLED(Z_SAFE_HOMING)){
+            home_z_safely();
+          } else {
+            homeaxis(Z_AXIS);
           }
-        } else if (ENABLED(Z_SAFE_HOMING)){
-          home_z_safely();
         } else {
-          homeaxis(Z_AXIS);
+          TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
         }
         //TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
 

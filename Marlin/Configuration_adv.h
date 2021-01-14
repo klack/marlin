@@ -545,16 +545,14 @@
     #define Y2_ENDSTOP_ADJUSTMENT  0
   #endif
 #endif
-
+/*
 //
 // For Z set the number of stepper drivers
 //
 #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
 
 #if NUM_Z_STEPPER_DRIVERS > 1
-  #if !ENABLED(BL_Touch)
-    #define Z_MULTI_ENDSTOPS
-  #endif
+  #define Z_MULTI_ENDSTOPS
   #if ENABLED(Z_MULTI_ENDSTOPS)
     #define Z2_USE_ENDSTOP          _ZMAX_
     #define Z2_ENDSTOP_ADJUSTMENT   0
@@ -568,7 +566,7 @@
     #endif
   #endif
 #endif
-
+*/
 /**
  * Dual X Carriage
  *
@@ -767,7 +765,7 @@
   #define RESTORE_LEVELING_AFTER_G34      // Restore leveling after G34 is done?
   // After G34, re-home Z (G28 Z) or just calculate it from the last probe heights?
   // Re-homing might be more precise in reproducing the actual 'G28 Z' homing height, especially on an uneven bed.
-  #define HOME_AFTER_G34
+  //#define HOME_AFTER_G34 //commented out as a G34 is part of homing routine. If enabled, it will loop on home.
 #endif
 
 //
@@ -1099,10 +1097,10 @@
 //#define LCD_TIMEOUT_TO_STATUS 15000
 
 // Add an 'M73' G-code to set the current percentage
-#define LCD_SET_PROGRESS_MANUALLY
+//#define LCD_SET_PROGRESS_MANUALLY
 
 // Show the E position (filament used) during printing
-#define LCD_SHOW_E_TOTAL
+//#define LCD_SHOW_E_TOTAL
 
 #if ENABLED(SHOW_BOOTSCREEN)
   #define BOOTSCREEN_TIMEOUT 4000        // (ms) Total Duration to display the boot screen(s)

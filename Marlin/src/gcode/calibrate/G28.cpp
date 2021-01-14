@@ -121,6 +121,8 @@
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
 
     sync_plan_position();
+    const float currentSafeXpos = current_position.x;
+    const float currentSafeYpos = current_position.y;
 
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
@@ -141,6 +143,11 @@
 
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
+
+      destination.set(currentSafeXpos, currentSafeYpos, current_position.z);
+      if (position_is_reachable(destination)) {
+        do_blocking_move_to_xy(destination);
+      }
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -370,9 +377,22 @@ void GcodeSuite::G28() {
     #if Z_HOME_DIR < 0
 
       if (doZ) {
-        TERN_(BLTOUCH, bltouch.init());
-
-        TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
+        //TERN_(BLTOUCH, bltouch.init());
+        if (ENABLED(BLTOUCH)) {
+          const float currentXpos = current_position.x;
+          const float currentYpos = current_position.y;
+          bltouch.init();
+          process_subcommands_now_P(PSTR("G34"));
+          destination.set(currentXpos, currentYpos, current_position.z);
+          if (position_is_reachable(destination)) {
+            do_blocking_move_to_xy(destination);
+          }
+        } else if (ENABLED(Z_SAFE_HOMING)){
+          home_z_safely();
+        } else {
+          homeaxis(Z_AXIS);
+        }
+        //TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
 
         probe.move_z_after_homing();
 

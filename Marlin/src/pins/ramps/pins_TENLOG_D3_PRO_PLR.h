@@ -37,12 +37,14 @@
 #define Y_MIN_PIN          14
 #define Y_MAX_PIN          -1
 #define Z_MIN_PIN          18
+#define Z_MAX_PIN          19
 
 #if ENABLED(BL_Touch)
-  #define SERVO0_PIN         19
+  #undef Z_MAX_PIN
   #define Z_MAX_PIN          -1
+  #define SERVO0_PIN         19
 #else
-  #define Z_MAX_PIN          19
+  
 #endif
 
 //
@@ -135,6 +137,9 @@
 //#define BEEPER_OFF LOW 
 //#define BEEPER_ON HIGH
 
-#define BTN_ENC                       35
-#define BTN_EN1                       31
-#define BTN_EN2                       33
+//#define BTN_ENC                       35
+//#define BTN_EN1                       31
+//#define BTN_EN2                       33
+#define BTN_ENC                       -1
+#define BTN_EN1                       -1
+#define BTN_EN2                       -1

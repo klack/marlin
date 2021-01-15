@@ -451,7 +451,8 @@ void GcodeSuite::G28() {
 
   // Restore the active tool after homing
   #if HAS_MULTI_HOTEND && (DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE))
-    tool_change(old_tool_index, NONE(PARKING_EXTRUDER, DUAL_X_CARRIAGE));   // Do move if one of these
+    //tool_change(old_tool_index, NONE(PARKING_EXTRUDER, DUAL_X_CARRIAGE));   // Do move if one of these
+    tool_change(old_tool_index, false);   // Do move if one of these
   #endif
 
   #if HAS_HOMING_CURRENT

@@ -765,7 +765,7 @@
   #define RESTORE_LEVELING_AFTER_G34      // Restore leveling after G34 is done?
   // After G34, re-home Z (G28 Z) or just calculate it from the last probe heights?
   // Re-homing might be more precise in reproducing the actual 'G28 Z' homing height, especially on an uneven bed.
-  //#define HOME_AFTER_G34 //commented out as a G34 is part of homing routine. If enabled, it will loop on home.
+  #define HOME_AFTER_G34
 #endif
 
 //

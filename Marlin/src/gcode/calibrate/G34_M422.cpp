@@ -137,7 +137,9 @@ void GcodeSuite::G34() {
     );
 
     // Home before the alignment procedure
-    if (!all_axes_known()) home_all_axes();
+    //if (!all_axes_known()) home_all_axes();
+    if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) process_subcommands_now_P(PSTR("G28XY"));
+    if (homing_needed_error(_BV(Z_AXIS))) process_subcommands_now_P(PSTR("G28Z"));
 
     // Move the Z coordinate realm towards the positive - dirty trick
     current_position.z += z_probe * 0.5f;

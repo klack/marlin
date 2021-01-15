@@ -46,6 +46,7 @@
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
   #define INVERT_E1_DIR true
+  #undef X2_MIN_POS
   #define X2_MIN_POS     15
 #endif
 

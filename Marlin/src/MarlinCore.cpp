@@ -832,8 +832,8 @@ void kill(PGM_P const lcd_error/*=nullptr*/, PGM_P const lcd_component/*=nullptr
   TERN_(HAS_CUTTER, cutter.kill()); // Full cutter shutdown including ISR control
 
   SERIAL_ERROR_MSG(STR_ERR_KILLED);
-  // MYSERIAL1.print("Error:");
-  // MYSERIAL1.print(STR_ERR_KILLED);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+  MYSERIAL1.print("Error:");
+  MYSERIAL1.print(STR_ERR_KILLED);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
 
   #if HAS_DISPLAY
     ui.kill_screen(lcd_error ?: GET_TEXT(MSG_KILLED), lcd_component ?: NUL_STR);
@@ -1015,7 +1015,7 @@ void setup() {
   uint32_t serial_connect_timeout = millis() + 1000UL;
   while (!MYSERIAL0 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
   #if HAS_MULTI_SERIAL
-    MYSERIAL1.begin(BAUDRATE);
+    MYSERIAL1.begin(9600);
     serial_connect_timeout = millis() + 1000UL;
     while (!MYSERIAL1 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
   #endif

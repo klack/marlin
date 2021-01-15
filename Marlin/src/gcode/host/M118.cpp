@@ -69,7 +69,7 @@ void GcodeSuite::M118() {
   if (hasA) SERIAL_ECHOPGM("// ");
   SERIAL_ECHOLN(p);
 
-  // MYSERIAL1.print(p);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+  MYSERIAL1.print(p);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
 
   TERN_(HAS_MULTI_SERIAL, serial_port_index = old_serial);
 }

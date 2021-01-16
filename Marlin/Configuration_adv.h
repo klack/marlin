@@ -3532,3 +3532,7 @@
 
 // Enable Marlin dev mode which adds some special commands
 //#define MARLIN_DEV_MODE
+
+#if __has_include("Configuration_overide.h") && __has_include(<stdint.h>)
+  #include "Configuration_overide.h"
+#endif

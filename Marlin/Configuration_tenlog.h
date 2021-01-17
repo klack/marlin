@@ -83,3 +83,6 @@
 #define Z4_DRIVER_TYPE DriverType
 #define E0_DRIVER_TYPE DriverType
 #define E1_DRIVER_TYPE DriverType
+
+#define HOST_ACTION_COMMANDS // Enables Action prompts for Host / Octoprint from Printer
+#define HOST_PROMPT_SUPPORT

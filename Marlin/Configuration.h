@@ -626,7 +626,7 @@
 #define USE_ZMIN_PLUG
 #define USE_XMAX_PLUG
 //#define USE_YMAX_PLUG
-#define USE_ZMAX_PLUG
+//#define USE_ZMAX_PLUG //In Tenlog
 
 // Enable pullup for all endstops to prevent a floating state
 #define ENDSTOPPULLUPS
@@ -1146,12 +1146,14 @@
  */
 
 // Min software endstops constrain movement within minimum coordinate bounds
+/*
 #define MIN_SOFTWARE_ENDSTOPS
 #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
   #define MIN_SOFTWARE_ENDSTOP_X
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
 #endif
+*/
 
 // Max software endstops constrain movement within maximum coordinate bounds
 #define MAX_SOFTWARE_ENDSTOPS

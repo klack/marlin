@@ -16,6 +16,13 @@
   #define X2_MIN_POS     10      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
   #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 92.6, 92.6 }
+  #define USE_ZMAX_PLUG
+  #define MIN_SOFTWARE_ENDSTOPS
+  #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
+    #define MIN_SOFTWARE_ENDSTOP_X
+    #define MIN_SOFTWARE_ENDSTOP_Y
+    #define MIN_SOFTWARE_ENDSTOP_Z
+  #endif
 #endif
 
 #if ENABLED(DriverA4988)
@@ -76,7 +83,9 @@
 #endif
 
 #if ENABLED(BL_Touch)
+  #undef USE_ZMAX_PLUG
   #define BLTOUCH
+  #undef MIN_SOFTWARE_ENDSTOP_Z
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #define Z_SAFE_HOMING
   #if ENABLED(Z_SAFE_HOMING)
@@ -84,7 +93,7 @@
     #define Z_SAFE_HOMING_Y_POINT 155  // Y point for Z homing
   #endif
   #define Z_STEPPER_AUTO_ALIGN
-  #define PROBING_MARGIN 10
+  #define PROBING_MARGIN 15
   #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #define AUTO_BED_LEVELING_UBL
   #define RESTORE_LEVELING_AFTER_G28

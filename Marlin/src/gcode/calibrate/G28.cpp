@@ -121,6 +121,8 @@
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
 
     sync_plan_position();
+    const float currentSafeXpos = current_position.x;
+    const float currentSafeYpos = current_position.y;
 
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
@@ -141,6 +143,11 @@
 
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
+
+      destination.set(currentSafeXpos, currentSafeYpos, current_position.z);
+      if (position_is_reachable(destination)) {
+        do_blocking_move_to_xy(destination);
+      }
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -371,23 +378,7 @@ void GcodeSuite::G28() {
 
       if (doZ) {
         TERN_(BLTOUCH, bltouch.init());
-        if (home_all) {
-          if (ENABLED(Z_SAFE_HOMING)){
-            const float currentXpos = current_position.x;
-            const float currentYpos = current_position.y;
-            //home_z_safely();
-            process_subcommands_now_P(PSTR("G34"));
-            destination.set(currentXpos, currentYpos, current_position.z);
-            if (position_is_reachable(destination)) {
-              do_blocking_move_to_xy(destination);
-            }
-          } else {
-            homeaxis(Z_AXIS);
-          }
-        } else {
-          TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
-        }
-        //TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
+        TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
 
         probe.move_z_after_homing();
 
@@ -451,8 +442,7 @@ void GcodeSuite::G28() {
 
   // Restore the active tool after homing
   #if HAS_MULTI_HOTEND && (DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE))
-    //tool_change(old_tool_index, NONE(PARKING_EXTRUDER, DUAL_X_CARRIAGE));   // Do move if one of these
-    tool_change(old_tool_index, false);   // Do move if one of these
+    tool_change(old_tool_index, NONE(PARKING_EXTRUDER, DUAL_X_CARRIAGE));   // Do move if one of these
   #endif
 
   #if HAS_HOMING_CURRENT

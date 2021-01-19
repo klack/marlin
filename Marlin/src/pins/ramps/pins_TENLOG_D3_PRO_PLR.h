@@ -39,6 +39,14 @@
 #define Z_MIN_PIN          18
 #define Z_MAX_PIN          19
 
+#if ENABLED(BL_Touch)
+  #undef Z_MAX_PIN
+  #define Z_MAX_PIN          -1
+  #define SERVO0_PIN         19
+#else
+  
+#endif
+
 //
 // Steppers
 //
@@ -124,7 +132,14 @@
 #define LCD_PINS_D5                   -1
 #define LCD_PINS_D6                   -1
 #define LCD_PINS_D7                   -1
-// #define BEEPER_PIN                    37
-#define BTN_ENC                       35
-#define BTN_EN1                       31
-#define BTN_EN2                       33
+
+//#define BEEPER_PIN                    23
+//#define BEEPER_OFF LOW 
+//#define BEEPER_ON HIGH
+
+//#define BTN_ENC                       35
+//#define BTN_EN1                       31
+//#define BTN_EN2                       33
+#define BTN_ENC                       -1
+#define BTN_EN1                       -1
+#define BTN_EN2                       -1

@@ -2,19 +2,27 @@
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define X_BED_SIZE        300
-  #define Y_BED_SIZE        300
-  #define TOOL_CHANGE_AREA  25 
-  #define X_MIN_POS -48 // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define Y_MIN_POS 0
+  #define X_BED_SIZE        305
+  #define Y_BED_SIZE        305
+  #define TOOL_CHANGE_AREA  10 
   #define Z_MIN_POS 0
-  #define X_MAX_POS X_BED_SIZE
-  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA // 305+10=315
   #define Z_MAX_POS 350
-  #define X2_MIN_POS     5      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
-  #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define DEFAULT_DUPLICATION_X_OFFSET 150  
+  #define DEFAULT_DUPLICATION_X_OFFSET 155
+  #define Y_MIN_POS 0
+  #define X_MIN_POS -50 // Travel limits (mm) after homing, corresponding to endstop positions.
+  #define X_MAX_POS 305
+  #define X2_MIN_POS     10      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
+  #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 92.6, 92.6 }
+  #define USE_ZMAX_PLUG
+  #define MIN_SOFTWARE_ENDSTOPS
+  #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
+    #define MIN_SOFTWARE_ENDSTOP_X
+    #define MIN_SOFTWARE_ENDSTOP_Y
+    #define MIN_SOFTWARE_ENDSTOP_Z
+  #endif
 #endif
 
 #if ENABLED(DriverA4988)

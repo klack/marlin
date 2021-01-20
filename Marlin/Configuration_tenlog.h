@@ -59,7 +59,17 @@
 
 #if ENABLED(TitanExtruder)
   #undef X2_MIN_POS
-  #define X2_MIN_POS     15
+  #define X2_MIN_POS     16
+  #undef Y_MIN_POS
+  #define Y_MIN_POS 11
+  #undef X_MIN_POS
+  #define X_MIN_POS -47 // Travel limits (mm) after homing, corresponding to endstop positions.
+  #undef X_MAX_POS
+  #define X_MAX_POS 306
+  #undef X2_MAX_POS
+  #define X2_MAX_POS   371       // Set this to the distance between toolheads when both heads are homed
+  #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 382.17, 382.17 }
 #endif
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
@@ -70,6 +80,23 @@
   #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #else
   #define Y_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
+#endif
+
+#if ENABLED(BL_Touch)
+  #undef USE_ZMAX_PLUG
+  #define BLTOUCH
+  #undef MIN_SOFTWARE_ENDSTOP_Z
+  #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+  #define Z_SAFE_HOMING
+  #if ENABLED(Z_SAFE_HOMING)
+    #define Z_SAFE_HOMING_X_POINT 155  // X point for Z homing
+    #define Z_SAFE_HOMING_Y_POINT 155  // Y point for Z homing
+  #endif
+  #define Z_STEPPER_AUTO_ALIGN
+  #define PROBING_MARGIN 15
+  #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #define AUTO_BED_LEVELING_UBL
+  #define RESTORE_LEVELING_AFTER_G28
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
@@ -87,6 +114,25 @@
 #define X1_MAX_POS X_BED_SIZE  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
 #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
 #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
+
+#define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
+#if NUM_Z_STEPPER_DRIVERS > 1
+  #if !ENABLED(BL_Touch)
+    #define Z_MULTI_ENDSTOPS
+  #endif
+  #if ENABLED(Z_MULTI_ENDSTOPS)
+    #define Z2_USE_ENDSTOP          _ZMAX_
+    #define Z2_ENDSTOP_ADJUSTMENT   0
+    #if NUM_Z_STEPPER_DRIVERS >= 3
+      #define Z3_USE_ENDSTOP        _YMAX_
+      #define Z3_ENDSTOP_ADJUSTMENT 0
+    #endif
+    #if NUM_Z_STEPPER_DRIVERS >= 4
+      #define Z4_USE_ENDSTOP        _ZMAX_
+      #define Z4_ENDSTOP_ADJUSTMENT 0
+    #endif
+  #endif
+#endif
 
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType

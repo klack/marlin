@@ -24,6 +24,7 @@
   #endif
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define BED_CENTER_AT_155_155
+  #define TOOLCHANGE_NO_RETURN
 #endif
 
 #if ENABLED(DriverA4988)
@@ -137,6 +138,12 @@
 		  #endif
 	  #endif
 	#endif
+#endif
+
+#if ENABLED(BTTSFR)
+  #define FILAMENT_RUNOUT_DISTANCE_MM 7
+  #define FILAMENT_MOTION_SENSOR
+  #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

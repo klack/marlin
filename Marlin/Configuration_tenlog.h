@@ -60,6 +60,7 @@
 #endif
 
 #if ENABLED(TitanExtruder)
+  #undef X2_MIN_POS
   #define X2_MIN_POS     16
   #define Y_MIN_POS 11
   #define X_MIN_POS -47 // Travel limits (mm) after homing, corresponding to endstop positions.
@@ -67,6 +68,7 @@
   #define X2_MAX_POS   371       // Set this to the distance between toolheads when both heads are homed
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 382.17, 382.17 }
 #else
+  #undef X2_MIN_POS
   #define X2_MIN_POS     10      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
   #define Y_MIN_POS 7
   #define X_MIN_POS -47 // Travel limits (mm) after homing, corresponding to endstop positions.

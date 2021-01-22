@@ -23,6 +23,7 @@
     #define MIN_SOFTWARE_ENDSTOP_Y
     #define MIN_SOFTWARE_ENDSTOP_Z
   #endif
+  #define TOOLCHANGE_NO_RETURN
 #endif
 
 #if ENABLED(DriverA4988)
@@ -97,6 +98,12 @@
   #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #define AUTO_BED_LEVELING_UBL
   #define RESTORE_LEVELING_AFTER_G28
+#endif
+
+#if ENABLED(BTTSFR)
+  #define FILAMENT_RUNOUT_DISTANCE_MM 7
+  #define FILAMENT_MOTION_SENSOR
+  #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3

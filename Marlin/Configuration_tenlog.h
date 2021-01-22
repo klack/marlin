@@ -23,6 +23,7 @@
     #define MIN_SOFTWARE_ENDSTOP_Y
     #define MIN_SOFTWARE_ENDSTOP_Z
   #endif
+  #define TOOLCHANGE_NO_RETURN
 #endif
 
 #if ENABLED(DriverA4988)

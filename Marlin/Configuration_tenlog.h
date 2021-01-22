@@ -99,6 +99,12 @@
   #define RESTORE_LEVELING_AFTER_G28
 #endif
 
+#if ENABLED(BTTSFR)
+  #define FILAMENT_RUNOUT_DISTANCE_MM 7
+  #define FILAMENT_MOTION_SENSOR
+  #define M114_DETAIL         // Use 'M114` for details to check planner calculations
+#endif
+
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
 
 // Enables action host prompts.  Action prompts send a message to the connected host for display in the host console or to perform a host action.

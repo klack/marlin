@@ -25,6 +25,9 @@
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define BED_CENTER_AT_155_155
   #define TOOLCHANGE_NO_RETURN
+  #define DEFAULT_MAX_FEEDRATE          { 80, 80, 3, 25, 25 }
+  #define HOMING_FEEDRATE_Z  (4*60) 
+  #define Z_CLEARANCE_BETWEEN_PROBES  5
 #endif
 
 #if ENABLED(DriverA4988)
@@ -91,29 +94,31 @@
   #define HAS_PROBE
   #define BLTOUCH
   #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
-  #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
+  #define Z_CLEARANCE_DEPLOY_PROBE   10 // Z Clearance for Deploy/Stow
+  #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probe
+  #define Z_PROBE_LOW_POINT          -2 
 #endif
-
 #if ENABLED(EZabl)
+  #undef  DEFAULT_MAX_FEEDRATE
+  #define DEFAULT_MAX_FEEDRATE          { 80, 80, 15, 25, 25 }
   #define HAS_PROBE
   #define FIX_MOUNTED_PROBE
-  #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
+  #define NOZZLE_TO_PROBE_OFFSET { -25, -55, 0 }
+  #define Z_CLEARANCE_DEPLOY_PROBE 5
+  #undef Z_CLEARANCE_BETWEEN_PROBES
+  #define Z_CLEARANCE_BETWEEN_PROBES 3
+  #define Z_CLEARANCE_MULTI_PROBE 3
+  #define Z_AFTER_PROBING           5 // Z position after probing is done
+  #define Z_AFTER_HOMING 5
+  #define Z_PROBE_LOW_POINT          -5
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
+  #undef HOMING_FEEDRATE_Z
+  #define HOMING_FEEDRATE_Z  (8*60) 
   #define MULTIPLE_PROBING 2
-  #define Z_HOMING_HEIGHT  7 
-  #define Z_AFTER_HOMING  2 
-  #define AUTO_BED_LEVELING_BILINEAR
-  #define ENABLE_LEVELING_FADE_HEIGHT
-  #define SEGMENT_LEVELED_MOVES
-  #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
-  #define GRID_MAX_POINTS_X 7
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
-  #define EXTRAPOLATE_BEYOND_GRID
-  #define PROBING_MARGIN 30
-  #define ABL_BILINEAR_SUBDIVISION
-  //#define BILINEAR_SUBDIVISIONS 5
+  #define EXTRA_PROBING    1
+  #define PROBING_MARGIN 50
 #endif
 
 #if ENABLED(HAS_PROBE)
@@ -124,6 +129,7 @@
   #define Z_SAFE_HOMING
   #define Z_STEPPER_AUTO_ALIGN
   #define RESTORE_LEVELING_AFTER_G28
+  #define AUTO_BED_LEVELING_UBL
 #else
 	#if NUM_Z_STEPPER_DRIVERS > 1
 	  #define Z_MULTI_ENDSTOPS

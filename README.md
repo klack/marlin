@@ -17,7 +17,7 @@ It is standard practice for a manufacturer to void your warranty for installing 
   - Z-Alignment (Since we no longer have 2 endstops)
   - Generate bed mesh
   - Enable UBL auto-leveling
-  
+  - Octoprint Bed Visualizer GCode Settings
 ### What does this do?
 BL-Touch is a probe with amazing accuracy. It can detect the slightest pressure, allowing it to tell the distance it is from a contact surface.
 
@@ -104,3 +104,17 @@ G29 S1 - Save the mesh to EEPROM.
 #### Enable UBL auto-leveling
 G29 A F 10.0 - Enables unified bed leveling with a Z-fade of 10. This means it will gradually even the layers to flat until 10mm high where it will be totally flat.
 M500 - Save leveling and settings to EEPROM.
+
+#### Octoprint Bed Visualizer GCode Settings
+G34       ; Set dual Z alignment home all axes
+M155 S30  ; reduce temperature reporting rate to reduce output pollution
+M190 S60  ; (optional) wait for the bed to get up to temperature
+G29 P1 V4  ; automatically populate mesh with all reachable points
+G29 P3 T V4    ; infer the rest of the mesh values
+G29 P3 T V4    ; infer the rest of the mesh values
+G29 A F 10.0 ; Enables unified bed leveling with a Z-fade of 10. This means it will gradually even the layers to flat until 10mm high where it will be totally flat.
+G29 S1 ; Save the mesh to EEPROM.
+@BEDLEVELVISUALIZER	; tell the plugin to watch for reported mesh
+M420 T4 V ; Report the new mesh
+M500      ; save the new mesh to EEPROM
+M155 S3   ; reset temperature reporting

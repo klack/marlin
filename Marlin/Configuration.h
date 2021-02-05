@@ -1390,11 +1390,11 @@
 // - Prevent Z homing when the Z probe is outside bed area.
 //
 //#define Z_SAFE_HOMING
-/*
-#if ENABLED(Z_SAFE_HOMING)
-  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
-  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
-#endif
+/* In Tenlog Config
+#if ENABLED(Z_SAFE_HOMING) In Tenlog Config
+  #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing In Tenlog Config
+  #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing In Tenlog Config
+#endif In Tenlog Config
 */
 // Homing speeds (mm/min)
 #define HOMING_FEEDRATE_XY (50*60)

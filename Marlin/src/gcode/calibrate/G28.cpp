@@ -121,8 +121,8 @@
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
 
     sync_plan_position();
-    const float currentSafeXpos = current_position.x;
-    const float currentSafeYpos = current_position.y;
+    const float currentSafeXpos = current_position.x; // Used in tenlog config
+    const float currentSafeYpos = current_position.y; // Used in tenlog config
 
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
@@ -144,10 +144,10 @@
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
 
-      destination.set(currentSafeXpos, currentSafeYpos, current_position.z);
-      if (position_is_reachable(destination)) {
-        do_blocking_move_to_xy(destination);
-      }
+      destination.set(currentSafeXpos, currentSafeYpos, current_position.z); // Used in tenlog config
+      if (position_is_reachable(destination)) { // Used in tenlog config
+        do_blocking_move_to_xy(destination); // Used in tenlog config
+      } // Used in tenlog config
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -286,7 +286,11 @@ void GcodeSuite::G28() {
     #if DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE)
       const uint8_t old_tool_index = active_extruder;
     #endif
-    tool_change(0, true);
+    #if ENABLED(DUAL_X_CARRIAGE) // Used in tenlog config
+      tool_change(0, false); // Used in tenlog config
+    #else // Used in tenlog config
+      tool_change(0, true);
+    #endif // Used in tenlog config
   #endif
 
   TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);

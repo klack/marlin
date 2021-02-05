@@ -124,6 +124,10 @@
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #define Z_MIN_PROBE_REPEATABILITY_TEST
   #define Z_SAFE_HOMING
+  #if ENABLED(Z_SAFE_HOMING)
+    #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
+    #define Z_SAFE_HOMING_Y_POINT Y_CENTER  // Y point for Z homing
+  #endif
   #define Z_STEPPER_AUTO_ALIGN
   #define RESTORE_LEVELING_AFTER_G28
 #elif NUM_Z_STEPPER_DRIVERS > 1

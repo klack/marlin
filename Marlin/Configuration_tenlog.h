@@ -41,6 +41,14 @@
 	#define INVERT_Z_DIR false
 	#define INVERT_E0_DIR true
 	#define INVERT_E1_DIR false
+#elif ENABLED(Driver2209)
+  #define verS2 "2209"
+  #define DriverType TMC2209_STANDALONE
+	#define INVERT_X_DIR false
+  #define INVERT_Y_DIR true
+	#define INVERT_Z_DIR false
+	#define INVERT_E0_DIR true
+	#define INVERT_E1_DIR false
 #endif
 
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)

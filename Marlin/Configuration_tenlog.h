@@ -62,11 +62,17 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
+  #define DEFAULT_Kp_LIST {  18.36,  16.80 }
+  #define DEFAULT_Ki_LIST {   1.55,   1.32 }
+  #define DEFAULT_Kd_LIST { 54.53, 53.34 }
 #else
   #define X2_MIN_POS 10
   #define X_MAX_POS 305
   #define X2_MAX_POS 353
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+  #define DEFAULT_Kp_LIST {  18.36,  16.80 }
+  #define DEFAULT_Ki_LIST {   1.55,   1.32 }
+  #define DEFAULT_Kd_LIST { 54.53, 53.34 }
 #endif
 
 #if ENABLED(OpticalY)
@@ -169,6 +175,14 @@
 #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
 #define DUAL_X_CARRIAGE
 #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
+#define EVENT_GCODE_IDEX_AFTER_MODECHANGE "G28X"
+#define DEFAULT_bedKp 154.01
+#define DEFAULT_bedKi 17.73
+#define DEFAULT_bedKd 892.09
+#define FIL_RUNOUT_ENABLED_DEFAULT false
+#define NUM_RUNOUT_SENSORS   1
+#define FIL_RUNOUT_STATE     LOW
+#define FIL_RUNOUT_PULLUP
 
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType

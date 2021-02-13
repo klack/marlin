@@ -959,7 +959,8 @@ void setup() {
   while (!MYSERIAL0.connected() && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
 
   #if HAS_MULTI_SERIAL && !HAS_ETHERNET
-    MYSERIAL1.begin(BAUDRATE);
+    //MYSERIAL1.begin(BAUDRATE);
+    MYSERIAL1.begin(9600);
     serial_connect_timeout = millis() + 1000UL;
     while (!MYSERIAL1.connected() && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
   #endif
@@ -997,17 +998,6 @@ void setup() {
     #endif
   #endif
 
-  //This portion is added for Tenlog custom TFT settings
-  //MYSERIAL0.begin(BAUDRATE);
-  //uint32_t serial_connect_timeout = millis() + 1000UL;
-  //while (!MYSERIAL0 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-  //#if HAS_MULTI_SERIAL
-  //  MYSERIAL1.begin(9600);
-  //  serial_connect_timeout = millis() + 1000UL;
-  //  while (!MYSERIAL1 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-  //#endif
-  //SERIAL_ECHO_MSG("start");
-  //End custom code
   #if BOTH(HAS_TFT_LVGL_UI, MKS_WIFI_MODULE)
     mks_esp_wifi_init();
     WIFISERIAL.begin(WIFI_BAUDRATE);

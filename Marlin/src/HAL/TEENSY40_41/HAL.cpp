@@ -21,7 +21,7 @@
  */
 
 /**
- * Description: HAL for Teensy40 (IMXRT1062)
+ * HAL for Teensy 4.0 / 4.1 (IMXRT1062)
  */
 
 #ifdef __IMXRT1062__
@@ -31,6 +31,9 @@
 #include "timers.h"
 
 #include <Wire.h>
+
+DefaultSerial MSerial(false);
+USBSerialType USBSerial(false, SerialUSB);
 
 uint16_t HAL_adc_result, HAL_adc_select;
 

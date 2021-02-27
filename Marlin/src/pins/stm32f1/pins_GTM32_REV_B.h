@@ -33,8 +33,6 @@
 #define BOARD_INFO_NAME      "GTM32 Pro VB"
 #define DEFAULT_MACHINE_NAME "M201"
 
-#define BOARD_NO_NATIVE_USB
-
 //#define DISABLE_DEBUG
 
 //
@@ -137,9 +135,9 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
- #if IS_RRD_SC
+ #if ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
 
     //
     // LCD display on J2 FFC40
@@ -170,7 +168,7 @@
     //#define LCD_UART_RX                   PD9
   #endif
 
-  #if HAS_MARLINUI_U8GLIB
+  #if HAS_GRAPHICAL_LCD
     #ifndef BOARD_ST7920_DELAY_1
       #define BOARD_ST7920_DELAY_1  DELAY_NS(96)
     #endif
@@ -182,7 +180,7 @@
     #endif
   #endif
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 //
 // Beeper
@@ -212,24 +210,24 @@
   //
   // SD Card on RepRapDiscount Smart Controller (J2) or on SD_CARD connector
   //
-  #define SD_SS_PIN                         PB12  // PC11
-  #define SD_SCK_PIN                        PB13  // PC12 // PC1
-  #define SD_MOSI_PIN                       PB15  // PD2  // PD2
-  #define SD_MISO_PIN                       PB14  // PC8
+  #define SS_PIN                            PB12  // PC11
+  #define SCK_PIN                           PB13  // PC12 // PC1
+  #define MOSI_PIN                          PB15  // PD2  // PD2
+  #define MISO_PIN                          PB14  // PC8
   #define SD_DETECT_PIN                     PC7
 
 #else
   //
   // Use the on-board card socket labeled TF_CARD_SOCKET
   //
-  #define SD_SS_PIN                         PA4
-  #define SD_SCK_PIN                        PA5
-  #define SD_MOSI_PIN                       PA7
-  #define SD_MISO_PIN                       PA6   // PA6
+  #define SS_PIN                            PA4
+  #define SCK_PIN                           PA5
+  #define MOSI_PIN                          PA7
+  #define MISO_PIN                          PA6   // PA6
   #define SD_DETECT_PIN                     -1    // Card detect is not connected
 #endif
 
-#define SDSS                           SD_SS_PIN
+#define SDSS                              SS_PIN
 
 //
 // ESP WiFi can be soldered to J9 connector which is wired to USART2.

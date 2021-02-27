@@ -132,10 +132,6 @@
 #define DOGLCD_CS                    LCD_PINS_D5
 #define DOGLCD_A0                    LCD_PINS_D6
 
-#if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-  #define BTN_ENC_EN                 LCD_PINS_D7  // Detect the presence of the encoder
-#endif
-
 //
 // Onboard SD support
 //
@@ -156,8 +152,8 @@
   #ifndef SDIO_SUPPORT
     #define SOFTWARE_SPI                          // Use soft SPI for onboard SD
     #define SDSS                     SDIO_D3_PIN
-    #define SD_SCK_PIN               SDIO_CK_PIN
-    #define SD_MISO_PIN              SDIO_D0_PIN
-    #define SD_MOSI_PIN             SDIO_CMD_PIN
+    #define SCK_PIN                  SDIO_CK_PIN
+    #define MISO_PIN                 SDIO_D0_PIN
+    #define MOSI_PIN                SDIO_CMD_PIN
   #endif
 #endif

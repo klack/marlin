@@ -26,6 +26,7 @@
  *
  * The pins diagram can be found and the following URL:
  * https://github.com/makerbase-mks/MKS-SGen/blob/master/Hardware/MKS%20SGEN%20V1.0_001/MKS%20SGEN%20V1.0_001%20PIN.pdf
+ *
  */
 
 #if NOT_TARGET(MCU_LPC1769)

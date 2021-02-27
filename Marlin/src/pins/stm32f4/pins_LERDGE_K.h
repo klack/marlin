@@ -29,9 +29,6 @@
 
 #define I2C_EEPROM
 
-// USB Flash Drive support
-#define HAS_OTG_USB_HOST_SUPPORT
-
 //
 // Servos
 //
@@ -145,7 +142,6 @@
 // SD support
 //
 #define SDIO_SUPPORT
-#define SDIO_CLOCK                       4800000
 
 //
 // Misc. Functions
@@ -156,10 +152,10 @@
 #define KILL_PIN                            -1
 #define POWER_LOSS_PIN                      PA4   // Power-loss / nAC_FAULT
 
-#define SD_SCK_PIN                          PC12
-#define SD_MISO_PIN                         PC8
-#define SD_MOSI_PIN                         PD2
-#define SD_SS_PIN                           PC11
+#define SCK_PIN                             PC12
+#define MISO_PIN                            PC8
+#define MOSI_PIN                            PD2
+#define SS_PIN                              PC11
 
 #define SD_DETECT_PIN                       PA8
 #define BEEPER_PIN                          PC7

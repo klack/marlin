@@ -181,7 +181,7 @@
 //
 // Formbot only supports REPRAP_DISCOUNT_SMART_CONTROLLER
 //
-#if IS_RRD_SC
+#if ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
   #define BEEPER_PIN                          37
   #define BTN_EN1                             31
   #define BTN_EN2                             33

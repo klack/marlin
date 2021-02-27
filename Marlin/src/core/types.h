@@ -75,6 +75,7 @@ typedef float feedRate_t;
 // Conversion macros
 #define MMM_TO_MMS(MM_M) feedRate_t(float(MM_M) / 60.0f)
 #define MMS_TO_MMM(MM_S) (float(MM_S) * 60.0f)
+#define MMS_SCALED(V)    ((V) * 0.01f * feedrate_percentage)
 
 //
 // Coordinates structures for XY, XYZ, XYZE...

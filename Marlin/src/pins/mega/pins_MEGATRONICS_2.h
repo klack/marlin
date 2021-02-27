@@ -130,7 +130,7 @@
 //
 #define BEEPER_PIN                            64
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #define LCD_PINS_RS                         14
   #define LCD_PINS_ENABLE                     15
@@ -139,17 +139,17 @@
   #define LCD_PINS_D6                         32
   #define LCD_PINS_D7                         33
 
-  #if IS_NEWPANEL
+  #if ENABLED(NEWPANEL)
     // Buttons are directly attached using keypad
     #define BTN_EN1                           61
     #define BTN_EN2                           59
     #define BTN_ENC                           43
   #else
     // Buttons attached to shift register of reprapworld keypad v1.1
-    #define SHIFT_CLK_PIN                     63
-    #define SHIFT_LD_PIN                      42
-    #define SHIFT_OUT_PIN                     17
-    #define SHIFT_EN_PIN                      17
+    #define SHIFT_CLK                         63
+    #define SHIFT_LD                          42
+    #define SHIFT_OUT                         17
+    #define SHIFT_EN                          17
   #endif
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD

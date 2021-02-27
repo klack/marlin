@@ -108,7 +108,7 @@
 //
 #define BEEPER_PIN                            33
 
-#if IS_ULTRA_LCD && IS_NEWPANEL
+#if BOTH(ULTRA_LCD, NEWPANEL)
 
   #define LCD_PINS_RS                         16
   #define LCD_PINS_ENABLE                     17
@@ -124,7 +124,7 @@
 
   #define SD_DETECT_PIN                       -1  // RAMPS doesn't use this
 
-#endif // IS_ULTRA_LCD && IS_NEWPANEL
+#endif // ULTRA_LCD && NEWPANEL
 
 //
 // M3/M4/M5 - Spindle/Laser Control

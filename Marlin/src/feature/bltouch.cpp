@@ -31,7 +31,6 @@ BLTouch bltouch;
 bool BLTouch::last_written_mode; // Initialized by settings.load, 0 = Open Drain; 1 = 5V Drain
 
 #include "../module/servo.h"
-#include "../module/probe.h"
 
 void stop();
 
@@ -91,7 +90,15 @@ void BLTouch::clear() {
   _stow();     // STOW to be ready for meaningful work. Could fail, don't care
 }
 
-bool BLTouch::triggered() { return PROBE_TRIGGERED(); }
+bool BLTouch::triggered() {
+  return (
+    #if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
+      READ(Z_MIN_PIN) != Z_MIN_ENDSTOP_INVERTING
+    #else
+      READ(Z_MIN_PROBE_PIN) != Z_MIN_PROBE_ENDSTOP_INVERTING
+    #endif
+  );
+}
 
 bool BLTouch::deploy_proc() {
   // Do a DEPLOY

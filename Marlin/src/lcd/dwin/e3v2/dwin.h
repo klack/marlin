@@ -215,11 +215,9 @@ enum processID : uint8_t {
 
 // Color
 #define Color_White       0xFFFF
-#define Color_Yellow      0xFF0F
 #define Color_Bg_Window   0x31E8  // Popup background color
 #define Color_Bg_Blue     0x1125  // Dark blue background color
 #define Color_Bg_Black    0x0841  // Black background color
-#define Color_Bg_Red      0xF00F  // Red background color
 #define Popup_Text_Color  0xD6BA  // Popup font background color
 #define Line_Color        0x3A6A  // Split line color
 #define Rectangle_Color   0xEE2F  // Blue square cursor color
@@ -249,14 +247,11 @@ typedef struct {
     float Move_E_scale    = 0;
   #endif
   float offset_value      = 0;
-  int8_t show_mode        = 0; // -1: Temperature control    0: Printing temperature
+  char show_mode          = 0;    // -1: Temperature control    0: Printing temperature
 } HMI_value_t;
 
-#define DWIN_CHINESE 123
-#define DWIN_ENGLISH 0
-
 typedef struct {
-  uint8_t language;
+  bool language_chinese;  // 0: EN, 1: CN
   bool pause_flag:1;
   bool pause_action:1;
   bool print_finish:1;
@@ -274,10 +269,10 @@ typedef struct {
     AxisEnum feedspeed_axis;
   #endif
   AxisEnum acc_axis, jerk_axis, step_axis;
-} HMI_Flag_t;
+} HMI_Flag;
 
 extern HMI_value_t HMI_ValueStruct;
-extern HMI_Flag_t HMI_flag;
+extern HMI_Flag    HMI_flag;
 
 // Show ICO
 void ICON_Print(bool show);
@@ -340,8 +335,8 @@ void Icon_temperature(bool value);
 void Icon_leveling(bool value);
 
 // Other
-void Draw_Status_Area(const bool with_update); // Status Area
-void HMI_StartFrame(const bool with_update);   // Prepare the menu view
+bool Pause_HeatStatus();
+void HMI_StartFrame(const bool with_update); // Startup screen
 void HMI_MainMenu();    // Main process screen
 void HMI_SelectFile();  // File page
 void HMI_Printing();    // Print page
@@ -368,8 +363,6 @@ void HMI_Init();
 void DWIN_Update();
 void EachMomentUpdate();
 void DWIN_HandleScreen();
-
-inline void DWIN_StartHoming() { HMI_flag.home_flag = true; }
 
 void DWIN_CompletedHoming();
 void DWIN_CompletedLeveling();

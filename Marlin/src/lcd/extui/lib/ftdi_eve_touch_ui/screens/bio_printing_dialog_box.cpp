@@ -17,12 +17,12 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                             *
+ *   location: <https://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "../config.h"
 
-#if BOTH(TOUCH_UI_FTDI_EVE, TOUCH_UI_LULZBOT_BIO)
+#if ENABLED(TOUCH_UI_FTDI_EVE) && defined(TOUCH_UI_LULZBOT_BIO)
 
 #include "screens.h"
 
@@ -78,10 +78,14 @@ void BioPrintingDialogBox::draw_interaction_buttons(draw_mode_t what) {
        .font(font_medium)
        .colors(isPrinting() ? action_btn : normal_btn)
        .tag(2).button(BTN_POS(1,9), BTN_SIZE(1,1), F("Menu"))
-       .enabled(isPrinting() ? TERN0(SDSUPPORT, isPrintingFromMedia()) : 1)
+        #if ENABLED(SDSUPPORT)
+          .enabled(isPrinting() ? isPrintingFromMedia() : 1)
+        #else
+          .enabled(isPrinting() ? 0 : 1)
+        #endif
        .tag(3)
        .colors(isPrinting() ? normal_btn : action_btn)
-       .button(BTN_POS(2,9), BTN_SIZE(1,1), isPrinting() ? F("Cancel") : F("Back"));
+       .button( BTN_POS(2,9), BTN_SIZE(1,1), isPrinting() ? F("Cancel") : F("Back"));
   }
 }
 
@@ -148,4 +152,4 @@ void BioPrintingDialogBox::show() {
   GOTO_SCREEN(BioPrintingDialogBox);
 }
 
-#endif // TOUCH_UI_FTDI_EVE && TOUCH_UI_LULZBOT_BIO
+#endif // TOUCH_UI_FTDI_EVE

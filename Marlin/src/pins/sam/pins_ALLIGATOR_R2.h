@@ -143,7 +143,7 @@
 //
 // LCD / Controller
 //
-#if IS_RRD_FG_SC
+#if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
   #define LCD_PINS_RS                         18
   #define LCD_PINS_ENABLE                     15
   #define LCD_PINS_D4                         19
@@ -152,7 +152,7 @@
   #define UI_VOLTAGE_LEVEL                     1
 #endif
 
-#if IS_NEWPANEL
+#if ENABLED(NEWPANEL)
   #define BTN_EN1                             14
   #define BTN_EN2                             16
   #define BTN_ENC                             17

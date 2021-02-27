@@ -29,7 +29,6 @@
 #include "../shared/math_32bit.h"
 #include "../shared/HAL_SPI.h"
 #include "fastio.h"
-#include "Servo.h"
 #include "watchdog.h"
 #include "MarlinSerial.h"
 
@@ -39,9 +38,6 @@
 
 #ifdef USBCON
   #include <USBSerial.h>
-  #include "../../core/serial_hook.h"
-  typedef ForwardSerial0Type< decltype(SerialUSB) > DefaultSerial;
-  extern DefaultSerial MSerial;
 #endif
 
 // ------------------------
@@ -51,7 +47,7 @@
 #define MSERIAL(X) _MSERIAL(X)
 
 #if SERIAL_PORT == -1
-  #define MYSERIAL0 MSerial
+  #define MYSERIAL0 SerialUSB
 #elif WITHIN(SERIAL_PORT, 1, 6)
   #define MYSERIAL0 MSERIAL(SERIAL_PORT)
 #else
@@ -60,7 +56,7 @@
 
 #ifdef SERIAL_PORT_2
   #if SERIAL_PORT_2 == -1
-    #define MYSERIAL1 MSerial
+    #define MYSERIAL1 SerialUSB
   #elif WITHIN(SERIAL_PORT_2, 1, 6)
     #define MYSERIAL1 MSERIAL(SERIAL_PORT_2)
   #else
@@ -68,19 +64,9 @@
   #endif
 #endif
 
-#ifdef MMU2_SERIAL_PORT
-  #if MMU2_SERIAL_PORT == -1
-    #define MMU2_SERIAL MSerial
-  #elif WITHIN(MMU2_SERIAL_PORT, 1, 6)
-    #define MMU2_SERIAL MSERIAL(MMU2_SERIAL_PORT)
-  #else
-    #error "MMU2_SERIAL_PORT must be -1 or from 1 to 6. Please update your configuration."
-  #endif
-#endif
-
 #ifdef LCD_SERIAL_PORT
   #if LCD_SERIAL_PORT == -1
-    #define LCD_SERIAL MSerial
+    #define LCD_SERIAL SerialUSB
   #elif WITHIN(LCD_SERIAL_PORT, 1, 6)
     #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
   #else
@@ -109,6 +95,14 @@
 // On AVR this is in math.h?
 #define square(x) ((x)*(x))
 
+#ifndef strncpy_P
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+#endif
+
+// Fix bug in pgm_read_ptr
+#undef pgm_read_ptr
+#define pgm_read_ptr(addr) (*(addr))
+
 // ------------------------
 // Types
 // ------------------------
@@ -116,8 +110,6 @@
 typedef int16_t pin_t;
 
 #define HAL_SERVO_LIB libServo
-#define PAUSE_SERVO_OUTPUT() libServo::pause_all_servos()
-#define RESUME_SERVO_OUTPUT() libServo::resume_all_servos()
 
 // ------------------------
 // Public Variables
@@ -135,16 +127,12 @@ extern uint16_t HAL_adc_result;
 
 // Enable hooks into  setup for HAL
 void HAL_init();
-#define HAL_IDLETASK 1
-void HAL_idletask();
 
 // Clear reset reason
 void HAL_clear_reset_source();
 
 // Reset reason
 uint8_t HAL_get_reset_source();
-
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
 
 void _delay_ms(const int delay);
 
@@ -166,13 +154,13 @@ static inline int freeMemory() {
 
 #define HAL_ANALOG_SELECT(pin) pinMode(pin, INPUT)
 
+inline void HAL_adc_init() {}
+
 #define HAL_ADC_VREF         3.3
-#define HAL_ADC_RESOLUTION  ADC_RESOLUTION // 12
+#define HAL_ADC_RESOLUTION  10
 #define HAL_START_ADC(pin)  HAL_adc_start_conversion(pin)
 #define HAL_READ_ADC()      HAL_adc_result
 #define HAL_ADC_READY()     true
-
-inline void HAL_adc_init() { analogReadResolution(HAL_ADC_RESOLUTION); }
 
 void HAL_adc_start_conversion(const uint8_t adc_pin);
 
@@ -189,26 +177,3 @@ uint16_t HAL_adc_get_result();
 
 #define PLATFORM_M997_SUPPORT
 void flashFirmware(const int16_t);
-
-// Maple Compatibility
-typedef void (*systickCallback_t)(void);
-void systick_attach_callback(systickCallback_t cb);
-void HAL_SYSTICK_Callback();
-extern volatile uint32_t systick_uptime_millis;
-
-#define HAL_CAN_SET_PWM_FREQ   // This HAL supports PWM Frequency adjustment
-
-/**
- * set_pwm_frequency
- *  Set the frequency of the timer corresponding to the provided pin
- *  All Timer PWM pins run at the same frequency
- */
-void set_pwm_frequency(const pin_t pin, int f_desired);
-
-/**
- * set_pwm_duty
- *  Set the PWM duty cycle of the provided pin to the provided value
- *  Optionally allows inverting the duty cycle [default = false]
- *  Optionally allows changing the maximum size of the provided value to enable finer PWM duty control [default = 255]
- */
-void set_pwm_duty(const pin_t pin, const uint16_t v, const uint16_t v_size=255, const bool invert=false);

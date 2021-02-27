@@ -22,8 +22,11 @@
 #pragma once
 
 /**
- * sd/SdBaseFile.h
- *
+ * \file
+ * \brief SdBaseFile class
+ */
+
+/**
  * Arduino SdFat Library
  * Copyright (c) 2009 by William Greiman
  *

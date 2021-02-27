@@ -139,7 +139,7 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
   // ramps-fd lcd adaptor
 
   #define BEEPER_PIN                          37
@@ -148,7 +148,7 @@
   #define BTN_ENC                             35
   #define SD_DETECT_PIN                       49
 
-  #if IS_NEWPANEL
+  #if ENABLED(NEWPANEL)
     #define LCD_PINS_RS                       16
     #define LCD_PINS_ENABLE                   17
   #endif
@@ -178,7 +178,7 @@
       #define NEOPIXEL_PIN                    25
     #endif
 
-  #elif IS_NEWPANEL
+  #elif ENABLED(NEWPANEL)
 
     #define LCD_PINS_D4                       23
     #define LCD_PINS_D5                       25
@@ -203,11 +203,7 @@
     #define DOGLCD_MISO                       74  // MISO_PIN
   #endif
 
-  #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-    #define BTN_ENC_EN               LCD_PINS_D7  // Detect the presence of the encoder
-  #endif
-
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 #if HAS_TMC_UART
   /**

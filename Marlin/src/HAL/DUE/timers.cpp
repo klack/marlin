@@ -21,7 +21,9 @@
  */
 
 /**
- * HAL Timers for Arduino Due and compatible (SAM3X8E)
+ * Description: HAL for Arduino Due and compatible (SAM3X8E)
+ *
+ * For ARDUINO_ARCH_SAM
  */
 
 #ifdef ARDUINO_ARCH_SAM
@@ -121,7 +123,7 @@ void HAL_timer_disable_interrupt(const uint8_t timer_num) {
 
 // missing from CMSIS: Check if interrupt is enabled or not
 static bool NVIC_GetEnabledIRQ(IRQn_Type IRQn) {
-  return TEST(NVIC->ISER[uint32_t(IRQn) >> 5], uint32_t(IRQn) & 0x1F);
+  return (NVIC->ISER[(uint32_t)(IRQn) >> 5] & (1 << ((uint32_t)(IRQn) & 0x1F))) != 0;
 }
 
 bool HAL_timer_interrupt_enabled(const uint8_t timer_num) {

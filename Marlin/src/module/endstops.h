@@ -116,14 +116,6 @@ class Endstops {
       ;
     }
 
-    static inline bool probe_switch_activated() {
-      return (true
-        #if ENABLED(PROBE_ACTIVATION_SWITCH)
-          && READ(PROBE_ACTIVATION_SWITCH_PIN) == PROBE_ACTIVATION_SWITCH_STATE
-        #endif
-      );
-    }
-
     /**
      * Report endstop hits to serial. Called from loop().
      */

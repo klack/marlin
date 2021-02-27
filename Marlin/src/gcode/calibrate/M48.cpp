@@ -27,7 +27,7 @@
 #include "../gcode.h"
 #include "../../module/motion.h"
 #include "../../module/probe.h"
-#include "../../lcd/marlinui.h"
+#include "../../lcd/ultralcd.h"
 
 #include "../../feature/bedlevel/bedlevel.h"
 
@@ -50,6 +50,8 @@
  *
  * This function requires the machine to be homed before invocation.
  */
+
+extern const char SP_Y_STR[];
 
 void GcodeSuite::M48() {
 
@@ -142,7 +144,7 @@ void GcodeSuite::M48() {
     float sample_sum = 0.0;
 
     LOOP_L_N(n, n_samples) {
-      #if HAS_WIRED_LCD
+      #if HAS_SPI_LCD
         // Display M48 progress in the status bar
         ui.status_printf_P(0, PSTR(S_FMT ": %d/%d"), GET_TEXT(MSG_M48_POINT), int(n + 1), int(n_samples));
       #endif
@@ -240,10 +242,9 @@ void GcodeSuite::M48() {
       sigma = SQRT(dev_sum / (n + 1));
 
       if (verbose_level > 1) {
-        SERIAL_ECHO((int)(n + 1));
-        SERIAL_ECHOPAIR(" of ", (int)n_samples);
+        SERIAL_ECHO(n + 1);
+        SERIAL_ECHOPAIR(" of ", int(n_samples));
         SERIAL_ECHOPAIR_F(": z: ", pz, 3);
-        SERIAL_CHAR(' ');
         dev_report(verbose_level > 2, mean, sigma, min, max);
         SERIAL_EOL();
       }
@@ -257,7 +258,7 @@ void GcodeSuite::M48() {
     SERIAL_ECHOLNPGM("Finished!");
     dev_report(verbose_level > 0, mean, sigma, min, max, true);
 
-    #if HAS_WIRED_LCD
+    #if HAS_SPI_LCD
       // Display M48 results in the status bar
       char sigma_str[8];
       ui.status_printf_P(0, PSTR(S_FMT ": %s"), GET_TEXT(MSG_M48_DEVIATION), dtostrf(sigma, 2, 6, sigma_str));

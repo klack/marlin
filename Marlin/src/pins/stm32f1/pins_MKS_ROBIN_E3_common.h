@@ -29,8 +29,6 @@
   #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
 #endif
 
-#define BOARD_NO_NATIVE_USB
-
 #define BOARD_WEBSITE_URL "github.com/makerbase-mks"
 
 //#define DISABLE_DEBUG
@@ -70,19 +68,15 @@
 #define Y_DIR_PIN                           PB9
 #define Y_ENABLE_PIN                        PB12
 
-#ifndef Z_STEP_PIN
-  #define Z_STEP_PIN                        PB7
-#endif
-#ifndef Z_DIR_PIN
-  #define Z_DIR_PIN                         PB6
-#endif
+#define Z_STEP_PIN                          PB7
+#define Z_DIR_PIN                           PB6
 #define Z_ENABLE_PIN                        PB8
 
 #define E0_STEP_PIN                         PB4
 #define E0_DIR_PIN                          PB3
 #define E0_ENABLE_PIN                       PB5
 
-#if HAS_TMC_UART
+#if HAS_TMC220x
   /**
    * TMC2208/TMC2209 stepper drivers
    *
@@ -138,7 +132,7 @@
  *                -----                                      -----                                     -----
  *                EXP1                                       EXP2                                      EXP3
  */
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #define BEEPER_PIN                        PC1
   #define BTN_ENC                           PC3
@@ -160,30 +154,25 @@
   #else
 
     #define LCD_PINS_D4                     PA6
-    #if IS_ULTIPANEL
+    #if ENABLED(ULTIPANEL)
       #define LCD_PINS_D5                   PA7
       #define LCD_PINS_D6                   PC4
       #define LCD_PINS_D7                   PC5
-
-      #if !defined(BTN_ENC_EN) && ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-        #define BTN_ENC_EN           LCD_PINS_D7  // Detect the presence of the encoder
-      #endif
-
     #endif
 
   #endif // !MKS_MINI_12864
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 //
 // SD Card
 //
-#define SPI_DEVICE                             2
+#define ENABLE_SPI2
 #define SD_DETECT_PIN                       PC10
-#define SD_SCK_PIN                          PB13
-#define SD_MISO_PIN                         PB14
-#define SD_MOSI_PIN                         PB15
-#define SD_SS_PIN                           PA15
+#define SCK_PIN                             PB13
+#define MISO_PIN                            PB14
+#define MOSI_PIN                            PB15
+#define SS_PIN                              PA15
 
 #ifndef BOARD_ST7920_DELAY_1
   #define BOARD_ST7920_DELAY_1     DELAY_NS(125)

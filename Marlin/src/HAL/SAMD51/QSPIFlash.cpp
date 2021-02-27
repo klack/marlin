@@ -26,7 +26,7 @@
 
 #include "QSPIFlash.h"
 
-#define INVALID_ADDR    0xFFFFFFFF
+#define INVALID_ADDR    0xffffffff
 #define SECTOR_OF(a)    (a & ~(SFLASH_SECTOR_SIZE - 1))
 #define OFFSET_OF(a)    (a & (SFLASH_SECTOR_SIZE - 1))
 
@@ -35,10 +35,10 @@ uint8_t QSPIFlash::_buf[SFLASH_SECTOR_SIZE];
 uint32_t QSPIFlash::_addr = INVALID_ADDR;
 
 void QSPIFlash::begin() {
-  if (_flashBase) return;
+  if (_flashBase != nullptr) return;
 
   _flashBase = new Adafruit_SPIFlashBase(new Adafruit_FlashTransport_QSPI());
-  _flashBase->begin(nullptr);
+  _flashBase->begin(NULL);
 }
 
 size_t QSPIFlash::size() {

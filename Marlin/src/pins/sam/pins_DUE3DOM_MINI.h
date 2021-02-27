@@ -105,7 +105,7 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #define LCD_PINS_RS                         42
   #define LCD_PINS_ENABLE                     43
@@ -114,7 +114,7 @@
   #define LCD_PINS_D6                         46
   #define LCD_PINS_D7                         47
 
-  #if IS_RRD_SC
+  #if ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
 
     #define BEEPER_PIN                        41
 
@@ -171,9 +171,4 @@
     #define DOGLCD_CS                         45
 
   #endif // SPARK_FULL_GRAPHICS
-
-  #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-    #define BTN_ENC_EN               LCD_PINS_D7  // Detect the presence of the encoder
-  #endif
-
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD

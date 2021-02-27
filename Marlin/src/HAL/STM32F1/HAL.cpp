@@ -82,9 +82,8 @@
 // Public Variables
 // ------------------------
 
-#if defined(SERIAL_USB) && !HAS_SD_HOST_DRIVE
+#if (defined(SERIAL_USB) && !defined(USE_USB_COMPOSITE))
   USBSerial SerialUSB;
-  DefaultSerial MSerial(false, SerialUSB);
 #endif
 
 uint16_t HAL_adc_result;
@@ -97,9 +96,6 @@ STM32ADC adc(ADC1);
 const uint8_t adc_pins[] = {
   #if HAS_TEMP_ADC_0
     TEMP_0_PIN,
-  #endif
-  #if HAS_TEMP_ADC_PROBE
-    TEMP_PROBE_PIN,
   #endif
   #if HAS_HEATED_BED
     TEMP_BED_PIN,
@@ -131,7 +127,7 @@ const uint8_t adc_pins[] = {
   #if ENABLED(FILAMENT_WIDTH_SENSOR)
     FILWIDTH_PIN,
   #endif
-  #if HAS_ADC_BUTTONS
+  #if ENABLED(ADC_KEYPAD)
     ADC_KEYPAD_PIN,
   #endif
   #if HAS_JOY_ADC_X
@@ -154,9 +150,6 @@ const uint8_t adc_pins[] = {
 enum TempPinIndex : char {
   #if HAS_TEMP_ADC_0
     TEMP_0,
-  #endif
-  #if HAS_TEMP_ADC_PROBE
-    TEMP_PROBE,
   #endif
   #if HAS_HEATED_BED
     TEMP_BED,
@@ -188,7 +181,7 @@ enum TempPinIndex : char {
   #if ENABLED(FILAMENT_WIDTH_SENSOR)
     FILWIDTH,
   #endif
-  #if HAS_ADC_BUTTONS
+  #if ENABLED(ADC_KEYPAD)
     ADC_KEY,
   #endif
   #if HAS_JOY_ADC_X
@@ -252,7 +245,7 @@ void HAL_init() {
   #if PIN_EXISTS(LED)
     OUT_WRITE(LED_PIN, LOW);
   #endif
-  #if HAS_SD_HOST_DRIVE
+  #ifdef USE_USB_COMPOSITE
     MSC_SD_init();
   #endif
   #if PIN_EXISTS(USB_CONNECT)
@@ -264,15 +257,17 @@ void HAL_init() {
 
 // HAL idle task
 void HAL_idletask() {
-  #if HAS_SHARED_MEDIA
-    // If Marlin is using the SD card we need to lock it to prevent access from
-    // a PC via USB.
-    // Other HALs use IS_SD_PRINTING() and IS_SD_FILE_OPEN() to check for access but
-    // this will not reliably detect delete operations. To be safe we will lock
-    // the disk if Marlin has it mounted. Unfortunately there is currently no way
-    // to unmount the disk from the LCD menu.
-    // if (IS_SD_PRINTING() || IS_SD_FILE_OPEN())
-    /* copy from lpc1768 framework, should be fixed later for process HAS_SD_HOST_DRIVE*/
+  #ifdef USE_USB_COMPOSITE
+    #if HAS_SHARED_MEDIA
+      // If Marlin is using the SD card we need to lock it to prevent access from
+      // a PC via USB.
+      // Other HALs use IS_SD_PRINTING() and IS_SD_FILE_OPEN() to check for access but
+      // this will not reliably detect delete operations. To be safe we will lock
+      // the disk if Marlin has it mounted. Unfortunately there is currently no way
+      // to unmount the disk from the LCD menu.
+      // if (IS_SD_PRINTING() || IS_SD_FILE_OPEN())
+      /* copy from lpc1768 framework, should be fixed later for process HAS_SHARED_MEDIA*/
+    #endif
     // process USB mass storage device class loop
     MarlinMSC.loop();
   #endif
@@ -346,9 +341,6 @@ void HAL_adc_start_conversion(const uint8_t adc_pin) {
     #if HAS_TEMP_ADC_0
       case TEMP_0_PIN: pin_index = TEMP_0; break;
     #endif
-    #if HAS_TEMP_ADC_PROBE
-      case TEMP_PROBE_PIN: pin_index = TEMP_PROBE; break;
-    #endif
     #if HAS_HEATED_BED
       case TEMP_BED_PIN: pin_index = TEMP_BED; break;
     #endif
@@ -388,7 +380,7 @@ void HAL_adc_start_conversion(const uint8_t adc_pin) {
     #if ENABLED(FILAMENT_WIDTH_SENSOR)
       case FILWIDTH_PIN: pin_index = FILWIDTH; break;
     #endif
-    #if HAS_ADC_BUTTONS
+    #if ENABLED(ADC_KEYPAD)
       case ADC_KEYPAD_PIN: pin_index = ADC_KEY; break;
     #endif
     #if ENABLED(POWER_MONITOR_CURRENT)

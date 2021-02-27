@@ -27,7 +27,7 @@
 * https://www.pjrc.com/teensy/teensyduino.html
 ****************************************************************************************/
 
-#if NOT_TARGET(IS_TEENSY_35_36)
+#if NOT_TARGET(IS_32BIT_TEENSY)
   #error "Oops! Select 'Teensy 3.5' or 'Teensy 3.6' in 'Tools > Board.'"
 #endif
 
@@ -130,7 +130,7 @@
 //
 #define SDSS                                  39  // 8
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
   #define LCD_PINS_RS                         40
   #define LCD_PINS_ENABLE                     41
   #define LCD_PINS_D4                         42
@@ -139,14 +139,14 @@
   #define LCD_PINS_D7                         45
 #endif
 
-#if IS_NEWPANEL
+#if ENABLED(NEWPANEL)
   #define BTN_EN1                             46
   #define BTN_EN2                             47
   #define BTN_ENC                             48
 #endif
 
-#if IS_RRW_KEYPAD
-  #define SHIFT_OUT_PIN                       40
-  #define SHIFT_CLK_PIN                       44
-  #define SHIFT_LD_PIN                        42
+#if ENABLED(REPRAPWORLD_KEYPAD)
+  #define SHIFT_OUT                           40
+  #define SHIFT_CLK                           44
+  #define SHIFT_LD                            42
 #endif

@@ -25,9 +25,10 @@
   extern "C" { /* C-declarations for C++ */
 #endif
 
-extern void lv_draw_home();
+extern void lv_draw_home(void);
 extern void lv_clear_home();
 
+//extern void disp_temp_ready_print();
 #ifdef __cplusplus
   } /* C-declarations for C++ */
 #endif

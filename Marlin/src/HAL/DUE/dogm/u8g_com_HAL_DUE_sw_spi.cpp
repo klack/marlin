@@ -57,7 +57,10 @@
 
 #include "../../../inc/MarlinConfigPre.h"
 
-#if HAS_MARLINUI_U8GLIB && DISABLED(U8GLIB_ST7920)
+#if HAS_GRAPHICAL_LCD && DISABLED(U8GLIB_ST7920)
+
+#undef SPI_SPEED
+#define SPI_SPEED 2  // About 2 MHz
 
 #include "u8g_com_HAL_DUE_sw_spi_shared.h"
 
@@ -141,5 +144,5 @@ uint8_t u8g_com_HAL_DUE_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void
   return 1;
 }
 
-#endif // HAS_MARLINUI_U8GLIB && !U8GLIB_ST7920
+#endif // HAS_GRAPHICAL_LCD && !U8GLIB_ST7920
 #endif // ARDUINO_ARCH_SAM

@@ -105,7 +105,7 @@
 #if ENABLED(CASE_LIGHT_MENU)
   #include "../../feature/caselight.h"
 
-  #if CASELIGHT_USES_BRIGHTNESS
+  #if DISABLED(CASE_LIGHT_NO_BRIGHTNESS)
     void menu_case_light() {
       START_MENU();
       BACK_ITEM(MSG_CONFIGURATION);
@@ -123,15 +123,11 @@ void menu_led() {
   #if ENABLED(LED_CONTROL_MENU)
     editable.state = leds.lights_on;
     EDIT_ITEM(bool, MSG_LEDS, &editable.state, leds.toggle);
-    #if ENABLED(LED_COLOR_PRESETS)
-      ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds.set_default);
-    #endif
+    ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds.set_default);
     #if ENABLED(NEOPIXEL2_SEPARATE)
       editable.state = leds2.lights_on;
       EDIT_ITEM(bool, MSG_LEDS2, &editable.state, leds2.toggle);
-      #if ENABLED(NEO2_COLOR_PRESETS)
-        ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds2.set_default);
-      #endif
+      ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds2.set_default);
     #endif
     #if ENABLED(LED_COLOR_PRESETS)
       SUBMENU(MSG_LED_PRESETS, menu_led_presets);

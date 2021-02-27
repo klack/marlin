@@ -49,19 +49,19 @@ class WriteSource:
 
   def convert_to_4bpp(self, data, chunk_size = 0):
     # Invert the image
-    data = list(map(lambda i: 255 - i, data))
+    data = map(lambda i: 255 - i, data)
     # Quanitize 8-bit values into 4-bits
-    data = list(map(lambda i: i >> 4, data))
+    data = map(lambda i: i >> 4, data)
     # Make sure there is an even number of elements
     if (len(data) & 1) == 1:
-      data.append(0)
+      result.append(0)
     # Combine each two adjacent values into one
     i = iter(data)
-    data = list(map(lambda a, b: a << 4 | b, i ,i))
+    data = map(lambda a, b: a << 4 | b, i ,i)
     # Pack the data
     data = pack_rle(data)
     # Convert values into hex strings
-    return list(map(lambda a: "0x" + format(a, '02x'), data))
+    return map(lambda a: "0x" + format(a, '02x'), data)
 
   def end_row(self, y):
     # Pad each row into even number of values

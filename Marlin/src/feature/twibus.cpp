@@ -28,8 +28,6 @@
 
 #include <Wire.h>
 
-TWIBus i2c;
-
 TWIBus::TWIBus() {
   #if I2C_SLAVE_ADDRESS == 0
     Wire.begin();                  // No address joins the BUS as the master
@@ -155,14 +153,6 @@ void TWIBus::flush() {
     Wire.write(buffer, buffer_s);
 
     reset();
-  }
-
-  void i2c_on_receive(int bytes) { // just echo all bytes received to serial
-    i2c.receive(bytes);
-  }
-
-  void i2c_on_request() {          // just send dummy data for now
-    i2c.reply("Hello World!\n");
   }
 
 #endif

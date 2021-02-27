@@ -118,7 +118,6 @@
 #ifndef DIGIPOT_I2C_ADDRESS_A
   #define DIGIPOT_I2C_ADDRESS_A             0x2F  // unshifted slave address (5E <- 2F << 1)
 #endif
-#define DIGIPOT_ENABLE_I2C_PULLUPS                // MightyBoard doesn't have hardware I2C pin pull-ups.
 
 //
 // Temperature Sensors
@@ -213,9 +212,9 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
-  #if IS_RRD_FG_SC
+  #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
 
     #define LCD_PINS_RS                       33  // C4: LCD-STROBE
     #define LCD_PINS_ENABLE                   72  // J2: LEFT
@@ -261,7 +260,7 @@
   #define BTN_CENTER                          15  // J0
   #define BTN_ENC                     BTN_CENTER
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 //
 // SD Card

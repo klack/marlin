@@ -24,17 +24,16 @@
 #if ENABLED(ANYCUBIC_LCD_I3MEGA)
 
 #include "anycubic_i3mega_lcd.h"
-#include "../../ui_api.h"
 
-#include "../../../../libs/numtostr.h"
-#include "../../../../module/motion.h"  // for quickstop_stepper, A20 read printing speed, feedrate_percentage
-#include "../../../../MarlinCore.h"     // for disable_steppers
 #include "../../../../inc/MarlinConfig.h"
+#include "../../ui_api.h"
+#include "../../../../MarlinCore.h"     // for quickstop_stepper and disable_steppers
+#include "../../../../module/motion.h"  // for A20 read printing speed feedrate_percentage
 
 // command sending macro's with debugging capability
 #define SEND_PGM(x)                                 send_P(PSTR(x))
 #define SENDLINE_PGM(x)                             sendLine_P(PSTR(x))
-#define SEND_PGM_VAL(x,y)                           (send_P(PSTR(x)), sendLine(i16tostr3rj(y)))
+#define SEND_PGM_VAL(x,y)                           (send_P(PSTR(x)), sendLine(itostr3(y)))
 #define SEND(x)                                     send(x)
 #define SENDLINE(x)                                 sendLine(x)
 #if ENABLED(ANYCUBIC_LCD_DEBUG)
@@ -45,7 +44,19 @@
   #define SENDLINE_DBG_PGM_VAL(x,y,z)               sendLine_P(PSTR(x))
 #endif
 
+
 AnycubicTFTClass AnycubicTFT;
+
+char _conv[8];
+
+char *itostr2(const uint8_t &x) {
+  // sprintf(conv,"%5.1f",x);
+  int xx = x;
+  _conv[0] = (xx / 10) % 10 + '0';
+  _conv[1] = (xx) % 10 + '0';
+  _conv[2] = 0;
+  return _conv;
+}
 
 static void sendNewLine(void) {
   LCD_SERIAL.write('\r');
@@ -71,6 +82,34 @@ static void sendLine_P(PGM_P str) {
   sendNewLine();
 }
 
+#ifndef ULTRA_LCD
+  #define DIGIT(n) ('0' + (n))
+  #define DIGIMOD(n, f) DIGIT((n) / (f) % 10)
+  #define RJDIGIT(n, f) ((n) >= (f) ? DIGIMOD(n, f) : ' ')
+  #define MINUSOR(n, alt) (n >= 0 ? (alt) : (n = -n, '-'))
+
+  char* itostr3(const int x) {
+    int xx = x;
+    _conv[4] = MINUSOR(xx, RJDIGIT(xx, 100));
+    _conv[5] = RJDIGIT(xx, 10);
+    _conv[6] = DIGIMOD(xx, 1);
+    return &_conv[4];
+  }
+
+// Convert signed float to fixed-length string with 023.45 / -23.45 format
+  char *ftostr32(const float &x) {
+    long xx = x * 100;
+    _conv[1] = MINUSOR(xx, DIGIMOD(xx, 10000));
+    _conv[2] = DIGIMOD(xx, 1000);
+    _conv[3] = DIGIMOD(xx, 100);
+    _conv[4] = '.';
+    _conv[5] = DIGIMOD(xx, 10);
+    _conv[6] = DIGIMOD(xx, 1);
+    return &_conv[1];
+  }
+
+#endif
+
 AnycubicTFTClass::AnycubicTFTClass() {}
 
 void AnycubicTFTClass::OnSetup() {
@@ -87,7 +126,7 @@ void AnycubicTFTClass::OnSetup() {
     SET_INPUT_PULLUP(SD_DETECT_PIN);
   #endif
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-    SET_INPUT_PULLUP(FIL_RUNOUT1_PIN);
+    SET_INPUT_PULLUP(FIL_RUNOUT_PIN);
   #endif
 
   mediaPrintingState = AMPRINTSTATE_NOT_PRINTING;
@@ -142,7 +181,7 @@ void AnycubicTFTClass::OnKillTFT() {
 void AnycubicTFTClass::OnSDCardStateChange(bool isInserted) {
   #if ENABLED(ANYCUBIC_LCD_DEBUG)
     SERIAL_ECHOPGM("TFT Serial Debug: OnSDCardStateChange event triggered...");
-    SERIAL_ECHO(ui8tostr2(isInserted));
+    SERIAL_ECHO(itostr2(isInserted));
     SERIAL_EOL();
   #endif
   DoSDCardStateCheck();
@@ -218,12 +257,12 @@ void AnycubicTFTClass::OnUserConfirmRequired(const char * const msg) {
 }
 
 float AnycubicTFTClass::CodeValue() {
-  return (strtod(&TFTcmdbuffer[TFTbufindr][TFTstrchr_pointer - TFTcmdbuffer[TFTbufindr] + 1], nullptr));
+  return (strtod(&TFTcmdbuffer[TFTbufindr][TFTstrchr_pointer - TFTcmdbuffer[TFTbufindr] + 1], NULL));
 }
 
 bool AnycubicTFTClass::CodeSeen(char code) {
   TFTstrchr_pointer = strchr(TFTcmdbuffer[TFTbufindr], code);
-  return !!TFTstrchr_pointer; // Return True if a character was found
+  return (TFTstrchr_pointer != NULL); // Return True if a character was found
 }
 
 bool AnycubicTFTClass::IsNozzleHomed() {
@@ -274,12 +313,12 @@ void AnycubicTFTClass::HandleSpecialMenu() {
 
               case '6': // "<06SMeshLvl>"
                 SERIAL_ECHOLNPGM("Special Menu: Start Mesh Leveling");
-                ExtUI::injectCommands_P(PSTR("G29S1"));
+                ExtUI::injectCommands_P(PSTR("G29 S1"));
                 break;
 
               case '7': // "<07MeshNPnt>"
                 SERIAL_ECHOLNPGM("Special Menu: Next Mesh Point");
-                ExtUI::injectCommands_P(PSTR("G29S2"));
+                ExtUI::injectCommands_P(PSTR("G29 S2"));
                 break;
 
               case '8': // "<08HtEndPID>"
@@ -324,7 +363,7 @@ void AnycubicTFTClass::HandleSpecialMenu() {
 
               case '2': // "<02ABL>"
                 SERIAL_ECHOLNPGM("Special Menu: Auto Bed Leveling");
-                ExtUI::injectCommands_P(PSTR("G29N"));
+                ExtUI::injectCommands_P(PSTR("G28\nG29"));
                 break;
 
               case '3': // "<03HtendPID>"
@@ -496,12 +535,12 @@ void AnycubicTFTClass::RenderCurrentFolder(uint16_t selectedNumber) {
         SEND_PGM("/");
         SENDLINE(currentFileList.shortFilename());
         SEND_PGM("/");
-        SENDLINE(currentFileList.filename());
+        SENDLINE(currentFileList.longFilename());
 
       }
       else {
         SENDLINE(currentFileList.shortFilename());
-        SENDLINE(currentFileList.filename());
+        SENDLINE(currentFileList.longFilename());
       }
     }
   }
@@ -536,7 +575,7 @@ void AnycubicTFTClass::OnPrintTimerStopped() {
 }
 
 void AnycubicTFTClass::GetCommandFromTFT() {
-  char *starpos = nullptr;
+  char *starpos = NULL;
   while (LCD_SERIAL.available() > 0  && TFTbuflen < TFTBUFSIZE) {
     serial3_char = LCD_SERIAL.read();
     if (serial3_char == '\n' ||
@@ -549,10 +588,10 @@ void AnycubicTFTClass::GetCommandFromTFT() {
 
       TFTcmdbuffer[TFTbufindw][serial3_count] = 0; // terminate string
 
-      if ((strchr(TFTcmdbuffer[TFTbufindw], 'A') != nullptr)) {
+      if ((strchr(TFTcmdbuffer[TFTbufindw], 'A') != NULL)) {
         int16_t a_command;
         TFTstrchr_pointer = strchr(TFTcmdbuffer[TFTbufindw], 'A');
-        a_command = ((int)((strtod(&TFTcmdbuffer[TFTbufindw][TFTstrchr_pointer - TFTcmdbuffer[TFTbufindw] + 1], nullptr))));
+        a_command = ((int)((strtod(&TFTcmdbuffer[TFTbufindw][TFTstrchr_pointer - TFTcmdbuffer[TFTbufindw] + 1], NULL))));
 
         #if ENABLED(ANYCUBIC_LCD_DEBUG)
           if ((a_command > 7) && (a_command != 20)) { // No debugging of status polls, please!
@@ -583,50 +622,62 @@ void AnycubicTFTClass::GetCommandFromTFT() {
           case 3: { // A3 GET HOTBED TARGET TEMP
             float heatedBedTargetTemp = ExtUI::getTargetTemp_celsius((ExtUI::heater_t) ExtUI::BED);
             SEND_PGM_VAL("A3V ", int(heatedBedTargetTemp + 0.5));
-          } break;
+          }
+          break;
 
-          case 4: { // A4 GET FAN SPEED
+          case 4: // A4 GET FAN SPEED
+          {
             float fanPercent = ExtUI::getActualFan_percent(ExtUI::FAN0);
             fanPercent = constrain(fanPercent, 0, 100);
             SEND_PGM_VAL("A4V ", int(fanPercent));
-          } break;
+          }
+          break;
 
-          case 5: { // A5 GET CURRENT COORDINATE
-            const float xPosition = ExtUI::getAxisPosition_mm(ExtUI::X),
-                        yPosition = ExtUI::getAxisPosition_mm(ExtUI::Y),
-                        zPosition = ExtUI::getAxisPosition_mm(ExtUI::Z);
-            SEND_PGM("A5V X: "); LCD_SERIAL.print(xPosition);
-            SEND_PGM(   " Y: "); LCD_SERIAL.print(yPosition);
-            SEND_PGM(   " Z: "); LCD_SERIAL.print(zPosition);
+          case 5: // A5 GET CURRENT COORDINATE
+          {
+            float xPostition = ExtUI::getAxisPosition_mm(ExtUI::X);
+            float yPostition = ExtUI::getAxisPosition_mm(ExtUI::Y);
+            float zPostition = ExtUI::getAxisPosition_mm(ExtUI::Z);
+            SEND_PGM("A5V X: ");
+            LCD_SERIAL.print(xPostition);
+            SEND_PGM(" Y: ");
+            LCD_SERIAL.print(yPostition);
+            SEND_PGM(" Z: ");
+            LCD_SERIAL.print(zPostition);
             SENDLINE_PGM("");
-          } break;
+          }
+          break;
 
           case 6: // A6 GET SD CARD PRINTING STATUS
             #if ENABLED(SDSUPPORT)
               if (ExtUI::isPrintingFromMedia()) {
                 SEND_PGM("A6V ");
-                if (ExtUI::isMediaInserted())
-                  SENDLINE(ui8tostr3rj(ExtUI::getProgress_percent()));
-                else
+                if (ExtUI::isMediaInserted()) {
+                  SENDLINE(itostr3(int(ExtUI::getProgress_percent())));
+                }
+                else {
                   SENDLINE_DBG_PGM("J02", "TFT Serial Debug: No SD Card mounted to return printing status... J02");
+                }
               }
-              else
+              else {
                 SENDLINE_PGM("A6V ---");
+              }
             #endif
             break;
 
           case 7: { // A7 GET PRINTING TIME
-            const uint32_t elapsedSeconds = ExtUI::getProgress_seconds_elapsed();
+            uint32_t elapsedSeconds = ExtUI::getProgress_seconds_elapsed();
             SEND_PGM("A7V ");
             if (elapsedSeconds != 0) {  // print time
-              const uint32_t elapsedMinutes = elapsedSeconds / 60;
-              SEND(ui8tostr2(elapsedMinutes / 60));
+              uint32_t elapsedMinutes = elapsedSeconds / 60;
+              SEND(itostr2(elapsedMinutes / 60));
               SEND_PGM(" H ");
-              SEND(ui8tostr2(elapsedMinutes % 60));
+              SEND(itostr2(elapsedMinutes % 60));
               SENDLINE_PGM(" M");
             }
-            else
+            else {
               SENDLINE_PGM(" 999:999");
+            }
           }
           break;
 
@@ -641,6 +692,7 @@ void AnycubicTFTClass::GetCommandFromTFT() {
             #if ENABLED(SDSUPPORT)
               if (ExtUI::isPrintingFromMedia())
                 PausePrint();
+
             #endif
             break;
 
@@ -648,11 +700,14 @@ void AnycubicTFTClass::GetCommandFromTFT() {
             #if ENABLED(SDSUPPORT)
               if (ExtUI::isPrintingFromMediaPaused())
                 ResumePrint();
+
             #endif
             break;
 
           case 11: // A11 STOP SD PRINT
-            TERN_(SDSUPPORT, StopPrint());
+            #if ENABLED(SDSUPPORT)
+              StopPrint();
+            #endif
             break;
 
           case 12: // A12 kill
@@ -679,7 +734,8 @@ void AnycubicTFTClass::GetCommandFromTFT() {
                 else {
                   SelectedDirectory[0] = 0;
 
-                  if (starpos) *(starpos - 1) = '\0';
+                  if (starpos != NULL)
+                    *(starpos - 1) = '\0';
 
                   strcpy(SelectedFile, TFTstrchr_pointer + 4);
                   SENDLINE_DBG_PGM_VAL("J20", "TFT Serial Debug: File Selected... J20 ", SelectedFile); // J20 File Selected
@@ -692,6 +748,7 @@ void AnycubicTFTClass::GetCommandFromTFT() {
             #if ENABLED(SDSUPPORT)
               if (!ExtUI::isPrinting() && strlen(SelectedFile) > 0)
                 StartPrint();
+
             #endif
             break;
 
@@ -714,7 +771,8 @@ void AnycubicTFTClass::GetCommandFromTFT() {
           }
           break;
 
-          case 17: { // A17 set heated bed temp
+          case 17:// A17 set heated bed temp
+          {
             unsigned int tempbed;
             if (CodeSeen('S')) {
               tempbed = constrain(CodeValue(), 0, 100);
@@ -723,17 +781,19 @@ void AnycubicTFTClass::GetCommandFromTFT() {
           }
           break;
 
-          case 18: { // A18 set fan speed
+          case 18:// A18 set fan speed
+          {
             float fanPercent;
             if (CodeSeen('S')) {
               fanPercent = CodeValue();
               fanPercent = constrain(fanPercent, 0, 100);
               ExtUI::setTargetFan_percent(fanPercent, ExtUI::FAN0);
             }
-            else
+            else {
               fanPercent = 100;
-
+            }
             ExtUI::setTargetFan_percent(fanPercent, ExtUI::FAN0);
+
             SENDLINE_PGM("");
           }
           break;
@@ -747,25 +807,27 @@ void AnycubicTFTClass::GetCommandFromTFT() {
             SENDLINE_PGM("");
             break;
 
-          case 20: // A20 read printing speed
+          case 20: { // A20 read printing speed
+
             if (CodeSeen('S'))
               feedrate_percentage = constrain(CodeValue(), 40, 999);
             else
               SEND_PGM_VAL("A20V ", feedrate_percentage);
+          }
             break;
 
           case 21: // A21 all home
             if (!ExtUI::isPrinting() && !ExtUI::isPrintingFromMediaPaused()) {
               if (CodeSeen('X') || CodeSeen('Y') || CodeSeen('Z')) {
                 if (CodeSeen('X'))
-                  ExtUI::injectCommands_P(PSTR("G28X"));
+                  ExtUI::injectCommands_P(PSTR("G28 X"));
                 if (CodeSeen('Y'))
-                  ExtUI::injectCommands_P(PSTR("G28Y"));
+                  ExtUI::injectCommands_P(PSTR("G28 Y"));
                 if (CodeSeen('Z'))
-                  ExtUI::injectCommands_P(PSTR("G28Z"));
+                  ExtUI::injectCommands_P(PSTR("G28 Z"));
               }
               else if (CodeSeen('C')) {
-                ExtUI::injectCommands_P(G28_STR);
+                ExtUI::injectCommands_P(PSTR("G28"));
               }
             }
             break;
@@ -932,7 +994,7 @@ void AnycubicTFTClass::DoFilamentRunoutCheck() {
   #if ENABLED(FILAMENT_RUNOUT_SENSOR)
     // NOTE: ExtUI::getFilamentRunoutState() only returns the runout state if the job is printing
     // we want to actually check the status of the pin here, regardless of printstate
-    if (READ(FIL_RUNOUT1_PIN)) {
+    if (READ(FIL_RUNOUT_PIN)) {
       if (mediaPrintingState == AMPRINTSTATE_PRINTING || mediaPrintingState == AMPRINTSTATE_PAUSED || mediaPrintingState == AMPRINTSTATE_PAUSE_REQUESTED) {
         // play tone to indicate filament is out
         ExtUI::injectCommands_P(PSTR("\nM300 P200 S1567\nM300 P200 S1174\nM300 P200 S1567\nM300 P200 S1174\nM300 P2000 S1567"));
@@ -980,7 +1042,7 @@ void AnycubicTFTClass::PausePrint() {
 void AnycubicTFTClass::ResumePrint() {
   #if ENABLED(SDSUPPORT)
     #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-      if (READ(FIL_RUNOUT1_PIN)) {
+      if (READ(FIL_RUNOUT_PIN)) {
         #if ENABLED(ANYCUBIC_LCD_DEBUG)
           SERIAL_ECHOLNPGM("TFT Serial Debug: Resume Print with filament sensor still tripped... ");
         #endif

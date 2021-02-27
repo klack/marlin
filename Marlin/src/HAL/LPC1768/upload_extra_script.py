@@ -23,50 +23,63 @@ def print_error(e):
 		  %(e, env.get('PIOENV')))
 
 try:
-	#
-	# Find a disk for upload
-	#
-	upload_disk = 'Disk not found'
-	target_file_found = False
-	target_drive_found = False
 	if current_OS == 'Windows':
 		#
 		# platformio.ini will accept this for a Windows upload port designation: 'upload_port = L:'
 		#   Windows - doesn't care about the disk's name, only cares about the drive letter
+		#
+
+		#
+		# get all drives on this computer
+		#
 		import subprocess
-		from ctypes import windll
-		import string
+		# typical result (string): 'Drives: C:\ D:\ E:\ F:\ G:\ H:\ I:\ J:\ K:\ L:\ M:\ Y:\ Z:\'
+		driveStr = str(subprocess.check_output("fsutil fsinfo drives"))
+		# typical result (string): 'C:\ D:\ E:\ F:\ G:\ H:\ I:\ J:\ K:\ L:\ M:\ Y:\ Z:\'
+		# driveStr = driveStr.strip().lstrip('Drives: ') <- Doesn't work in other Languages as English. In German is "Drives:" = "Laufwerke:"
+		FirstFound = driveStr.find(':',0,-1)         # Find the first ":" and
+		driveStr = driveStr[FirstFound + 1 : -1]     # truncate to the rest
+		# typical result (array of stings): ['C:\\', 'D:\\', 'E:\\', 'F:\\',
+		# 'G:\\', 'H:\\', 'I:\\', 'J:\\', 'K:\\', 'L:\\', 'M:\\', 'Y:\\', 'Z:\\']
+		drives = driveStr.split()
 
-		# getting list of drives
-		# https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
-		drives = []
-		bitmask = windll.kernel32.GetLogicalDrives()
-		for letter in string.ascii_uppercase:
-			if bitmask & 1:
-				drives.append(letter)
-			bitmask >>= 1
-
+		upload_disk = 'Disk not found'
+		target_file_found = False
+		target_drive_found = False
 		for drive in drives:
-			final_drive_name = drive + ':\\'
-			# print ('disc check: {}'.format(final_drive_name))
+			final_drive_name = drive.strip().rstrip('\\')   # typical result (string): 'C:'
 			try:
 				volume_info = str(subprocess.check_output('cmd /C dir ' + final_drive_name, stderr=subprocess.STDOUT))
 			except Exception as e:
-				print ('error:{}'.format(e))
 				continue
 			else:
-				if target_drive in volume_info and not target_file_found:  # set upload if not found target file yet
+				if target_drive in volume_info and target_file_found == False:  # set upload if not found target file yet
 					target_drive_found = True
 					upload_disk = final_drive_name
 				if target_filename in volume_info:
-					if not target_file_found:
+					if target_file_found == False:
 						upload_disk = final_drive_name
 					target_file_found = True
+
+		#
+		# set upload_port to drive if found
+		#
+
+		if target_file_found == True or target_drive_found == True:
+			env.Replace(
+				UPLOAD_PORT=upload_disk
+			)
+			print('upload disk: ', upload_disk)
+		else:
+			print_error('Autodetect Error')
 
 	elif current_OS == 'Linux':
 		#
 		# platformio.ini will accept this for a Linux upload port designation: 'upload_port = /media/media_name/drive'
 		#
+		upload_disk = 'Disk not found'
+		target_file_found = False
+		target_drive_found = False
 		drives = os.listdir(os.path.join(os.sep, 'media', getpass.getuser()))
 		if target_drive in drives:  # If target drive is found, use it.
 			target_drive_found = True
@@ -88,15 +101,22 @@ try:
 
 		if target_file_found or target_drive_found:
 			env.Replace(
-				UPLOAD_FLAGS="-P$UPLOAD_PORT"
+				UPLOAD_FLAGS="-P$UPLOAD_PORT",
+				UPLOAD_PORT=upload_disk
 			)
+			print('upload disk: ', upload_disk)
+		else:
+			print_error('Autodetect Error')
 
 	elif current_OS == 'Darwin':  # MAC
 		#
 		# platformio.ini will accept this for a OSX upload port designation: 'upload_port = /media/media_name/drive'
 		#
+		upload_disk = 'Disk not found'
 		drives = os.listdir('/Volumes')  # human readable names
-		if target_drive in drives and not target_file_found:  # set upload if not found target file yet
+		target_file_found = False
+		target_drive_found = False
+		if target_drive in drives and target_file_found == False:  # set upload if not found target file yet
 			target_drive_found = True
 			upload_disk = '/Volumes/' + target_drive + '/'
 		for drive in drives:
@@ -106,18 +126,20 @@ try:
 				continue
 			else:
 				if target_filename in filenames:
-					if not target_file_found:
+					if target_file_found == False:
 						upload_disk = '/Volumes/' + drive + '/'
 					target_file_found = True
+		#
+		# set upload_port to drive if found
+		#
 
-	#
-	# Set upload_port to drive if found
-	#
-	if target_file_found or target_drive_found:
-		env.Replace(UPLOAD_PORT=upload_disk)
-		print('\nUpload disk: ', upload_disk, '\n')
-	else:
-		print_error('Autodetect Error')
+		if target_file_found == True or target_drive_found == True:
+			env.Replace(
+				UPLOAD_PORT=upload_disk
+			)
+			print('\nupload disk: ', upload_disk, '\n')
+		else:
+			print_error('Autodetect Error')
 
 except Exception as e:
 	print_error(str(e))

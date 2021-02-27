@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "Marlin 2.0.7.2 Jan 13, 2021 for Luxuri 0.7.x"
+#define SHORT_BUILD_VERSION "2.0.7.2 01/13/2021 for Luxuri 0.7.x"
 
 #define TITAN_Y_OFFSET 5
 #define TITAN_X_RIGHT_SPACING 3

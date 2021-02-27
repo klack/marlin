@@ -22,7 +22,7 @@
 
 #include "../gcode.h"
 
-#include "../../lcd/marlinui.h" // for lcd_reset_alert_level
+#include "../../lcd/ultralcd.h" // for lcd_reset_alert_level
 #include "../../MarlinCore.h"   // for marlin_state
 #include "../queue.h"           // for flush_and_request_resend
 
@@ -34,6 +34,7 @@
  *
  * Sending "M999 S1" will resume printing without flushing the
  * existing command buffer.
+ *
  */
 void GcodeSuite::M999() {
   marlin_state = MF_RUNNING;

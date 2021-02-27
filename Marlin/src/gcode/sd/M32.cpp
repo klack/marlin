@@ -22,7 +22,7 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if HAS_MEDIA_SUBCALLS
+#if ENABLED(SDSUPPORT)
 
 #include "../gcode.h"
 #include "../../sd/cardreader.h"
@@ -38,6 +38,7 @@
  *    M32 !PATH/TO/FILE.GCO#      ; Start FILE.GCO
  *    M32 P !PATH/TO/FILE.GCO#    ; Start FILE.GCO as a procedure
  *    M32 S60 !PATH/TO/FILE.GCO#  ; Start FILE.GCO at byte 60
+ *
  */
 void GcodeSuite::M32() {
   if (IS_SD_PRINTING()) planner.synchronize();
@@ -56,4 +57,4 @@ void GcodeSuite::M32() {
   }
 }
 
-#endif // HAS_MEDIA_SUBCALLS
+#endif // SDSUPPORT

@@ -26,19 +26,13 @@
 
 #include "../inc/MarlinConfigPre.h"
 
-#if HAS_WIRED_LCD && !HAS_GRAPHICAL_TFT
+#if HAS_SPI_LCD
 
-#include "marlinui.h"
 #include "lcdprint.h"
 
 /**
  * lcd_put_u8str_ind_P
- *
- * Print a string with an index substituted within it:
- *
- *   = displays  '0'....'10' for indexes 0 - 10
- *   ~ displays  '1'....'11' for indexes 0 - 10
- *   * displays 'E1'...'E11' for indexes 0 - 10 (By default. Uses LCD_FIRST_TOOL)
+ * Print a string with an index substituted within it
  */
 lcd_uint_t lcd_put_u8str_ind_P(PGM_P const pstr, const int8_t ind, PGM_P const inStr/*=nullptr*/, const lcd_uint_t maxlen/*=LCD_WIDTH*/) {
   uint8_t *p = (uint8_t*)pstr;
@@ -79,4 +73,4 @@ lcd_uint_t lcd_put_u8str_ind_P(PGM_P const pstr, const int8_t ind, PGM_P const i
   return n;
 }
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD

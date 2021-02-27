@@ -29,7 +29,7 @@
 #include "wifi.h"
 #include <ESPAsyncWebServer.h>
 
-MSerialT webSocketSerial(false);
+WebSocketSerial webSocketSerial;
 AsyncWebSocket ws("/ws"); // TODO Move inside the class.
 
 // RingBuffer impl
@@ -142,6 +142,10 @@ size_t WebSocketSerial::write(const uint8_t* buffer, size_t size) {
   for (size_t i = 0; i < size; i++)
     written += write(buffer[i]);
   return written;
+}
+
+void WebSocketSerial::flushTX() {
+  // No need to do anything as there's no benefit to sending partial lines over the websocket connection.
 }
 
 #endif // WIFISUPPORT

@@ -19,11 +19,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-
-/**
- * HAL SPI for Teensy 4.0 (IMXRT1062DVL6A) / 4.1 (IMXRT1062DVJ6A)
- */
-
 #ifdef __IMXRT1062__
 
 #include "HAL.h"
@@ -50,20 +45,20 @@ static SPISettings spiConfig;
 // ------------------------
 
 void spiBegin() {
-  #ifndef SD_SS_PIN
-    #error "SD_SS_PIN is not defined!"
+  #ifndef SS_PIN
+    #error "SS_PIN is not defined!"
   #endif
 
-  OUT_WRITE(SD_SS_PIN, HIGH);
+  OUT_WRITE(SS_PIN, HIGH);
 
-  //SET_OUTPUT(SD_SCK_PIN);
-  //SET_INPUT(SD_MISO_PIN);
-  //SET_OUTPUT(SD_MOSI_PIN);
+  //SET_OUTPUT(SCK_PIN);
+  //SET_INPUT(MISO_PIN);
+  //SET_OUTPUT(MOSI_PIN);
 
   #if 0 && DISABLED(SOFTWARE_SPI)
     // set SS high - may be chip select for another SPI device
     #if SET_SPI_SS_HIGH
-      WRITE(SD_SS_PIN, HIGH);
+      WRITE(SS_PIN, HIGH);
     #endif
     // set a default rate
     spiInit(SPI_HALF_SPEED); // 1

@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 #elif EXTRUDERS > 2 || E_STEPPERS > 2
   #error "MRR ESPE only supports two E Steppers. Comment out this line to continue."
 #elif HOTENDS > 1
-  #error "MRR ESPE only supports one hotend / E-stepper. Comment out this line to continue."
+  #error "MRR ESPE currently supports only one hotend. Comment out this line to continue."
 #endif
 
 #define BOARD_INFO_NAME      "MRR ESPE"
@@ -52,10 +52,12 @@
 //
 #undef I2S_STEPPER_STREAM
 #define I2S_STEPPER_STREAM
+
+#undef LIN_ADVANCE                                // Currently, I2S stream does not work with linear advance
+
 #define I2S_WS                                26
 #define I2S_BCK                               25
 #define I2S_DATA                              27
-#undef LIN_ADVANCE                                // Currently, I2S stream does not work with linear advance
 
 //
 // Steppers
@@ -112,9 +114,9 @@
 //
 // MicroSD card
 //
-#define SD_MOSI_PIN                           23
-#define SD_MISO_PIN                           19
-#define SD_SCK_PIN                            18
+#define MOSI_PIN                              23
+#define MISO_PIN                              19
+#define SCK_PIN                               18
 #define SDSS                                   5
 #define USES_SHARED_SPI                           // SPI is shared by SD card with TMC SPI drivers
 
@@ -122,7 +124,7 @@
 // LCDs and Controllers //
 //////////////////////////
 
-#if HAS_MARLINUI_U8GLIB
+#if HAS_GRAPHICAL_LCD
 
   #define LCD_PINS_RS                         13
   #define LCD_PINS_ENABLE                     17
@@ -132,7 +134,7 @@
 
     #define BEEPER_PIN                       151
 
-  #elif IS_RRD_FG_SC
+  #elif ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
 
     #define BEEPER_PIN                       151
 
@@ -150,7 +152,7 @@
   #define BTN_EN2                             12
   #define BTN_ENC                             14
 
-#endif // HAS_MARLINUI_U8GLIB
+#endif // HAS_GRAPHICAL_LCD
 
 // Hardware serial pins
 // Add the following to Configuration.h or Configuration_adv.h to assign

@@ -141,13 +141,13 @@
 //
 // LCD / Controller
 //
-#if HAS_WIRED_LCD || TOUCH_UI_ULTIPANEL
+#if HAS_SPI_LCD || TOUCH_UI_ULTIPANEL
 
   #if !MB(MINIRAMBO_10A)
     #define KILL_PIN                          32
   #endif
 
-  #if IS_ULTIPANEL || TOUCH_UI_ULTIPANEL
+  #if ENABLED(ULTIPANEL) || TOUCH_UI_ULTIPANEL
 
     #if MB(MINIRAMBO_10A)
 
@@ -187,10 +187,6 @@
 
     #endif // !MINIRAMBO_10A
 
-    #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-      #define BTN_ENC_EN             LCD_PINS_D7  // Detect the presence of the encoder
-    #endif
+  #endif // ULTIPANEL || TOUCH_UI_ULTIPANEL
 
-  #endif // IS_ULTIPANEL || TOUCH_UI_ULTIPANEL
-
-#endif // HAS_WIRED_LCD || TOUCH_UI_ULTIPANEL
+#endif // HAS_SPI_LCD || TOUCH_UI_ULTIPANEL

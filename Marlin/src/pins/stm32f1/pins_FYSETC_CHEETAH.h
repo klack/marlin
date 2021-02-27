@@ -29,11 +29,10 @@
 
 #define BOARD_INFO_NAME   "FYSETC Cheetah"
 #define BOARD_WEBSITE_URL "fysetc.com"
+// https://github.com/FYSETC/Cheetah
 
 // Ignore temp readings during development.
 //#define BOGUS_TEMPERATURE_GRACE_PERIOD    2000
-
-#define BOARD_NO_NATIVE_USB
 
 #define DISABLE_JTAG
 
@@ -80,26 +79,10 @@
 #define E0_DIR_PIN                          PC14
 #define E0_ENABLE_PIN                       PC13
 
-#if HAS_TMC_UART
-  #define X_HARDWARE_SERIAL  MSerial2
-  #define Y_HARDWARE_SERIAL  MSerial2
-  #define Z_HARDWARE_SERIAL  MSerial2
-  #define E0_HARDWARE_SERIAL MSerial2
-
-  // Default TMC slave addresses
-  #ifndef X_SLAVE_ADDRESS
-    #define X_SLAVE_ADDRESS  0
-  #endif
-  #ifndef Y_SLAVE_ADDRESS
-    #define Y_SLAVE_ADDRESS  1
-  #endif
-  #ifndef Z_SLAVE_ADDRESS
-    #define Z_SLAVE_ADDRESS  2
-  #endif
-  #ifndef E0_SLAVE_ADDRESS
-    #define E0_SLAVE_ADDRESS 3
-  #endif
-#endif
+#define X_HARDWARE_SERIAL  MSerial2
+#define Y_HARDWARE_SERIAL  MSerial2
+#define Z_HARDWARE_SERIAL  MSerial2
+#define E0_HARDWARE_SERIAL MSerial2
 
 //
 // Heaters / Fans
@@ -147,10 +130,10 @@
 * Note: Pin 4 on the Cheetah board is assigned to an I/O, it is assigned to RESET on the Ender-3 board.
 */
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
   #define BEEPER_PIN                        PC9
 
-  #if HAS_MARLINUI_U8GLIB
+  #if HAS_GRAPHICAL_LCD
     #define DOGLCD_A0                       PB14
     #define DOGLCD_CS                       PB12
     #define DOGLCD_SCK                      PB13
@@ -170,7 +153,7 @@
 
   //#define LCD_CONTRAST_INIT                190
 
-  #if IS_NEWPANEL
+  #if ENABLED(NEWPANEL)
     #define BTN_EN1                         PC10
     #define BTN_EN2                         PC11
     #define BTN_ENC                         PC12

@@ -84,9 +84,9 @@
 
     public:
       /**
-       * @brief Init Buzzer
+       * @brief Class constructor
        */
-      static inline void init() {
+      Buzzer() {
         SET_OUTPUT(BEEPER_PIN);
         reset();
       }
@@ -118,7 +118,6 @@
 #elif HAS_BUZZER
 
   // Buzz indirectly via the MarlinUI instance
-  #include "../lcd/marlinui.h"
   #define BUZZ(d,f) ui.buzz(d,f)
 
 #else

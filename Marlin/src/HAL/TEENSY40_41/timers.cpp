@@ -21,7 +21,7 @@
  */
 
 /**
- * HAL Timers for Teensy 4.0 (IMXRT1062DVL6A) / 4.1 (IMXRT1062DVJ6A)
+ * Teensy4.0/4.1 (__IMXRT1062__)
  */
 
 #ifdef __IMXRT1062__

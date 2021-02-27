@@ -22,8 +22,11 @@
 #pragma once
 
 /**
- * sd/SdFile.h
- *
+ * \file
+ * \brief SdFile class
+ */
+
+/**
  * Arduino SdFat Library
  * Copyright (c) 2009 by William Greiman
  *
@@ -39,7 +42,7 @@
  * \class SdFile
  * \brief SdBaseFile with Print.
  */
-class SdFile : public SdBaseFile {
+class SdFile : public SdBaseFile/*, public Print*/ {
  public:
   SdFile() {}
   SdFile(const char* name, uint8_t oflag);

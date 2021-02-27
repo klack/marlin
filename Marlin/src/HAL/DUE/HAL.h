@@ -22,7 +22,9 @@
 #pragma once
 
 /**
- * HAL for Arduino Due and compatible (SAM3X8E)
+ * Description: HAL for Arduino Due and compatible (SAM3X8E)
+ *
+ * For ARDUINO_ARCH_SAM
  */
 
 #define CPU_32_BIT
@@ -36,20 +38,9 @@
 
 #include <stdint.h>
 
-#include "../../core/serial_hook.h"
-typedef ForwardSerial0Type< decltype(Serial) > DefaultSerial;
-extern DefaultSerial MSerial;
-
-typedef ForwardSerial0Type< decltype(Serial1) > DefaultSerial1;
-typedef ForwardSerial0Type< decltype(Serial2) > DefaultSerial2;
-typedef ForwardSerial0Type< decltype(Serial3) > DefaultSerial3;
-extern DefaultSerial1 MSerial1;
-extern DefaultSerial2 MSerial2;
-extern DefaultSerial3 MSerial3;
-
-#define _MSERIAL(X) MSerial##X
+#define _MSERIAL(X) Serial##X
 #define MSERIAL(X) _MSERIAL(X)
-#define MSerial0 MSerial
+#define Serial0 Serial
 
 // Define MYSERIAL0/1 before MarlinSerial includes!
 #if SERIAL_PORT == -1 || ENABLED(EMERGENCY_PARSER)
@@ -70,14 +61,6 @@ extern DefaultSerial3 MSerial3;
   #endif
 #endif
 
-#ifdef MMU2_SERIAL_PORT
-  #if WITHIN(MMU2_SERIAL_PORT, 0, 3)
-    #define MMU2_SERIAL MSERIAL(MMU2_SERIAL_PORT)
-  #else
-    #error "MMU2_SERIAL_PORT must be from 0 to 3. Please update your configuration."
-  #endif
-#endif
-
 #ifdef LCD_SERIAL_PORT
   #if LCD_SERIAL_PORT == -1
     #define LCD_SERIAL lcdSerial
@@ -93,6 +76,16 @@ extern DefaultSerial3 MSerial3;
 
 // On AVR this is in math.h?
 #define square(x) ((x)*(x))
+
+#ifndef strncpy_P
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+#endif
+
+// Fix bug in pgm_read_ptr
+#undef pgm_read_ptr
+#define pgm_read_ptr(addr) (*((void**)(addr)))
+#undef pgm_read_word
+#define pgm_read_word(addr) (*((uint16_t*)(addr)))
 
 typedef int8_t pin_t;
 
@@ -114,15 +107,13 @@ void sei();                     // Enable interrupts
 void HAL_clear_reset_source();  // clear reset reason
 uint8_t HAL_get_reset_source(); // get reset reason
 
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-
 //
 // ADC
 //
 extern uint16_t HAL_adc_result;     // result of last ADC conversion
 
 #ifndef analogInputToDigitalPin
-  #define analogInputToDigitalPin(p) ((p < 12U) ? (p) + 54U : -1)
+  #define analogInputToDigitalPin(p) ((p < 12u) ? (p) + 54u : -1)
 #endif
 
 #define HAL_ANALOG_SELECT(ch)
@@ -162,16 +153,10 @@ void HAL_init();
 //
 void _delay_ms(const int delay);
 
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wunused-function"
-#endif
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 int freeMemory();
-
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic pop
-#endif
+#pragma GCC diagnostic pop
 
 #ifdef __cplusplus
   extern "C" {

@@ -19,7 +19,9 @@
  */
 
 /**
- * HAL for Arduino Due and compatible (SAM3X8E)
+ * Description: HAL for Arduino Due and compatible (SAM3X8E)
+ *
+ * For ARDUINO_ARCH_SAM
  */
 
 #ifdef ARDUINO_ARCH_SAM
@@ -101,12 +103,5 @@ uint16_t HAL_adc_get_result() {
   // nop
   return HAL_adc_result;
 }
-
-// Forward the default serial port
-DefaultSerial MSerial(false, Serial);
-
-DefaultSerial1 MSerial1(false, Serial1);
-DefaultSerial2 MSerial2(false, Serial2);
-DefaultSerial3 MSerial3(false, Serial3);
 
 #endif // ARDUINO_ARCH_SAM

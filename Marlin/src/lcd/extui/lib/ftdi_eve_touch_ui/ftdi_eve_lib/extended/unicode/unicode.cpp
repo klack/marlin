@@ -16,7 +16,7 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                             *
+ *   location: <https://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "../ftdi_extended.h"
@@ -73,13 +73,6 @@
     return val;
   }
 
-  utf8_char_t FTDI::get_utf8_char_and_inc(char *&c) {
-    utf8_char_t val = *(uint8_t*)c++;
-    while ((*c & 0xC0) == 0x80)
-      val = (val << 8) | *(uint8_t*)c++;
-    return val;
-  }
-
   /**
    * Helper function to draw and/or measure a UTF8 string
    *
@@ -99,9 +92,6 @@
     const int start_x = x;
     while (*str) {
       const utf8_char_t c = get_utf8_char_and_inc(str);
-      #ifdef TOUCH_UI_UTF8_CYRILLIC_CHARSET
-        CyrillicCharSet::render_glyph(cmd, x, y, fs, c) ||
-      #endif
       #ifdef TOUCH_UI_UTF8_WESTERN_CHARSET
         WesternCharSet::render_glyph(cmd, x, y, fs, c) ||
       #endif
@@ -118,14 +108,11 @@
    *   addr  - Address in RAMG where the font data is written
    */
 
-  void FTDI::load_utf8_data(uint32_t addr) {
-    #ifdef TOUCH_UI_UTF8_CYRILLIC_CHARSET
-      addr = CyrillicCharSet::load_data(addr);
-    #endif
+  void FTDI::load_utf8_data(uint16_t addr) {
     #ifdef TOUCH_UI_UTF8_WESTERN_CHARSET
-      addr = WesternCharSet::load_data(addr);
+      WesternCharSet::load_data(addr);
     #endif
-    addr = StandardCharSet::load_data(addr);
+    StandardCharSet::load_data(addr);
   }
 
   /**
@@ -138,9 +125,6 @@
    */
 
   void FTDI::load_utf8_bitmaps(CommandProcessor &cmd) {
-    #ifdef TOUCH_UI_UTF8_CYRILLIC_CHARSET
-      CyrillicCharSet::load_bitmaps(cmd);
-    #endif
     #ifdef TOUCH_UI_UTF8_WESTERN_CHARSET
       WesternCharSet::load_bitmaps(cmd);
     #endif
@@ -161,13 +145,10 @@
 
   uint16_t FTDI::get_utf8_char_width(utf8_char_t c, font_size_t fs) {
     int x = 0, y = 0;
-    #ifdef TOUCH_UI_UTF8_CYRILLIC_CHARSET
-      CyrillicCharSet::render_glyph(nullptr, x, y, fs, c) ||
-    #endif
     #ifdef TOUCH_UI_UTF8_WESTERN_CHARSET
-      WesternCharSet::render_glyph(nullptr, x, y, fs, c) ||
+      WesternCharSet::render_glyph(NULL, x, y, fs, c) ||
     #endif
-      StandardCharSet::render_glyph(nullptr, x, y, fs, c);
+      StandardCharSet::render_glyph(NULL, x, y, fs, c);
     return x;
   }
 
@@ -184,7 +165,7 @@
     */
 
   uint16_t FTDI::get_utf8_text_width(const char *str, font_size_t fs) {
-    return render_utf8_text(nullptr, 0, 0, str, fs);
+    return render_utf8_text(NULL, 0, 0, str, fs);
   }
 
   uint16_t FTDI::get_utf8_text_width(progmem_str pstr, font_size_t fs) {

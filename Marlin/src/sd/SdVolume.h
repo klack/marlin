@@ -22,8 +22,11 @@
 #pragma once
 
 /**
- * sd/SdVolume.h
- *
+ * \file
+ * \brief SdVolume class
+ */
+
+/**
  * Arduino SdFat Library
  * Copyright (c) 2009 by William Greiman
  *

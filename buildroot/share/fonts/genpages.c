@@ -71,49 +71,63 @@ uint8_t* get_utf8_value(uint8_t *pstart, wchar_t *pval) {
 
   assert(NULL != pstart);
 
-  #define NEXT_6_BITS() do{ val <<= 6; p++; val |= (*p & 0x3F); }while(0)
-
   if (0 == (0x80 & *p)) {
     val = (size_t)*p;
     p++;
   }
   else if (0xC0 == (0xE0 & *p)) {
     val = *p & 0x1F;
-    NEXT_6_BITS();
+    val <<= 6;
+    p++;
+    val |= (*p & 0x3F);
     p++;
     assert((wchar_t)val == get_val_utf82uni(pstart));
   }
   else if (0xE0 == (0xF0 & *p)) {
     val = *p & 0x0F;
-    NEXT_6_BITS();
-    NEXT_6_BITS();
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
     p++;
     assert((wchar_t)val == get_val_utf82uni(pstart));
   }
   else if (0xF0 == (0xF8 & *p)) {
     val = *p & 0x07;
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
     p++;
     assert((wchar_t)val == get_val_utf82uni(pstart));
   }
   else if (0xF8 == (0xFC & *p)) {
     val = *p & 0x03;
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
     p++;
     assert((wchar_t)val == get_val_utf82uni(pstart));
   }
   else if (0xFC == (0xFE & *p)) {
     val = *p & 0x01;
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
-    NEXT_6_BITS();
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
+    val <<= 6; p++;
+    val |= (*p & 0x3F);
     p++;
     assert((wchar_t)val == get_val_utf82uni(pstart));
   }

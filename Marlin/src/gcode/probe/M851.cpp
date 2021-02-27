@@ -28,6 +28,8 @@
 #include "../../feature/bedlevel/bedlevel.h"
 #include "../../module/probe.h"
 
+extern const char SP_Y_STR[], SP_Z_STR[];
+
 /**
  * M851: Set the nozzle-to-probe offsets in current units
  */

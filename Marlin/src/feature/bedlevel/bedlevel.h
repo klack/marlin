@@ -23,10 +23,6 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
-#if EITHER(RESTORE_LEVELING_AFTER_G28, ENABLE_LEVELING_AFTER_G28)
-  #define G28_L0_ENSURES_LEVELING_OFF 1
-#endif
-
 #if ENABLED(PROBE_MANUALLY)
   extern bool g29_in_progress;
 #else

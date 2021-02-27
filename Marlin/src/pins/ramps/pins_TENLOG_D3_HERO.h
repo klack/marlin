@@ -123,23 +123,3 @@
     #define BTN_EN2                       33
 #endif
 
-//#if IS_RRD_SC
-
-#define LCD_PINS_RS                           -1
-#define LCD_PINS_ENABLE                       -1
-#define LCD_PINS_D4                           -1
-#define LCD_PINS_D5                           -1
-#define LCD_PINS_D6                           -1
-#define LCD_PINS_D7                           -1
-//#define BTN_EN1                             31
-//#define BTN_EN2                             33
-//#define BTN_ENC                             35
-#define SD_DETECT_PIN                         49
-//#ifndef KILL_PIN
-  //#define KILL_PIN                          41
-//#endif
-//#ifndef BEEPER_PIN
-#define BEEPER_PIN                            -1
-//#endif
-
-//#endif // IS_RRD_SC

@@ -134,6 +134,8 @@
 #define LCD_PINS_D7                   -1
 
 //#define BEEPER_PIN                    23
+//#define BEEPER_OFF LOW 
+//#define BEEPER_ON HIGH
 
 #define BTN_ENC                       -1
 #define BTN_EN1                       -1

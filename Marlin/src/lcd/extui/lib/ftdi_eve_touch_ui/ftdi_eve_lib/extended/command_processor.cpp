@@ -16,12 +16,12 @@
  *   GNU General Public License for more details.                           *
  *                                                                          *
  *   To view a copy of the GNU General Public License, go to the following  *
- *   location: <https://www.gnu.org/licenses/>.                             *
+ *   location: <https://www.gnu.org/licenses/>.                              *
  ****************************************************************************/
 
 #include "ftdi_extended.h"
 
-#if ENABLED(FTDI_EXTENDED)
+#ifdef FTDI_EXTENDED
 
 CommandProcessor::btn_style_func_t  *CommandProcessor::_btn_style_callback = CommandProcessor::default_button_style_func;
 bool CommandProcessor::is_tracking = false;

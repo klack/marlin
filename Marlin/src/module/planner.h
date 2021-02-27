@@ -218,7 +218,7 @@ typedef struct block_t {
     uint8_t valve_pressure, e_to_p_pressure;
   #endif
 
-  #if HAS_WIRED_LCD
+  #if HAS_SPI_LCD
     uint32_t segment_time_us;
   #endif
 
@@ -286,10 +286,6 @@ typedef struct {
                 xz = XZ_SKEW_FACTOR, yz = YZ_SKEW_FACTOR;
   #endif
 } skew_factor_t;
-
-#if ENABLED(DISABLE_INACTIVE_EXTRUDER)
-  typedef IF<(BLOCK_BUFFER_SIZE > 64), uint16_t, uint8_t>::type last_move_t;
-#endif
 
 class Planner {
   public:
@@ -439,10 +435,10 @@ class Planner {
 
     #if ENABLED(DISABLE_INACTIVE_EXTRUDER)
        // Counters to manage disabling inactive extruders
-      static last_move_t g_uc_extruder_last_move[EXTRUDERS];
+      static uint8_t g_uc_extruder_last_move[EXTRUDERS];
     #endif
 
-    #if HAS_WIRED_LCD
+    #if HAS_SPI_LCD
       volatile static uint32_t block_buffer_runtime_us; // Theoretical block buffer runtime in µs
     #endif
 
@@ -712,7 +708,7 @@ class Planner {
     private:
 
       // Allow do_homing_move to access internal functions, such as buffer_segment.
-      friend void do_homing_move(const AxisEnum, const float, const feedRate_t, const bool);
+      friend void do_homing_move(const AxisEnum, const float, const feedRate_t);
   #endif
 
     /**
@@ -875,7 +871,7 @@ class Planner {
         block_buffer_tail = next_block_index(block_buffer_tail);
     }
 
-    #if HAS_WIRED_LCD
+    #if HAS_SPI_LCD
       static uint16_t block_buffer_runtime();
       static void clear_block_buffer_runtime();
     #endif
@@ -978,6 +974,6 @@ class Planner {
     #endif // !CLASSIC_JERK
 };
 
-#define PLANNER_XY_FEEDRATE() _MIN(planner.settings.max_feedrate_mm_s[X_AXIS], planner.settings.max_feedrate_mm_s[Y_AXIS])
+#define PLANNER_XY_FEEDRATE() (_MIN(planner.settings.max_feedrate_mm_s[X_AXIS], planner.settings.max_feedrate_mm_s[Y_AXIS]))
 
 extern Planner planner;

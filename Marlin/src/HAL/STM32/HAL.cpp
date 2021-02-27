@@ -28,10 +28,6 @@
 #include "../../inc/MarlinConfig.h"
 #include "../shared/Delay.h"
 
-#ifdef USBCON
-  DefaultSerial MSerial(false, SerialUSB);
-#endif
-
 #if ENABLED(SRAM_EEPROM_EMULATION)
   #if STM32F7xx
     #include <stm32f7xx_ll_pwr.h>
@@ -40,11 +36,6 @@
   #else
     #error "SRAM_EEPROM_EMULATION is currently only supported for STM32F4xx and STM32F7xx"
   #endif
-#endif
-
-#if HAS_SD_HOST_DRIVE
-  #include "msc_sd.h"
-  #include "usbd_cdc_if.h"
 #endif
 
 // ------------------------
@@ -72,7 +63,7 @@ uint16_t HAL_adc_result;
 void HAL_init() {
   FastIO_init();
 
-  #if ENABLED(SDSUPPORT) && DISABLED(SDIO_SUPPORT) && (defined(SDSS) && SDSS != -1)
+  #if ENABLED(SDSUPPORT) && DISABLED(SDIO_SUPPORT)
     OUT_WRITE(SDSS, HIGH); // Try to set SDSS inactive before any other SPI users start up
   #endif
 
@@ -90,22 +81,7 @@ void HAL_init() {
 
   SetTimerInterruptPriorities();
 
-  #if ENABLED(EMERGENCY_PARSER) && USBD_USE_CDC
-    USB_Hook_init();
-  #endif
-
-  #if HAS_SD_HOST_DRIVE
-    MSC_SD_init();                         // Enable USB SD card access
-  #endif
-}
-
-// HAL idle task
-void HAL_idletask() {
-  #if HAS_SHARED_MEDIA
-    // Stm32duino currently doesn't have a "loop/idle" method
-    CDC_resume_receive();
-    CDC_continue_transmit();
-  #endif
+  TERN_(EMERGENCY_PARSER, USB_Hook_init());
 }
 
 void HAL_clear_reset_source() { __HAL_RCC_CLEAR_RESET_FLAGS(); }
@@ -146,18 +122,9 @@ extern "C" {
 
 // TODO: Make sure this doesn't cause any delay
 void HAL_adc_start_conversion(const uint8_t adc_pin) { HAL_adc_result = analogRead(adc_pin); }
+
 uint16_t HAL_adc_get_result() { return HAL_adc_result; }
 
-// Reset the system (to initiate a firmware flash)
 void flashFirmware(const int16_t) { NVIC_SystemReset(); }
-
-// Maple Compatibility
-volatile uint32_t systick_uptime_millis = 0;
-systickCallback_t systick_user_callback;
-void systick_attach_callback(systickCallback_t cb) { systick_user_callback = cb; }
-void HAL_SYSTICK_Callback() {
-  systick_uptime_millis++;
-  if (systick_user_callback) systick_user_callback();
-}
 
 #endif // ARDUINO_ARCH_STM32 && !STM32GENERIC

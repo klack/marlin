@@ -53,7 +53,6 @@ void _man_probe_pt(const xy_pos_t &xy) {
 
 #if ENABLED(DELTA_AUTO_CALIBRATION)
 
-  #include "../../MarlinCore.h" // for wait_for_user_response()
   #include "../../gcode/gcode.h"
 
   #if ENABLED(HOST_PROMPT_SUPPORT)
@@ -119,7 +118,7 @@ void lcd_delta_settings() {
 }
 
 void menu_delta_calibrate() {
-  TERN_(DELTA_CALIBRATION_MENU, const bool all_homed = all_axes_homed()); // Acquire ahead of loop
+  const bool all_homed = all_axes_homed();
 
   START_MENU();
   BACK_ITEM(MSG_MAIN);

@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -70,9 +70,7 @@
 #endif
 
 // LED driving pin
-#ifndef NEOPIXEL_PIN
-  #define NEOPIXEL_PIN                     P1_24
-#endif
+#define NEOPIXEL_PIN                       P1_24
 
 //
 // Power Loss Detection
@@ -163,7 +161,7 @@
 //
 #define TEMP_0_PIN                         P0_24
 #define TEMP_1_PIN                         P0_23
-//#define TEMP_2_PIN                       P1_30  // Onboard thermistor
+//#define TEMP_2_PIN                       P1_30   // Onboard thermistor
 #define TEMP_BED_PIN                       P0_25
 
 //
@@ -175,9 +173,11 @@
 #define FAN_PIN                            P2_01
 #define FAN1_PIN                           P2_02
 
-#ifndef CONTROLLER_FAN_PIN
-  #define CONTROLLER_FAN_PIN            FAN1_PIN
-#endif
+//
+// USB connect control
+//
+//#define USB_CONNECT_PIN                  P0_29
+//#define USB_CONNECT_INVERTING            false
 
 /**
  *                  _____
@@ -199,7 +199,7 @@
 #define EXPA1_09_PIN                       P0_16
 #define EXPA1_10_PIN                       P2_08
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #if ENABLED(CR10_STOCKDISPLAY)
 
@@ -244,7 +244,7 @@
 
   #endif
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD
 
 //
 // SD Support
@@ -255,10 +255,10 @@
 
 #if SD_CONNECTION_IS(ONBOARD)
   #define SD_DETECT_PIN                    P2_00
-  #define SD_SCK_PIN                       P0_07
-  #define SD_MISO_PIN                      P0_08
-  #define SD_MOSI_PIN                      P0_09
-  #define SD_SS_PIN                        P0_06
+  #define SCK_PIN                          P0_07
+  #define MISO_PIN                         P0_08
+  #define MOSI_PIN                         P0_09
+  #define SS_PIN                           P0_06
 #elif SD_CONNECTION_IS(CUSTOM_CABLE)
   #error "SD CUSTOM_CABLE is not compatible with SKR E3 Turbo."
 #endif

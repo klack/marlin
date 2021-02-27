@@ -14,12 +14,12 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
-#if HAS_MARLINUI_HD44780
+#if HAS_CHARACTER_LCD
 
-#include "../marlinui.h"
+#include "../ultralcd.h"
 #include "../../MarlinCore.h"
 
-#include "marlinui_HD44780.h"
+#include "ultralcd_HD44780.h"
 
 #include <string.h>
 
@@ -1119,4 +1119,4 @@ int lcd_put_u8str_max_P(PGM_P utf8_str_P, pixel_len_t max_length) {
 
 #endif // DEBUG_LCDPRINT
 
-#endif // HAS_MARLINUI_HD44780
+#endif // HAS_CHARACTER_LCD

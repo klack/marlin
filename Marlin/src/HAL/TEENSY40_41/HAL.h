@@ -22,7 +22,7 @@
 #pragma once
 
 /**
- * HAL for Teensy 4.0 (IMXRT1062DVL6A) / 4.1 (IMXRT1062DVJ6A)
+ * Description: HAL for Teensy 4.0 and Teensy 4.1
  */
 
 #define CPU_32_BIT
@@ -37,10 +37,6 @@
 #include <stdint.h>
 #include <util/atomic.h>
 
-#if HAS_ETHERNET
-  #include "../../feature/ethernet.h"
-#endif
-
 //#define ST7920_DELAY_1 DELAY_NS(600)
 //#define ST7920_DELAY_2 DELAY_NS(750)
 //#define ST7920_DELAY_3 DELAY_NS(750)
@@ -49,21 +45,14 @@
 // Defines
 // ------------------------
 
-#define IS_32BIT_TEENSY 1
-#define IS_TEENSY_40_41 1
-#ifndef IS_TEENSY40
+#ifdef __IMXRT1062__
+  #define IS_32BIT_TEENSY 1
   #define IS_TEENSY41 1
 #endif
 
-#include "../../core/serial_hook.h"
-typedef Serial0Type<decltype(Serial)> DefaultSerial;
-extern DefaultSerial MSerial;
-typedef ForwardSerial0Type<decltype(SerialUSB)> USBSerialType;
-extern USBSerialType USBSerial;
-
-#define _MSERIAL(X) MSerial##X
+#define _MSERIAL(X) Serial##X
 #define MSERIAL(X) _MSERIAL(X)
-#define MSerial0 MSerial
+#define Serial0 Serial
 
 #if SERIAL_PORT == -1
   #define MYSERIAL0 SerialUSB
@@ -76,12 +65,10 @@ extern USBSerialType USBSerial;
 #ifdef SERIAL_PORT_2
   #if SERIAL_PORT_2 == -1
     #define MYSERIAL1 usbSerial
-  #elif SERIAL_PORT_2 == -2
-    #define MYSERIAL1 ethernet.telnetClient
   #elif WITHIN(SERIAL_PORT_2, 0, 8)
     #define MYSERIAL1 MSERIAL(SERIAL_PORT_2)
   #else
-    #error "SERIAL_PORT_2 must be from -2 to 8. Please update your configuration."
+      #error "SERIAL_PORT_2 must be from -1 to 8. Please update your configuration."
   #endif
 #endif
 
@@ -90,7 +77,7 @@ extern USBSerialType USBSerial;
 typedef int8_t pin_t;
 
 #ifndef analogInputToDigitalPin
-  #define analogInputToDigitalPin(p) ((p < 12U) ? (p) + 54U : -1)
+  #define analogInputToDigitalPin(p) ((p < 12u) ? (p) + 54u : -1)
 #endif
 
 #define CRITICAL_SECTION_START()  uint32_t primask = __get_primask(); __disable_irq()
@@ -102,9 +89,20 @@ typedef int8_t pin_t;
 #undef sq
 #define sq(x) ((x)*(x))
 
+#ifndef strncpy_P
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+#endif
+
 // Don't place string constants in PROGMEM
 #undef PSTR
 #define PSTR(str) ({static const char *data = (str); &data[0];})
+
+// Fix bug in pgm_read_ptr
+#undef pgm_read_ptr
+#define pgm_read_ptr(addr) (*((void**)(addr)))
+// Add type-checking to pgm_read_word
+#undef pgm_read_word
+#define pgm_read_word(addr) (*((uint16_t*)(addr)))
 
 // Enable hooks into idle and setup for HAL
 #define HAL_IDLETASK 1
@@ -119,16 +117,12 @@ uint8_t HAL_get_reset_source();
 
 FORCE_INLINE void _delay_ms(const int delay_ms) { delay(delay_ms); }
 
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wunused-function"
-#endif
-
-extern "C" uint32_t freeMemory();
-
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic pop
-#endif
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+extern "C" {
+  uint32_t freeMemory();
+}
+#pragma GCC diagnostic pop
 
 // ADC
 

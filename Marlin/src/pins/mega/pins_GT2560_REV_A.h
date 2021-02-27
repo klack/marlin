@@ -105,31 +105,17 @@
 #define SUICIDE_PIN                           54  // Must be enabled at startup to keep power flowing
 #define KILL_PIN                              -1
 
-#if HAS_WIRED_LCD
+#if HAS_SPI_LCD
 
   #define BEEPER_PIN                          18
 
-  #if IS_NEWPANEL
+  #if ENABLED(NEWPANEL)
 
     #if ENABLED(MKS_MINI_12864)
       #define DOGLCD_A0                        5
       #define DOGLCD_CS                       21
       #define BTN_EN1                         40
       #define BTN_EN2                         42
-    #elif ENABLED(FYSETC_MINI_12864)
-      // Disconnect EXP2-1 and EXP2-2, otherwise future firmware upload won't work.
-      #define DOGLCD_A0                       20
-      #define DOGLCD_CS                       17
-
-      #define NEOPIXEL_PIN                    21
-      #define BTN_EN1                         42
-      #define BTN_EN2                         40
-
-      #define LCD_RESET_PIN                   16
-
-      #define DEFAULT_LCD_CONTRAST           220
-
-      #define LCD_BACKLIGHT_PIN               -1
     #else
       #define LCD_PINS_RS                     20
       #define LCD_PINS_ENABLE                 17
@@ -144,12 +130,12 @@
     #define BTN_ENC                           19
     #define SD_DETECT_PIN                     38
 
-  #else                                           // !IS_NEWPANEL
+  #else                                           // !NEWPANEL
 
-    #define SHIFT_CLK_PIN                     38
-    #define SHIFT_LD_PIN                      42
-    #define SHIFT_OUT_PIN                     40
-    #define SHIFT_EN_PIN                      17
+    #define SHIFT_CLK                         38
+    #define SHIFT_LD                          42
+    #define SHIFT_OUT                         40
+    #define SHIFT_EN                          17
 
     #define LCD_PINS_RS                       16
     #define LCD_PINS_ENABLE                    5
@@ -158,12 +144,8 @@
     #define LCD_PINS_D6                       20
     #define LCD_PINS_D7                       19
 
-    #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-      #define BTN_ENC_EN             LCD_PINS_D7  // Detect the presence of the encoder
-    #endif
-
     #define SD_DETECT_PIN                     -1
 
-  #endif // !IS_NEWPANEL
+  #endif // !NEWPANEL
 
-#endif // HAS_WIRED_LCD
+#endif // HAS_SPI_LCD

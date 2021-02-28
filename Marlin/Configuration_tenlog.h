@@ -25,6 +25,13 @@
   #define TOOLCHANGE_NO_RETURN
 #endif
 
+#if ENABLED(BTTSKRPRO)
+  #define verS3 "BTTSKRPRO"
+  #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define USE_CONTROLLER_FAN
+#endif
+
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
   #define DriverType A4988
@@ -49,6 +56,22 @@
 	#define INVERT_Z_DIR false
 	#define INVERT_E0_DIR true
 	#define INVERT_E1_DIR false
+#elif ENABLED(Driver2209BTTSKRPRO)
+  #define verS2 "2209BTTSKRPRO"
+  #define DriverType TMC2209
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR true
+  #define INVERT_Z2_VS_Z_DIR false
+  #define INVERT_X2_VS_X_DIR false
+  #define INVERT_E0_DIR true
+  #define INVERT_E1_DIR true
+  #define X_MIN_ENDSTOP_INVERTING true
+  #define Z_MIN_ENDSTOP_INVERTING true
+  #define Z_MAX_ENDSTOP_INVERTING true
+  #define X_MAX_ENDSTOP_INVERTING true
+  #define TMC_DEBUG
+  #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E"
 #endif
 
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
@@ -108,9 +131,14 @@
 #elif ENABLED(EZabl)
   #define HAS_PROBE
   #define FIX_MOUNTED_PROBE
-  #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
+  #if ENABLED(TitanExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { +29, -46, -1.2 }
+  #else
+    #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
+  #endif
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
+  #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
   #define Z_HOMING_HEIGHT  7 
   #define Z_AFTER_HOMING  2 
@@ -118,18 +146,24 @@
   #define ENABLE_LEVELING_FADE_HEIGHT
   #define SEGMENT_LEVELED_MOVES
   #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
-  #define GRID_MAX_POINTS_X 7
+  #define GRID_MAX_POINTS_X 5
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #define EXTRAPOLATE_BEYOND_GRID
-  #define PROBING_MARGIN 30
-  #define ABL_BILINEAR_SUBDIVISION
-  //#define BILINEAR_SUBDIVISIONS 5
+  #define PROBING_MARGIN 50
+  //#define ABL_BILINEAR_SUBDIVISION
 #endif
 
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z
-  #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+  #if ENABLED(BTTSKRPRO)
+    #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+    #undef Z_MIN_PROBE_PIN
+    #define Z_MIN_PROBE_PIN                   PA2
+  #else
+    #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+  #endif
+  #undef MIN_SOFTWARE_ENDSTOP_Z
   #define Z_MIN_PROBE_REPEATABILITY_TEST
   #define Z_SAFE_HOMING
   #if ENABLED(Z_SAFE_HOMING)
@@ -177,7 +211,16 @@
 #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
 #define DUAL_X_CARRIAGE
 #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
-
+#define FIL_RUNOUT_ENABLED_DEFAULT false
+#define FIL_RUNOUT_STATE     HIGH
+#define FIL_RUNOUT_PULLUP
+#if ENABLED(BTTSKRPRO)
+  #define NUM_RUNOUT_SENSORS   2 
+  #define FIL_RUNOUT2_STATE HIGH
+  #define FIL_RUNOUT2_PULLUP
+#else 
+  #define NUM_RUNOUT_SENSORS   1
+#endif
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType
 #define Z_DRIVER_TYPE  DriverType

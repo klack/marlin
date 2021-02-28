@@ -27,8 +27,8 @@
 
 // Use one of these or SDCard-based Emulation will be used
 #if NO_EEPROM_SELECTED
-  //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
-  #define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
+  #define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
+  //#define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
@@ -37,6 +37,7 @@
   #define FLASH_EEPROM_LEVELING
 #endif
 
+#define BTT_MOTOR_EXPANSION
 //
 // Servos
 //
@@ -49,48 +50,23 @@
 #define X_DIAG_PIN                          PB10  // X-
 #define Y_DIAG_PIN                          PE12  // Y-
 #define Z_DIAG_PIN                          PG8   // Z-
-#define E0_DIAG_PIN                         PE15  // E0
-#define E1_DIAG_PIN                         PE10  // E1
-#define E2_DIAG_PIN                         PG5   // E2
-
+#define Z2_DIAG_PIN                         PE15  // E0
+#define X2_DIAG_PIN                         PE10  // E1
+#define M1_DIAG_PIN                         PG5   // E2
 //
 // Limit Switches
 //
-#ifdef X_STALL_SENSITIVITY
-  #define X_STOP_PIN                  X_DIAG_PIN
-  #if X_HOME_DIR < 0
-    #define X_MAX_PIN                       PE15  // E0
-  #else
-    #define X_MIN_PIN                       PE15  // E0
-  #endif
-#else
+
   #define X_MIN_PIN                         PB10  // X-
   #define X_MAX_PIN                         PE15  // E0
-#endif
 
-#ifdef Y_STALL_SENSITIVITY
-  #define Y_STOP_PIN                  Y_DIAG_PIN
-  #if Y_HOME_DIR < 0
-    #define Y_MAX_PIN                       PE10  // E1
-  #else
-    #define Y_MIN_PIN                       PE10  // E1
-  #endif
-#else
   #define Y_MIN_PIN                         PE12  // Y-
   #define Y_MAX_PIN                         PE10  // E1
-#endif
 
-#ifdef Z_STALL_SENSITIVITY
-  #define Z_STOP_PIN                  Z_DIAG_PIN
-  #if Z_HOME_DIR < 0
-    #define Z_MAX_PIN                       PG5   // E2
-  #else
-    #define Z_MIN_PIN                       PG5   // E2
-  #endif
-#else
+
   #define Z_MIN_PIN                         PG8   // Z-
   #define Z_MAX_PIN                         PG5   // E2
-#endif
+
 
 //
 // Z Probe must be this pin
@@ -103,10 +79,10 @@
 // Filament Runout Sensor
 //
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN                    PE15
+  #define FIL_RUNOUT_PIN                    PE10 // Tenlog Change from PE15 to  PE10
 #endif
 #ifndef FIL_RUNOUT2_PIN
-  #define FIL_RUNOUT2_PIN                   PE10
+  #define FIL_RUNOUT2_PIN                   PG5 // Tenlog  Change from PE10 to  PG5
 #endif
 #ifndef FIL_RUNOUT3_PIN
   #define FIL_RUNOUT3_PIN                   PG5
@@ -136,26 +112,27 @@
   #define Z_CS_PIN                          PB9
 #endif
 
-#define E0_STEP_PIN                         PE14
-#define E0_DIR_PIN                          PA0
-#define E0_ENABLE_PIN                       PC3
+#define Z2_STEP_PIN                         PE14
+#define Z2_DIR_PIN                          PA0
+#define Z2_ENABLE_PIN                       PC3
+#ifndef Z2_CS_PIN
+  #define Z2_CS_PIN                         PB3
+#endif
+
+#define X2_STEP_PIN                         PD15
+#define X2_DIR_PIN                          PE7
+#define X2_ENABLE_PIN                       PA3
+#ifndef X2_CS_PIN
+  #define X2_CS_PIN                         PG15
+#endif
+
+#define E0_STEP_PIN                         PD13
+#define E0_DIR_PIN                          PG9
+#define E0_ENABLE_PIN                       PF0
 #ifndef E0_CS_PIN
-  #define E0_CS_PIN                         PB3
+  #define E0_CS_PIN                         PG12
 #endif
 
-#define E1_STEP_PIN                         PD15
-#define E1_DIR_PIN                          PE7
-#define E1_ENABLE_PIN                       PA3
-#ifndef E1_CS_PIN
-  #define E1_CS_PIN                         PG15
-#endif
-
-#define E2_STEP_PIN                         PD13
-#define E2_DIR_PIN                          PG9
-#define E2_ENABLE_PIN                       PF0
-#ifndef E2_CS_PIN
-  #define E2_CS_PIN                         PG12
-#endif
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -203,14 +180,14 @@
   #define Z_SERIAL_TX_PIN                   PE1
   #define Z_SERIAL_RX_PIN                   PE1
 
-  #define E0_SERIAL_TX_PIN                  PD4
-  #define E0_SERIAL_RX_PIN                  PD4
+  #define Z2_SERIAL_TX_PIN                  PD4
+  #define Z2_SERIAL_RX_PIN                  PD4
 
-  #define E1_SERIAL_TX_PIN                  PD1
-  #define E1_SERIAL_RX_PIN                  PD1
+  #define X2_SERIAL_TX_PIN                  PD1
+  #define X2_SERIAL_RX_PIN                  PD1
 
-  #define E2_SERIAL_TX_PIN                  PD6
-  #define E2_SERIAL_RX_PIN                  PD6
+  #define E0_SERIAL_TX_PIN                  PD6
+  #define E0_SERIAL_RX_PIN                  PD6
 
   // Reduce baud rate to improve software serial reliability
   #define TMC_BAUD_RATE                    19200
@@ -233,7 +210,8 @@
 #define HEATER_BED_PIN                      PD12  // Hotbed
 #define FAN_PIN                             PC8   // Fan0
 #define FAN1_PIN                            PE5   // Fan1
-#define FAN2_PIN                            PE6
+#define FAN2_PIN                            PE6   // Fan2
+#define FAN3_PIN                            HEATER_2_PIN
 
 #ifndef E0_AUTO_FAN_PIN
   #define E0_AUTO_FAN_PIN               FAN1_PIN
@@ -244,7 +222,7 @@
 //
 
 #ifndef SDCARD_CONNECTION
-  #define SDCARD_CONNECTION                  LCD
+  #define SDCARD_CONNECTION                  ONBOARD
 #endif
 
 //
@@ -275,14 +253,79 @@
 
 /**
  *               -----                                             -----
- *           NC | · · | GND                                    5V | · · | GND
- *        RESET | · · | PF12(SD_DETECT)             (LCD_D7)  PG7 | · · | PG6  (LCD_D6)
- *   (MOSI)PB15 | · · | PF11(BTN_EN2)               (LCD_D5)  PG3 | · · | PG2  (LCD_D4)
- *  (SD_SS)PB12 | · · | PG10(BTN_EN1)               (LCD_RS) PD10 | · · | PD11 (LCD_EN)
- *    (SCK)PB13 | · · | PB14(MISO)                 (BTN_ENC)  PA8 | · · | PG4  (BEEPER)
+ *           NC | 1 2 | GND                                    5V | 1 2 | GND
+ *        RESET | 3 4 | PF12(SD_DETECT)             (LCD_D7)  PG7 | 3 4 | PG6  (LCD_D6)
+ *   (MOSI)PB15 | 5 6   PF11(BTN_EN2)               (LCD_D5)  PG3 | 5 6   PG2  (LCD_D4)
+ *  (SD_SS)PB12 | 7 8 | PG10(BTN_EN1)               (LCD_RS) PD10 | 7 8 | PD11 (LCD_EN)
+ *    (SCK)PB13 | 9 10| PB14(MISO)                 (BTN_ENC)  PA8 | 9 10| PG4  (BEEPER)
  *               -----                                             -----
  *               EXP2                                              EXP1
  */
+
+#define EXPA1_03_PIN                        PG7
+#define EXPA1_04_PIN                        PG6
+#define EXPA1_05_PIN                        PG3
+#define EXPA1_06_PIN                        PG2
+#define EXPA1_07_PIN                        PD10
+#define EXPA1_08_PIN                        PD11
+#define EXPA1_09_PIN                        PA8
+#define EXPA1_10_PIN                        PG4
+
+#define EXPA2_03_PIN                        -1
+#define EXPA2_04_PIN                        PF12
+#define EXPA2_05_PIN                        PB15
+#define EXPA2_06_PIN                        PF11
+#define EXPA2_07_PIN                        PB12
+#define EXPA2_08_PIN                        PG10
+#define EXPA2_09_PIN                        PB13
+#define EXPA2_10_PIN                        PB14
+
+#if ENABLED(BTT_MOTOR_EXPANSION)
+  /**
+   *               _____                                      _____
+   *           NC | · · | GND                             NC | · · | GND
+   *           NC | · · | PF12 (M1EN)            (M2EN)  PG7 | · · | PG6  (M3EN)
+   * (M1STP) PB15 | · ·   PF11 (M1DIR)           (M1RX)  PG3 | · ·   PG2  (M1DIAG)
+   * (M2DIR) PB12 | · · | PG10 (M2STP)           (M2RX) PD10 | · · | PD11 (M2DIAG)
+   * (M3DIR) PB13 | · · | PB14 (M3STP)           (M3RX)  PA8 | · · | PG4  (M3DIAG)
+   *               -----                                      -----
+   *               EXP2                                       EXP1
+   */
+
+  // M1 on Driver Expansion Module
+  #define M2_STEP_PIN               EXPA2_05_PIN
+  #define M2_DIR_PIN                EXPA2_06_PIN
+  #define M2_ENABLE_PIN             EXPA2_04_PIN
+  #define M2_DIAG_PIN               EXPA1_06_PIN
+  #define M2_CS_PIN                 EXPA1_05_PIN
+  #if HAS_TMC_UART
+    #define M2_SERIAL_TX_PIN        EXPA1_05_PIN
+    #define M2_SERIAL_RX_PIN        EXPA1_05_PIN
+  #endif
+
+  // M2 on Driver Expansion Module
+  #define E1_STEP_PIN               EXPA2_08_PIN
+  #define E1_DIR_PIN                EXPA2_07_PIN
+  #define E1_ENABLE_PIN             EXPA1_03_PIN
+  #define E1_DIAG_PIN               EXPA1_08_PIN
+  #define E1_CS_PIN                 EXPA1_07_PIN
+  #if HAS_TMC_UART
+    #define E1_SERIAL_TX_PIN        EXPA1_07_PIN
+    #define E1_SERIAL_RX_PIN        EXPA1_07_PIN
+  #endif
+
+  // M3 on Driver Expansion Module
+  #define M3_STEP_PIN               EXPA2_10_PIN
+  #define M3_DIR_PIN                EXPA2_09_PIN
+  #define M3_ENABLE_PIN             EXPA1_04_PIN
+  #define M3_DIAG_PIN               EXPA1_10_PIN
+  #define M3_CS_PIN                 EXPA1_09_PIN
+  #if HAS_TMC_UART
+    #define M3_SERIAL_TX_PIN        EXPA1_09_PIN
+    #define M3_SERIAL_RX_PIN        EXPA1_09_PIN
+  #endif
+
+#endif // BTT_MOTOR_EXPANSION
 
 //
 // LCDs and Controllers

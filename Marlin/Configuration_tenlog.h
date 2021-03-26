@@ -84,7 +84,7 @@
   #define E0_CURRENT       580 
   #define E1_CURRENT       580 
 #else
-    #define X_CURRENT       800 
+  #define X_CURRENT       800 
   #define X2_CURRENT       800 
   #define Y_CURRENT       800 
   #define Y2_CURRENT       800 

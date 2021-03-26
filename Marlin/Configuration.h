@@ -106,8 +106,8 @@
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 #if ENABLED(BTTSKRPRO)
-  #define SERIAL_PORT -1
-  #define SERIAL_PORT_2 1
+  #define SERIAL_PORT 1
+  #define SERIAL_PORT_2 -1
 #else
   #define SERIAL_PORT 0
   #define SERIAL_PORT_2 2

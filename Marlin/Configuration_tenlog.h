@@ -23,6 +23,7 @@
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOLCHANGE_NO_RETURN
+  #define HOMING_FEEDRATE_Z  (4*60)
 #endif
 
 #if ENABLED(BTTSKRPRO)
@@ -65,7 +66,7 @@
   #define INVERT_Z2_VS_Z_DIR false
   #define INVERT_X2_VS_X_DIR false
   #define INVERT_E0_DIR true
-  #define INVERT_E1_DIR true
+  #define INVERT_E1_DIR false
   #define X_MIN_ENDSTOP_INVERTING true
   #define Z_MIN_ENDSTOP_INVERTING true
   #define Z_MAX_ENDSTOP_INVERTING true
@@ -73,13 +74,34 @@
   #define TMC_DEBUG
   #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E"
 #endif
-
+#if ENABLED(Driver2209BTTSKRPRO)
+  #define X_CURRENT       580 
+  #define X2_CURRENT       580 
+  #define Y_CURRENT       580 
+  #define Y2_CURRENT       580 
+  #define Z_CURRENT       580 
+  #define Z2_CURRENT       580 
+  #define E0_CURRENT       580 
+  #define E1_CURRENT       580 
+#else
+    #define X_CURRENT       800 
+  #define X2_CURRENT       800 
+  #define Y_CURRENT       800 
+  #define Y2_CURRENT       800 
+  #define Z_CURRENT       800 
+  #define Z2_CURRENT       800 
+  #define E0_CURRENT       800 
+  #define E1_CURRENT       800 
+#endif
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
+#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
+  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
+  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
 #elif ENABLED(OpticalY)
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
@@ -93,6 +115,11 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
+#elif ENABLED(BMGExtruder)
+  #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
+  #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
+  #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 428, 428 }
 #else
   #define X2_MIN_POS 10
   #define X_MAX_POS 305
@@ -128,28 +155,34 @@
   #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
+  #define MESH_INSET 15 
+  #define GRID_MAX_POINTS_X 10
 #elif ENABLED(EZabl)
   #define HAS_PROBE
   #define FIX_MOUNTED_PROBE
-  #if ENABLED(TitanExtruder)
+  #if ENABLED(BMGExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { +29, -46, -1.2 }
   #else
     #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
   #endif
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
+  #undef HOMING_FEEDRATE_Z
+  #define HOMING_FEEDRATE_Z  (8*60)
   #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
+  #define EXTRA_PROBING    1
   #define Z_HOMING_HEIGHT  7 
   #define Z_AFTER_HOMING  2 
-  #define AUTO_BED_LEVELING_BILINEAR
-  #define ENABLE_LEVELING_FADE_HEIGHT
-  #define SEGMENT_LEVELED_MOVES
-  #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
-  #define GRID_MAX_POINTS_X 5
+  #define PROBING_HEATERS_OFF
+  #define WAIT_FOR_BED_HEATER
+  #define AUTO_BED_LEVELING_UBL
+  //#define AUTO_BED_LEVELING_BILINEAR
+  #define GRID_MAX_POINTS_X 10
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #define EXTRAPOLATE_BEYOND_GRID
-  #define PROBING_MARGIN 50
+  #define PROBING_MARGIN 45
+  #define MESH_INSET 50 
   //#define ABL_BILINEAR_SUBDIVISION
 #endif
 

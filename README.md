@@ -52,7 +52,7 @@ And that's it!
 
 - Mount the BL-Touch to E1.
   Depending on your extruder type, you need to print out a BL-Touch mount! Use supports for only what's touching the build plate.
-  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/BL-Touch/docs/Titan-BL_Touch-Mount.stl)
+  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/master/docs/Titan-BL_Touch-Mount.stl)
   - [![Website](https://img.shields.io/badge/Stock-black?style=flat-square)](https://www.thingiverse.com/thing:4726829)
   - Attach the BL-Touch to the mount.
   ![Mount touch](docs/PXL_20210112_202053715.jpg)

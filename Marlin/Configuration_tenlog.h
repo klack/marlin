@@ -14,7 +14,7 @@
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
-  #define X_MIN_POS -48
+  #define X_MIN_POS -50
   #define X_MAX_POS 305
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage

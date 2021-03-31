@@ -91,14 +91,11 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
-#else
-
 #endif
 
 #if ENABLED(OpticalY)
   #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
-#else
 #endif
 
 #if ENABLED(TGCustom_2209_Titan)

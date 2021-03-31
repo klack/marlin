@@ -7,23 +7,33 @@
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define Y_MIN_POS 0
-  #define Z_MIN_POS 0
-  #define Z_MAX_POS 350
-  #define TOOL_CHANGE_AREA 14
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
+  #define DUAL_X_CARRIAGE
+  #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
+  #define X_BED_SIZE        310
+  #define Y_BED_SIZE        310
+  #define TOOL_CHANGE_AREA  14
+  #define X_MIN_POS -48
+  #define X_MAX_POS 305
+  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
+  #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
+  #define X2_MIN_POS 10
+  #define X2_MAX_POS 353
+  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
+  #define Y_MIN_POS 0
+  #define Y_MIN_ENDSTOP_INVERTING false  
+  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Z_MIN_POS 0
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
+  #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define USE_ZMAX_PLUG
   #define MIN_SOFTWARE_ENDSTOPS
-  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
-  #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
-    #define MIN_SOFTWARE_ENDSTOP_X
-    #define MIN_SOFTWARE_ENDSTOP_Y
-    #define MIN_SOFTWARE_ENDSTOP_Z
-  #endif
-  #define X_BED_SIZE        310
-  #define Y_BED_SIZE        310
+  #define MIN_SOFTWARE_ENDSTOP_X
+  #define MIN_SOFTWARE_ENDSTOP_Y
+  #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
 #endif
 
@@ -66,26 +76,27 @@
 #elif ENABLED(OpticalY)
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
-#else
-
 #endif
 
 #if ENABLED(TitanExtruder)
+  #undef X_MIN_POS
+  #undef X2_MIN_POS
+  #undef X_MAX_POS
+  #undef X2_MAX_POS
+  #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #define X_MIN_POS -47
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
 #else
-  #define X2_MIN_POS 10
-  #define X_MAX_POS 305
-  #define X2_MAX_POS 353
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+
 #endif
 
 #if ENABLED(OpticalY)
+  #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
 #else
-  #define Y_MIN_ENDSTOP_INVERTING false
 #endif
 
 #if ENABLED(TGCustom_2209_Titan)
@@ -175,13 +186,7 @@
 #define HOST_PROMPT_SUPPORT
 
 // Common
-#define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
-#define X_MIN_POS -47
-#define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-#define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-#define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-#define DUAL_X_CARRIAGE
-#define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
+
 
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType

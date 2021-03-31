@@ -1,10 +1,5 @@
 #define SHORT_BUILD_VERSION "2.0.7.2 | Luxuri 0.7.x"
 
-#define TITAN_Y_OFFSET 5
-#define TITAN_X_RIGHT_SPACING 3
-#define TITAN_X_LEFT_SPACING 6
-#define OPTICALY_Y_OFFSET 4
-
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -65,21 +60,9 @@
 	#define INVERT_E1_DIR false
 #endif
 
-#if ENABLED(TitanExtruder) || ENABLED(OpticalY)
-  #undef Y_MIN_POS
-  #undef TOOL_CHANGE_AREA
-#endif
-#if ENABLED(TitanExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
-#elif ENABLED(TitanExtruder)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
-#endif
-
+#define TITAN_Y_OFFSET 5
+#define TITAN_X_RIGHT_SPACING 3
+#define TITAN_X_LEFT_SPACING 6
 #if ENABLED(TitanExtruder)
   #undef X_MIN_POS
   #undef X2_MIN_POS
@@ -91,11 +74,27 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
+  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
+
 #endif
 
+#define OPTICALY_Y_OFFSET 4
 #if ENABLED(OpticalY)
   #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
+#endif
+#if ENABLED(TitanExtruder) || ENABLED(OpticalY)
+  #undef Y_MIN_POS
+  #undef TOOL_CHANGE_AREA
+#endif
+#if ENABLED(TitanExtruder) && ENABLED(OpticalY)
+  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
+  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
+#elif ENABLED(TitanExtruder)
+  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
+#elif ENABLED(OpticalY)
+  #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
+  #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
 #endif
 
 #if ENABLED(TGCustom_2209_Titan)

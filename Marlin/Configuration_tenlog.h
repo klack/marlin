@@ -69,13 +69,13 @@
   #undef X_MAX_POS
   #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #undef Y_MIN_POS
   #define X_MIN_POS -47
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
-
 #endif
 
 #define OPTICALY_Y_OFFSET 4
@@ -83,14 +83,16 @@
   #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
 #endif
+
 #if ENABLED(TitanExtruder) || ENABLED(OpticalY)
-  #undef Y_MIN_POS
   #undef TOOL_CHANGE_AREA
+  #undef Y_MIN_POS
 #endif
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
 #elif ENABLED(TitanExtruder)
+  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
 #elif ENABLED(OpticalY)
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET

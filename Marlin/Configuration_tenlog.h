@@ -35,6 +35,8 @@
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
+  #define HOST_ACTION_COMMANDS
+  #define HOST_PROMPT_SUPPORT  
 #endif
 
 #if ENABLED(DriverA4988)
@@ -176,16 +178,8 @@
   #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 
+// Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
-
-// Enables action host prompts.  Action prompts send a message to the connected host for display in the host console or to perform a host action.
-// This allows for Octoprint to receive "Filament Runout" prompts and pause printing. 
-// https://marlinfw.org/docs/gcode/M118.html
-// https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html
-#define HOST_ACTION_COMMANDS
-#define HOST_PROMPT_SUPPORT
-
-// Common
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType
 #define Z_DRIVER_TYPE  DriverType
@@ -196,4 +190,3 @@
 #define Z4_DRIVER_TYPE DriverType
 #define E0_DRIVER_TYPE DriverType
 #define E1_DRIVER_TYPE DriverType
-

@@ -186,8 +186,6 @@
 #define HOST_PROMPT_SUPPORT
 
 // Common
-
-
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType
 #define Z_DRIVER_TYPE  DriverType

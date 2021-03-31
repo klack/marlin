@@ -7,8 +7,10 @@
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
+  #define Y_MIN_POS 0
   #define Z_MIN_POS 0
   #define Z_MAX_POS 350
+  #define TOOL_CHANGE_AREA 14
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define USE_ZMAX_PLUG
@@ -51,6 +53,10 @@
 	#define INVERT_E1_DIR false
 #endif
 
+#if ENABLED(TitanExtruder) || ENABLED(OpticalY)
+  #undef Y_MIN_POS
+  #undef TOOL_CHANGE_AREA
+#endif
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
@@ -61,8 +67,7 @@
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
 #else
-  #define Y_MIN_POS 3
-  #define TOOL_CHANGE_AREA 14
+
 #endif
 
 #if ENABLED(TitanExtruder)

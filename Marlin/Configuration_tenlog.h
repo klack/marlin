@@ -14,7 +14,7 @@
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
-  #define X2_MAX_POS 359.5
+  #define X2_MAX_POS 353
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 0

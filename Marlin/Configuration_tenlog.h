@@ -30,8 +30,8 @@
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
-  // #define HOST_ACTION_COMMANDS
-  #define HOST_PROMPT_SUPPORT  
+  #define HOST_ACTION_COMMANDS
+  // #define HOST_PROMPT_SUPPORT  
 #endif
 
 #if ENABLED(DriverA4988)

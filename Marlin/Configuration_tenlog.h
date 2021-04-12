@@ -41,7 +41,11 @@
   #define INVERT_Y_DIR false
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
-  #define INVERT_E1_DIR true
+  #if ENABLED(TitanExtruder)
+    #define INVERT_E1_DIR false
+  #elif
+    #define INVERT_E1_DIR true
+  #endif
 #elif ENABLED(Driver2208)
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE

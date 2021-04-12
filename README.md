@@ -93,6 +93,7 @@ This can be a little tricky.
 - Take note of the new X and Y positions.
 - The difference between (155, 155) and the new position is your offsets. Negative X is the probe is to the left of the nozzle, positive to the right. Negative Y is the probe is in front of the nozzle, positive behind.
 - Slowly lower your Z axis down to zero without letting it hit your bed. You want 0 to be where you would have the nozzle for first layer. A piece of paper sliding with a little resistance. If you are above that at 0, you need to make your Z offset more negative to get where you want. If you can't make 0 without hitting the bed, it needs to be more positive.
+- Set probe offsets i.e `M851 X8.5 Y-47.9 Z-2.34
 
 #### Generate bed mesh
 G28 - Home your axis.

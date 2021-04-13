@@ -61,7 +61,11 @@
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false
 	#define INVERT_E0_DIR true
-	#define INVERT_E1_DIR false
+  #if ENABLED(TitanExtruder)
+    #define INVERT_E1_DIR true
+  #elif
+    #define INVERT_E1_DIR false
+  #endif
 #endif
 
 #define TITAN_Y_OFFSET 5

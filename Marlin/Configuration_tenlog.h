@@ -17,7 +17,7 @@
   #define X2_MAX_POS 353
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define Y_MIN_POS 0
+  #define Y_MIN_POS 3
   #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MIN_POS 0
@@ -72,13 +72,11 @@
 #define TITAN_X_RIGHT_SPACING 3
 #define TITAN_X_LEFT_SPACING 6
 #if ENABLED(TitanExtruder)
-  #undef X_MIN_POS
   #undef X2_MIN_POS
   #undef X_MAX_POS
   #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
   #undef Y_MIN_POS
-  #define X_MIN_POS -47
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING

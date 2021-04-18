@@ -287,7 +287,7 @@ void GcodeSuite::G28() {
       const uint8_t old_tool_index = active_extruder;
     #endif
   
-    tool_change(0, false); // 18/04/2021 Murdock Bug Fix #76 ?#39
+    tool_change(0, true); // 18/04/2021 Murdock Bug Fix #76 ?#39
   #endif
 
   TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);

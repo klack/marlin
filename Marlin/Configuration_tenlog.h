@@ -14,7 +14,7 @@
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
-  #define X2_MAX_POS 353
+  #define X2_MAX_POS 354
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
@@ -23,7 +23,7 @@
   #define Z_MIN_POS 0
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
-  #define DEFAULT_DUPLICATION_X_OFFSET 155
+  #define DEFAULT_DUPLICATION_X_OFFSET 150
   #define USE_ZMAX_PLUG
   #define MIN_SOFTWARE_ENDSTOPS
   #define MIN_SOFTWARE_ENDSTOP_X
@@ -43,7 +43,7 @@
   #define INVERT_E0_DIR false
   #if ENABLED(TitanExtruder)
     #define INVERT_E1_DIR false
-  #else
+  #elif
     #define INVERT_E1_DIR true
   #endif
 #elif ENABLED(Driver2208)
@@ -63,7 +63,7 @@
 	#define INVERT_E0_DIR true
   #if ENABLED(TitanExtruder)
     #define INVERT_E1_DIR true
-  #else
+  #elif
     #define INVERT_E1_DIR false
   #endif
 #endif
@@ -86,7 +86,7 @@
 
 #define OPTICALY_Y_OFFSET 4
 #if ENABLED(OpticalY)
-  #undef Y_MIN_ENDSTOP_INVERTING
+  #undef Y_MIN_ENDSTOP_INVERTING`
   #define Y_MIN_ENDSTOP_INVERTING true
 #endif
 

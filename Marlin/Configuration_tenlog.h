@@ -36,9 +36,7 @@
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
-#endif
-
-if ENABLED(MachineTLD5)
+#elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
   #define X_BED_SIZE        510
   #define Y_BED_SIZE        510
@@ -143,6 +141,8 @@ if ENABLED(MachineTLD5)
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
+#else
+  #define verS3 ""
 #endif
 
 #if ENABLED(BL_Touch)

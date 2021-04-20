@@ -45,7 +45,7 @@
   #define INVERT_E0_DIR false
   #if ENABLED(TitanExtruder)
     #define INVERT_E1_DIR false
-  #elif
+  #else
     #define INVERT_E1_DIR true
   #endif
 #elif ENABLED(Driver2208)
@@ -67,7 +67,7 @@
 	#define INVERT_E0_DIR true
   #if ENABLED(TitanExtruder)
     #define INVERT_E1_DIR true
-  #elif
+  #else
     #define INVERT_E1_DIR false
   #endif
 #endif

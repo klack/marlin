@@ -1,11 +1,25 @@
 #define SHORT_BUILD_VERSION "2.0.7.2 | Luxuri 0.7.x"
 
+//Common
+#define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+#define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
+#define DUAL_X_CARRIAGE
+#define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
+#define USE_ZMAX_PLUG
+#define MIN_SOFTWARE_ENDSTOPS
+#define MIN_SOFTWARE_ENDSTOP_X
+#define MIN_SOFTWARE_ENDSTOP_Y
+#define MIN_SOFTWARE_ENDSTOP_Z
+#define TOOLCHANGE_NO_RETURN
+#define HOST_ACTION_COMMANDS
+// #define HOST_PROMPT_SUPPORT  
+#define LIN_ADVANCE
+#define LIN_ADVANCE_K 0
+#define Y_MIN_ENDSTOP_INVERTING false  
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false
+
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
-  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
-  #define DUAL_X_CARRIAGE
-  #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
@@ -18,22 +32,14 @@
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
-  #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MIN_POS 0
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
-  #define USE_ZMAX_PLUG
-  #define MIN_SOFTWARE_ENDSTOPS
-  #define MIN_SOFTWARE_ENDSTOP_X
-  #define MIN_SOFTWARE_ENDSTOP_Y
-  #define MIN_SOFTWARE_ENDSTOP_Z
-  #define TOOLCHANGE_NO_RETURN
-  #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT  
-  #define LIN_ADVANCE
-  #define LIN_ADVANCE_K 0
+#endif
+
+if ENABLED(MachineTLD5)
+
 #endif
 
 #if ENABLED(DriverA4988)

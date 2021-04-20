@@ -30,21 +30,16 @@
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
-<<<<<<< HEAD
+  // #define HOST_ACTION_COMMANDS
+  // #define HOST_PROMPT_SUPPORT
   #define HOMING_FEEDRATE_Z  (4*60)
 #endif
-
 #if ENABLED(BTTSKRPRO)
   #define verS3 "BTTSKRPRO"
   #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define USE_CONTROLLER_FAN
-=======
-  #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT  
->>>>>>> 48951aee303d3fc36655ea8df52c41cae2f3f2ba
 #endif
-
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
   #define DriverType A4988
@@ -84,7 +79,7 @@
   #define Z_MAX_ENDSTOP_INVERTING true
   #define X_MAX_ENDSTOP_INVERTING true
   #define TMC_DEBUG
-  #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E"
+  #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E \n M106 P1 S255"
 #endif
 #if ENABLED(Driver2209BTTSKRPRO)
   #define X_CURRENT       580 
@@ -105,30 +100,10 @@
   #define E0_CURRENT       800 
   #define E1_CURRENT       800 
 #endif
-<<<<<<< HEAD
-#if ENABLED(TitanExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
-#elif ENABLED(TitanExtruder)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
-#elif ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
-#else
-  #define Y_MIN_POS 3
-  #define TOOL_CHANGE_AREA 14
-#endif
-
-=======
 
 #define TITAN_Y_OFFSET 5
 #define TITAN_X_RIGHT_SPACING 3
 #define TITAN_X_LEFT_SPACING 6
->>>>>>> 48951aee303d3fc36655ea8df52c41cae2f3f2ba
 #if ENABLED(TitanExtruder)
   #undef X_MIN_POS
   #undef X2_MIN_POS
@@ -141,20 +116,27 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
-<<<<<<< HEAD
 #elif ENABLED(BMGExtruder)
+  #undef X2_MIN_POS
+  #undef X_MAX_POS
+  #undef X2_MAX_POS
+  #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #undef Y_MIN_POS
+  #undef X_MIN_POS 
+  #undef X1_MIN_POS
+  #define X_MIN_POS -49
+  #define X1_MIN_POS X_MIN_POS
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 428, 428 }
 #else
+  #undef Y_MIN_POS
   #define X2_MIN_POS 10
   #define X_MAX_POS 305
   #define X2_MAX_POS 353
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
-=======
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
->>>>>>> 48951aee303d3fc36655ea8df52c41cae2f3f2ba
 #endif
 
 #define OPTICALY_Y_OFFSET 4
@@ -173,7 +155,10 @@
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(OpticalY)
+#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
+  #define Y_MIN_POS 3
+  #define TOOL_CHANGE_AREA 18
+#elif ENABLED(OpticalY) 
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
 #endif
@@ -197,11 +182,18 @@
 #if ENABLED(BL_Touch)
   #define HAS_PROBE
   #define BLTOUCH
-  #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #if ENABLED(BMGExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { +20, -57, +0.5 }
+    #undef HOMING_FEEDRATE_Z
+    #define HOMING_FEEDRATE_Z  16000
+  #else
+    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
   #define MESH_INSET 15 
-  #define GRID_MAX_POINTS_X 10
+  #define GRID_MAX_POINTS_X 15
+  #define G26_MESH_VALIDATION
 #elif ENABLED(EZabl)
   #define HAS_PROBE
   #define FIX_MOUNTED_PROBE
@@ -233,12 +225,14 @@
 
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
-  #undef MIN_SOFTWARE_ENDSTOP_Z
+  #undef MIN_SOFTWARE_ENDSTOP_Z  
   #if ENABLED(BTTSKRPRO)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PA2
+    #define XY_PROBE_SPEED 16000
   #else
+    #define XY_PROBE_SPEED (133*60)
     #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #endif
   #undef MIN_SOFTWARE_ENDSTOP_Z
@@ -274,35 +268,15 @@
 
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
-<<<<<<< HEAD
-
-// Enables action host prompts.  Action prompts send a message to the connected host for display in the host console or to perform a host action.
-// This allows for Octoprint to receive "Filament Runout" prompts and pause printing. 
-// https://marlinfw.org/docs/gcode/M118.html
-// https://docs.octoprint.org/en/master/bundledplugins/action_command_prompt.html
-#define HOST_ACTION_COMMANDS
-#define HOST_PROMPT_SUPPORT
-
-// Common
-#define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
-#define X_MIN_POS -47
-#define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-#define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-#define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-#define DUAL_X_CARRIAGE
-#define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE
-#define FIL_RUNOUT_ENABLED_DEFAULT false
-#define FIL_RUNOUT_STATE     HIGH
-#define FIL_RUNOUT_PULLUP
 #if ENABLED(BTTSKRPRO)
   #define NUM_RUNOUT_SENSORS   2 
+  #define FIL_RUNOUT_STATE HIGH
+  #define FIL_RUNOUT_PULLUP
   #define FIL_RUNOUT2_STATE HIGH
   #define FIL_RUNOUT2_PULLUP
 #else 
   #define NUM_RUNOUT_SENSORS   1
 #endif
-=======
->>>>>>> 48951aee303d3fc36655ea8df52c41cae2f3f2ba
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType
 #define Z_DRIVER_TYPE  DriverType

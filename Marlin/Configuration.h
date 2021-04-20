@@ -106,8 +106,8 @@
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
 #if ENABLED(BTTSKRPRO)
-  #define SERIAL_PORT 1
-  #define SERIAL_PORT_2 -1
+  #define SERIAL_PORT -1
+  #define SERIAL_PORT_2 1
 #else
   #define SERIAL_PORT 0
   #define SERIAL_PORT_2 2
@@ -999,7 +999,7 @@
 //#define PROBING_MARGIN 10
 
 // X and Y axis travel speed (mm/min) between probes
-#define XY_PROBE_SPEED (133*60)
+//#define XY_PROBE_SPEED (133*60) in tenlog 
 
 // Feedrate (mm/min) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST HOMING_FEEDRATE_Z
@@ -1401,7 +1401,7 @@
 #endif In Tenlog Config
 */
 // Homing speeds (mm/min)
-#define HOMING_FEEDRATE_XY (50*60)
+#define HOMING_FEEDRATE_XY 16000
 //#define HOMING_FEEDRATE_Z  (4*60) In Tenlog Config
 
 // Validate that endstops are triggered on homing moves
@@ -1844,7 +1844,7 @@
 //
 // Note: Usually sold with a white PCB.
 //
-//#define REPRAP_DISCOUNT_SMART_CONTROLLER
+#define REPRAP_DISCOUNT_SMART_CONTROLLER
 
 //
 // Original RADDS LCD Display+Encoder+SDCardReader

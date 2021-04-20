@@ -17,6 +17,8 @@
 #define LIN_ADVANCE_K 0
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
+#define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
+#define Z_MIN_POS 0
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
@@ -30,16 +32,28 @@
   #define X2_MIN_POS 10
   #define X2_MAX_POS 354
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
-  #define Z_MIN_POS 0
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
 #endif
 
 if ENABLED(MachineTLD5)
-
+  #define verS1 "Tenlog TL-D5"
+  #define X_BED_SIZE        510
+  #define Y_BED_SIZE        510
+  #define TOOL_CHANGE_AREA  0
+  #define X_MIN_POS -50
+  #define X_MAX_POS 505
+  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
+  #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
+  #define X2_MIN_POS 10
+  #define X2_MAX_POS 555.6
+  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
+  #define Y_MIN_POS 3
+  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Z_MAX_POS 350
+  #define DEFAULT_DUPLICATION_X_OFFSET 250
 #endif
 
 #if ENABLED(DriverA4988)

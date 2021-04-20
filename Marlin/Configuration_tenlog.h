@@ -50,7 +50,7 @@
   #endif
 #elif ENABLED(Driver2208)
   #undef LIN_ADVANCE
-  #undef LIN_ADVANCE_K 0
+  #undef LIN_ADVANCE_K
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE
 	#define INVERT_X_DIR false
@@ -90,7 +90,7 @@
 
 #define OPTICALY_Y_OFFSET 4
 #if ENABLED(OpticalY)
-  #undef Y_MIN_ENDSTOP_INVERTING`
+  #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
 #endif
 

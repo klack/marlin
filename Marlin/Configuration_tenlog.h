@@ -32,6 +32,8 @@
   #define TOOLCHANGE_NO_RETURN
   #define HOST_ACTION_COMMANDS
   // #define HOST_PROMPT_SUPPORT  
+  #define LIN_ADVANCE
+  #define LIN_ADVANCE_K 0
 #endif
 
 #if ENABLED(DriverA4988)
@@ -47,6 +49,8 @@
     #define INVERT_E1_DIR true
   #endif
 #elif ENABLED(Driver2208)
+  #undef LIN_ADVANCE
+  #undef LIN_ADVANCE_K 0
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE
 	#define INVERT_X_DIR false

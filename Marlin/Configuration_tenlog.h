@@ -1,11 +1,27 @@
 #define SHORT_BUILD_VERSION "2.0.7.2 | Luxuri 0.7.x"
 
+//Common
+#define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+#define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
+#define DUAL_X_CARRIAGE
+#define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
+#define USE_ZMAX_PLUG
+#define MIN_SOFTWARE_ENDSTOPS
+#define MIN_SOFTWARE_ENDSTOP_X
+#define MIN_SOFTWARE_ENDSTOP_Y
+#define MIN_SOFTWARE_ENDSTOP_Z
+#define TOOLCHANGE_NO_RETURN
+#define HOST_ACTION_COMMANDS
+// #define HOST_PROMPT_SUPPORT  
+#define LIN_ADVANCE
+#define LIN_ADVANCE_K 0
+#define Y_MIN_ENDSTOP_INVERTING false  
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false
+#define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
+#define Z_MIN_POS 0
+
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
-  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
-  #define DUAL_X_CARRIAGE
-  #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
@@ -16,22 +32,26 @@
   #define X2_MIN_POS 10
   #define X2_MAX_POS 354
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
-  #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
-  #define Z_MIN_POS 0
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
-  #define USE_ZMAX_PLUG
-  #define MIN_SOFTWARE_ENDSTOPS
-  #define MIN_SOFTWARE_ENDSTOP_X
-  #define MIN_SOFTWARE_ENDSTOP_Y
-  #define MIN_SOFTWARE_ENDSTOP_Z
-  #define TOOLCHANGE_NO_RETURN
-  #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT  
+#elif ENABLED(MachineTLD5)
+  #define verS1 "Tenlog TL-D5"
+  #define X_BED_SIZE        510
+  #define Y_BED_SIZE        510
+  #define TOOL_CHANGE_AREA  0
+  #define X_MIN_POS -50
+  #define X_MAX_POS 505
+  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
+  #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
+  #define X2_MIN_POS 10
+  #define X2_MAX_POS 555.6
+  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
+  #define Y_MIN_POS 3
+  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Z_MAX_POS 350
+  #define DEFAULT_DUPLICATION_X_OFFSET 250
 #endif
 
 #if ENABLED(DriverA4988)
@@ -47,6 +67,8 @@
     #define INVERT_E1_DIR true
   #endif
 #elif ENABLED(Driver2208)
+  #undef LIN_ADVANCE
+  #undef LIN_ADVANCE_K
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE
 	#define INVERT_X_DIR false
@@ -86,7 +108,7 @@
 
 #define OPTICALY_Y_OFFSET 4
 #if ENABLED(OpticalY)
-  #undef Y_MIN_ENDSTOP_INVERTING`
+  #undef Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
 #endif
 
@@ -119,6 +141,8 @@
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
+#else
+  #define verS3 ""
 #endif
 
 #if ENABLED(BL_Touch)

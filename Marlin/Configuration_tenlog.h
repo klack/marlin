@@ -206,6 +206,16 @@
   #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 
+#if ENABLED(AC_BED)
+  #undef THERMAL_PROTECTION_BED_PERIOD
+  #undef WATCH_BED_TEMP_PERIOD
+  #undef TEMP_SENSOR_BED
+  
+  #define THERMAL_PROTECTION_BED_PERIOD 10
+  #define WATCH_BED_TEMP_PERIOD 20
+  #define TEMP_SENSOR_BED 11
+#endif
+
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
 #define X_DRIVER_TYPE  DriverType

@@ -20,10 +20,9 @@
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
 #define Z_MIN_POS 0
 #define TEMP_SENSOR_BED 1
-#define THERMAL_PROTECTION_PERIOD 40       // Seconds
-#define THERMAL_PROTECTION_HYSTERESIS 10     // Degrees Celsius
-#define WATCH_TEMP_PERIOD 20                // Seconds
-#define WATCH_TEMP_INCREASE 2               // Degrees Celsius
+#define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
+#define WATCH_BED_TEMP_PERIOD                60 // Seconds
+
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"

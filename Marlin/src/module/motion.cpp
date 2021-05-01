@@ -1010,7 +1010,7 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
             else
               new_pos.x = inactive_extruder_x_pos;
             
-            // 26/04/2021 Murdock Z Safety Unpark for duplication mode (Fix issue #36).
+            // 26/04/2021 Murdock Z Safety Unpark for duplication mode (For avoid bed clips. Fix issue #36).
             if (SAFETY_Z_UNPARK > 0)
             {
                 #define CUR_Z    current_position.z

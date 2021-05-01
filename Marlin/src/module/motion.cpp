@@ -1009,10 +1009,41 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
               new_pos.x += duplicate_extruder_x_offset;
             else
               new_pos.x = inactive_extruder_x_pos;
-            // move duplicate extruder into correct duplication position.
-            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x_pos, " ... Line to X", new_pos.x);
-            planner.set_position_mm(inactive_extruder_x_pos, current_position.y, current_position.z, current_position.e);
-            if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+            
+            // 26/04/2021 Murdock Z Safety Unpark for duplication mode (Fix issue #36).
+            if (SAFETY_Z_UNPARK > 0)
+            {
+                #define CUR_Z    current_position.z
+                #define RAISED_Z     current_position.z
+
+                if (current_position.z <= SAFETY_Z_UNPARK) {  
+                    if (current_position.y <= SAFETY_Y_UNPARK) {
+                        RAISED_Z = SAFETY_Z_UNPARK;
+                        new_pos.z = SAFETY_Z_UNPARK;
+                    }
+                }  
+
+                
+                // move duplicate extruder into correct duplication position.
+                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x_pos, " ... Line to X", new_pos.x);
+                if ( planner.buffer_line(current_position.x, current_position.y, RAISED_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) {
+                    planner.set_position_mm(inactive_extruder_x_pos, current_position.y, current_position.z, current_position.e);
+                    if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) {
+                        planner.synchronize();
+                        planner.buffer_line(new_pos.x, new_pos.y, CUR_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // move duplicate extruder into correct duplication position.
+                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x_pos, " ... Line to X", new_pos.x);
+                planner.set_position_mm(inactive_extruder_x_pos, current_position.y, current_position.z, current_position.e);
+                if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+            }
+            // End fix #36.
+            
             planner.synchronize();
             sync_plan_position();
             extruder_duplication_enabled = true;

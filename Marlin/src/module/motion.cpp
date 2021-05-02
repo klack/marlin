@@ -1014,6 +1014,7 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
             if (SAFETY_Z_UNPARK > 0)
             {
                 #define CUR_Z    current_position.z
+                #undef RAISED_Z
                 #define RAISED_Z     current_position.z
 
                 if (current_position.z <= SAFETY_Z_UNPARK) {  

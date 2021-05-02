@@ -43,14 +43,13 @@
   FORCE_INLINE void mod_offset(const float &offs) {
     SERIAL_ECHO_START();
     if (active_extruder==0) {
-      if ENABLED(BABYSTEP_ZPROBE_OFFSET) {
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
         probe.offset.z += offs;
         SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);        
-      }
-      else {
+      #else 
         home_offset[Z_AXIS] += offs;
         SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
-      }
+      #endif
     } else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         hotend_offset[active_extruder].z -= offs;

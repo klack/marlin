@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "2.0.7.2 | Luxuri 0.7.x"
+#define SHORT_BUILD_VERSION "2.0.7.2 | Luxuri 0.8.x"
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -15,6 +15,8 @@
 // #define HOST_PROMPT_SUPPORT  
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
+#define BABYSTEP_HOTEND_Z_OFFSET 
+
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
@@ -181,6 +183,7 @@
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z
+  #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
   #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #define Z_MIN_PROBE_REPEATABILITY_TEST
   #define Z_SAFE_HOMING

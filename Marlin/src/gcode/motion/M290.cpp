@@ -71,7 +71,7 @@
  *  S<linear> - Distance to step Z (alias for Z)
  *
  * With BABYSTEP_ZPROBE_OFFSET:
- *  P0 - Don't adjust the Z probe offset
+ *  P0 - Don't adjust the offset
  */
 void GcodeSuite::M290() {
   #if ENABLED(BABYSTEP_XY)

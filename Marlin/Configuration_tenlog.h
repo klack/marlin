@@ -24,7 +24,7 @@
 #define TEMP_SENSOR_BED 1
 #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
 #define WATCH_BED_TEMP_PERIOD                60 // Seconds
-#define SAFETY_Z_UNPARK 2.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
+#define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
 
 

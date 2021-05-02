@@ -26,6 +26,7 @@
 
 #include "../gcode.h"
 #include "../../feature/babystep.h"
+#include "../../module/motion.h"
 #include "../../module/probe.h"
 #include "../../module/temperature.h"
 #include "../../module/planner.h"
@@ -38,9 +39,10 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
-#if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
 
-  FORCE_INLINE void mod_probe_offset(const float &offs) {
+  FORCE_INLINE void mod_offset(const float &offs) {
+    home_offset[Z_AXIS] = 0;
     if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
       probe.offset.z += offs;
       SERIAL_ECHO_START();
@@ -76,16 +78,16 @@ void GcodeSuite::M290() {
       if (parser.seenval(XYZ_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
         const float offs = constrain(parser.value_axis_units((AxisEnum)a), -2, 2);
         babystep.add_mm((AxisEnum)a, offs);
-        #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-          if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_probe_offset(offs);
+        #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
+          if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_offset(offs);
         #endif
       }
   #else
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-        if (!parser.seen('P') || parser.value_bool()) mod_probe_offset(offs);
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
+        if (!parser.seen('P') || parser.value_bool()) mod_offset(offs);
       #endif
     }
   #endif
@@ -129,6 +131,8 @@ void GcodeSuite::M290() {
         #endif
         , babystep.axis_total[BS_TOTAL_IND(Z_AXIS)]
       );
+      constexpr float default_axis_steps_per_unit[] = DEFAULT_AXIS_STEPS_PER_UNIT;
+      SERIAL_ECHOLNPAIR("Babystep mm Z", babystep.axis_total[BS_TOTAL_IND(Z_AXIS)] / default_axis_steps_per_unit[2]);
     }
     #endif
   }

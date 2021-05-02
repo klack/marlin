@@ -49,7 +49,7 @@
       }
       else {
         home_offset[Z_AXIS] += offs;
-        SERIAL_ECHOLNPAIR("Home Offset: Z", home_offset[Z_AXIS]);
+        SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
       }
     } else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
@@ -98,9 +98,9 @@ void GcodeSuite::M290() {
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
       SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
+    #else
+      SERIAL_ECHOLNPAIR("Home Offset: Z", home_offset[Z_AXIS]);
     #endif
-
-    SERIAL_ECHOLNPAIR("Home Offset: Z", home_offset[Z_AXIS]);
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
     {

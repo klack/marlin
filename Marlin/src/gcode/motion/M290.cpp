@@ -100,19 +100,22 @@ void GcodeSuite::M290() {
       SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
     #endif
 
+    SERIAL_ECHOLNPAIR("Home Offset: Z", home_offset[Z_AXIS]);
+
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
     {
-      SERIAL_ECHOLNPAIR_P(
-        PSTR("Hotend "), int(active_extruder)
-        #if ENABLED(BABYSTEP_XY)
-          , PSTR("Offset X"), hotend_offset[active_extruder].x
-          , SP_Y_STR, hotend_offset[active_extruder].y
-          , SP_Z_STR
-        #else
-          , PSTR("Offset Z")
-        #endif
-        , hotend_offset[active_extruder].z
-      );
+      if(active_extruder!=0){
+        SERIAL_ECHOLNPAIR_P(
+          PSTR("Hotend "), int(active_extruder) 
+          #if ENABLED(BABYSTEP_XY)
+            , PSTR("Offset X"), hotend_offset[active_extruder].x
+            , SP_Y_STR, hotend_offset[active_extruder].y
+            , SP_Z_STR, hotend_offset[active_extruder].z
+          #else
+            , PSTR("Offset Z"), hotend_offset[active_extruder].z
+          #endif
+        );
+      }
     }
     #endif
 

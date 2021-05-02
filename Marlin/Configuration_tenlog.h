@@ -179,7 +179,7 @@
 #endif
 
 #if ENABLED(HAS_PROBE)
-  #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
+  // #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
 
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z

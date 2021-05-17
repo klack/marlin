@@ -286,11 +286,8 @@ void GcodeSuite::G28() {
     #if DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE)
       const uint8_t old_tool_index = active_extruder;
     #endif
-    #if ENABLED(DUAL_X_CARRIAGE) // Used in tenlog config
-      tool_change(0, false); // Used in tenlog config
-    #else // Used in tenlog config
-      tool_change(0, true);
-    #endif // Used in tenlog config
+  
+    tool_change(0, true); // 18/04/2021 Murdock Bug Fix #76 ?#39
   #endif
 
   TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);
@@ -421,7 +418,7 @@ void GcodeSuite::G28() {
       raised_parked_position = current_position;
       delayed_move_time = 0;
       active_extruder_parked = true;
-      extruder_duplication_enabled = IDEX_saved_duplication_state;
+      //extruder_duplication_enabled = IDEX_saved_duplication_state; // 18/04/2021 Murdock Bug Fix #104 & #33.
       dual_x_carriage_mode         = IDEX_saved_mode;
       stepper.set_directions();
 

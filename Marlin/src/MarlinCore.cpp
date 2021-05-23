@@ -280,9 +280,7 @@ void setup_killpin() {
 }
 
 void setup_poweroff() {
-  #ifdef POWER_LOSS_TRIGGER_BY_PIN
-    SET_INPUT_PULLDOWN(POWER_OFF_PIN);
-  #endif
+  SET_INPUT_PULLDOWN(POWER_OFF_PIN);
 }
 
 void setup_powerhold() {

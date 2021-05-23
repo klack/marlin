@@ -114,12 +114,7 @@ void protected_pin_err();
   inline bool kill_state() { return READ(KILL_PIN) == KILL_PIN_STATE; }
 #endif
 
-inline bool power_off_state() { 
-  #ifdef POWER_LOSS_TRIGGER_BY_PIN
-    return READ(POWER_OFF_PIN) == POWER_OFF_STATE; 
-  #endif
-  return false;
-}
+inline bool power_off_state() { return READ(POWER_OFF_PIN) == POWER_OFF_STATE; }
 
 #if ENABLED(G29_RETRY_AND_RECOVER)
   void event_probe_recover();

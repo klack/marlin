@@ -26,7 +26,6 @@
 
 #include "../gcode.h"
 #include "../../feature/babystep.h"
-#include "../../module/motion.h"
 #include "../../module/probe.h"
 #include "../../module/temperature.h"
 #include "../../module/planner.h"
@@ -39,24 +38,23 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
-#if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-  FORCE_INLINE void mod_offset(const float &offs) {
-    SERIAL_ECHO_START();
-    if (active_extruder==0) {
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-        probe.offset.z += offs;
-        SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);        
-      #else 
-        home_offset[Z_AXIS] += offs;
-        SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
-      #endif
-    } else {
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+
+  FORCE_INLINE void mod_probe_offset(const float &offs) {
+    if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
+      probe.offset.z += offs;
+      SERIAL_ECHO_START();
+      SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
+    }
+    else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         hotend_offset[active_extruder].z -= offs;
+        SERIAL_ECHO_START();
         SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET STR_Z ": ", hotend_offset[active_extruder].z);
       #endif
     }
   }
+
 #endif
 
 /**
@@ -70,7 +68,7 @@
  *  S<linear> - Distance to step Z (alias for Z)
  *
  * With BABYSTEP_ZPROBE_OFFSET:
- *  P0 - Don't adjust the offset
+ *  P0 - Don't adjust the Z probe offset
  */
 void GcodeSuite::M290() {
   #if ENABLED(BABYSTEP_XY)
@@ -78,16 +76,16 @@ void GcodeSuite::M290() {
       if (parser.seenval(XYZ_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
         const float offs = constrain(parser.value_axis_units((AxisEnum)a), -2, 2);
         babystep.add_mm((AxisEnum)a, offs);
-        #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-          if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_offset(offs);
+        #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+          if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_probe_offset(offs);
         #endif
       }
   #else
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-        if (!parser.seen('P') || parser.value_bool()) mod_offset(offs);
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+        if (!parser.seen('P') || parser.value_bool()) mod_probe_offset(offs);
       #endif
     }
   #endif
@@ -97,24 +95,21 @@ void GcodeSuite::M290() {
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
       SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
-    #else
-      SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
     #endif
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
     {
-      if(active_extruder!=0){
-        SERIAL_ECHOLNPAIR_P(
-          PSTR("Hotend "), int(active_extruder) 
-          #if ENABLED(BABYSTEP_XY)
-            , PSTR("Offset X"), hotend_offset[active_extruder].x
-            , SP_Y_STR, hotend_offset[active_extruder].y
-            , SP_Z_STR, hotend_offset[active_extruder].z
-          #else
-            , PSTR("Offset Z"), hotend_offset[active_extruder].z
-          #endif
-        );
-      }
+      SERIAL_ECHOLNPAIR_P(
+        PSTR("Hotend "), int(active_extruder)
+        #if ENABLED(BABYSTEP_XY)
+          , PSTR("Offset X"), hotend_offset[active_extruder].x
+          , SP_Y_STR, hotend_offset[active_extruder].y
+          , SP_Z_STR
+        #else
+          , PSTR("Offset Z")
+        #endif
+        , hotend_offset[active_extruder].z
+      );
     }
     #endif
 
@@ -134,8 +129,6 @@ void GcodeSuite::M290() {
         #endif
         , babystep.axis_total[BS_TOTAL_IND(Z_AXIS)]
       );
-      constexpr float default_axis_steps_per_unit[] = DEFAULT_AXIS_STEPS_PER_UNIT;
-      SERIAL_ECHOLNPAIR("Babystep mm Z", babystep.axis_total[BS_TOTAL_IND(Z_AXIS)] / default_axis_steps_per_unit[2]);
     }
     #endif
   }

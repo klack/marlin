@@ -53,6 +53,12 @@
     #define MIN_SOFTWARE_ENDSTOP_Z
   #endif
 =======
+=======
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
+  #define DUAL_X_CARRIAGE
+  #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
+>>>>>>> 1f77df2eaa99c492d6b76f4aa83f3699601a2c9d
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
@@ -61,11 +67,16 @@
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
-  #define X2_MAX_POS 354
+  #define X2_MAX_POS 353
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-  #define Y_MIN_POS 3
+  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
+  #define Y_MIN_POS 0
+  #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Z_MIN_POS 0
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
+<<<<<<< HEAD
   #define DEFAULT_DUPLICATION_X_OFFSET 150
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
@@ -84,8 +95,25 @@
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 250
 >>>>>>> 0100ef7f6867c243aff95e3f06e2ec5b3b584b3f
+=======
+  #define DEFAULT_DUPLICATION_X_OFFSET 155
+  #define USE_ZMAX_PLUG
+  #define MIN_SOFTWARE_ENDSTOPS
+  #define MIN_SOFTWARE_ENDSTOP_X
+  #define MIN_SOFTWARE_ENDSTOP_Y
+  #define MIN_SOFTWARE_ENDSTOP_Z
+  #define TOOLCHANGE_NO_RETURN
+  // #define HOST_ACTION_COMMANDS
+  // #define HOST_PROMPT_SUPPORT
+  #define HOMING_FEEDRATE_Z  (4*60)
 #endif
-
+#if ENABLED(BTTSKRPRO)
+  #define verS3 "BTTSKRPRO"
+  #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define USE_CONTROLLER_FAN
+>>>>>>> 1f77df2eaa99c492d6b76f4aa83f3699601a2c9d
+#endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
   #define DriverType A4988
@@ -93,14 +121,8 @@
   #define INVERT_Y_DIR false
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
-  #if ENABLED(TitanExtruder)
-    #define INVERT_E1_DIR false
-  #else
-    #define INVERT_E1_DIR true
-  #endif
+  #define INVERT_E1_DIR true
 #elif ENABLED(Driver2208)
-  #undef LIN_ADVANCE
-  #undef LIN_ADVANCE_K
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE
 	#define INVERT_X_DIR false
@@ -115,26 +137,79 @@
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false
 	#define INVERT_E0_DIR true
-  #if ENABLED(TitanExtruder)
-    #define INVERT_E1_DIR true
-  #else
-    #define INVERT_E1_DIR false
-  #endif
+	#define INVERT_E1_DIR false
+#elif ENABLED(Driver2209BTTSKRPRO)
+  #define verS2 "2209BTTSKRPRO"
+  #define DriverType TMC2209
+  #define INVERT_X_DIR true
+  #define INVERT_Y_DIR false
+  #define INVERT_Z_DIR true
+  #define INVERT_Z2_VS_Z_DIR false
+  #define INVERT_X2_VS_X_DIR false
+  #define INVERT_E0_DIR true
+  #define INVERT_E1_DIR false
+  #define X_MIN_ENDSTOP_INVERTING true
+  #define Z_MIN_ENDSTOP_INVERTING true
+  #define Z_MAX_ENDSTOP_INVERTING true
+  #define X_MAX_ENDSTOP_INVERTING true
+  #define TMC_DEBUG
+  #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E \n M106 P1 S255"
+#endif
+#if ENABLED(Driver2209BTTSKRPRO)
+  #define X_CURRENT       580 
+  #define X2_CURRENT       580 
+  #define Y_CURRENT       580 
+  #define Y2_CURRENT       580 
+  #define Z_CURRENT       580 
+  #define Z2_CURRENT       580 
+  #define E0_CURRENT       580 
+  #define E1_CURRENT       580 
+#else
+  #define X_CURRENT       800 
+  #define X2_CURRENT       800 
+  #define Y_CURRENT       800 
+  #define Y2_CURRENT       800 
+  #define Z_CURRENT       800 
+  #define Z2_CURRENT       800 
+  #define E0_CURRENT       800 
+  #define E1_CURRENT       800 
 #endif
 
 #define TITAN_Y_OFFSET 5
 #define TITAN_X_RIGHT_SPACING 3
 #define TITAN_X_LEFT_SPACING 6
 #if ENABLED(TitanExtruder)
+  #undef X_MIN_POS
   #undef X2_MIN_POS
   #undef X_MAX_POS
   #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
   #undef Y_MIN_POS
+  #define X_MIN_POS -47
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
+#elif ENABLED(BMGExtruder)
+  #undef X2_MIN_POS
+  #undef X_MAX_POS
+  #undef X2_MAX_POS
+  #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #undef Y_MIN_POS
+  #undef X_MIN_POS 
+  #undef X1_MIN_POS
+  #define X_MIN_POS -49
+  #define X1_MIN_POS X_MIN_POS
+  #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
+  #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
+  #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 428, 428 }
+#else
+  #undef Y_MIN_POS
+  #define X2_MIN_POS 10
+  #define X_MAX_POS 305
+  #define X2_MAX_POS 353
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
 #endif
 
@@ -154,7 +229,10 @@
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(OpticalY)
+#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
+  #define Y_MIN_POS 3
+  #define TOOL_CHANGE_AREA 18
+#elif ENABLED(OpticalY) 
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
 #endif
@@ -173,42 +251,65 @@
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
-#else
-  #define verS3 ""
 #endif
 
 #if ENABLED(BL_Touch)
   #define HAS_PROBE
   #define BLTOUCH
-  #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #if ENABLED(BMGExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { +20, -57, +0.5 }
+    #undef HOMING_FEEDRATE_Z
+    #define HOMING_FEEDRATE_Z  16000
+  #else
+    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
+  #define MESH_INSET 15 
+  #define GRID_MAX_POINTS_X 15
+  #define G26_MESH_VALIDATION
 #elif ENABLED(EZabl)
   #define HAS_PROBE
   #define FIX_MOUNTED_PROBE
-  #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
+  #if ENABLED(BMGExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { +29, -46, -1.2 }
+  #else
+    #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
+  #endif
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
+  #undef HOMING_FEEDRATE_Z
+  #define HOMING_FEEDRATE_Z  (8*60)
+  #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
+  #define EXTRA_PROBING    1
   #define Z_HOMING_HEIGHT  7 
   #define Z_AFTER_HOMING  2 
-  #define AUTO_BED_LEVELING_BILINEAR
-  #define ENABLE_LEVELING_FADE_HEIGHT
-  #define SEGMENT_LEVELED_MOVES
-  #define LEVELED_SEGMENT_LENGTH 5.0 // (mm) Length of all segments (except the last one)
-  #define GRID_MAX_POINTS_X 7
+  #define PROBING_HEATERS_OFF
+  #define WAIT_FOR_BED_HEATER
+  #define AUTO_BED_LEVELING_UBL
+  //#define AUTO_BED_LEVELING_BILINEAR
+  #define GRID_MAX_POINTS_X 10
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
   #define EXTRAPOLATE_BEYOND_GRID
-  #define PROBING_MARGIN 30
-  #define ABL_BILINEAR_SUBDIVISION
-  //#define BILINEAR_SUBDIVISIONS 5
+  #define PROBING_MARGIN 45
+  #define MESH_INSET 50 
+  //#define ABL_BILINEAR_SUBDIVISION
 #endif
 
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
+  #undef MIN_SOFTWARE_ENDSTOP_Z  
+  #if ENABLED(BTTSKRPRO)
+    #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+    #undef Z_MIN_PROBE_PIN
+    #define Z_MIN_PROBE_PIN                   PA2
+    #define XY_PROBE_SPEED 16000
+  #else
+    #define XY_PROBE_SPEED (133*60)
+    #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+  #endif
   #undef MIN_SOFTWARE_ENDSTOP_Z
-  #define BABYSTEP_ZPROBE_OFFSET          // Combine M851 Z and Babystepping
-  #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #define Z_MIN_PROBE_REPEATABILITY_TEST
   #define Z_SAFE_HOMING
   #if ENABLED(Z_SAFE_HOMING)
@@ -239,17 +340,17 @@
   #define M114_DETAIL         // Use 'M114` for details to check planner calculations
 #endif
 
-#if ENABLED(AC_Bed)
-  #undef THERMAL_PROTECTION_BED_PERIOD
-  #undef WATCH_BED_TEMP_PERIOD
-  #undef TEMP_SENSOR_BED
-  #define THERMAL_PROTECTION_BED_PERIOD 10
-  #define WATCH_BED_TEMP_PERIOD 20
-  #define TEMP_SENSOR_BED 11
-#endif
-
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
+#if ENABLED(BTTSKRPRO)
+  #define NUM_RUNOUT_SENSORS   2 
+  #define FIL_RUNOUT_STATE HIGH
+  #define FIL_RUNOUT_PULLUP
+  #define FIL_RUNOUT2_STATE HIGH
+  #define FIL_RUNOUT2_PULLUP
+#else 
+  #define NUM_RUNOUT_SENSORS   1
+#endif
 #define X_DRIVER_TYPE  DriverType
 #define Y_DRIVER_TYPE  DriverType
 #define Z_DRIVER_TYPE  DriverType

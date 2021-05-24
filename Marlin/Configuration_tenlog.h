@@ -52,11 +52,13 @@
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
+  #define HOMING_FEEDRATE_Z  (4*60)
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
+  #define verS3 ""
   #define X_BED_SIZE        510
   #define Y_BED_SIZE        510
-  #define TOOL_CHANGE_AREA  0
+  #define TOOL_CHANGE_AREA  0a
   #define X_MIN_POS -50
   #define X_MAX_POS 505
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
@@ -176,13 +178,6 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 428, 428 }
-#else
-  #undef Y_MIN_POS
-  #define X2_MIN_POS 10
-  #define X_MAX_POS 305
-  #define X2_MAX_POS 353
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
 #endif
 
 #define OPTICALY_Y_OFFSET 4
@@ -320,7 +315,7 @@
 #endif
 
 // Dynamic Variables
-#define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
+#define CUSTOM_MACHINE_NAME verS1 verS2 verS3 
 #if ENABLED(BTTSKRPRO)
   #define NUM_RUNOUT_SENSORS   2 
   #define FIL_RUNOUT_STATE HIGH

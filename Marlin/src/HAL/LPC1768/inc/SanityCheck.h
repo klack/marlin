@@ -113,7 +113,7 @@ static_assert(DISABLED(BAUD_RATE_GCODE), "BAUD_RATE_GCODE is not yet supported o
   #define _IS_RX1_1 IS_RX1
   #if IS_TX1(TMC_SW_SCK)
     #error "Serial port pins (1) conflict with other pins!"
-  #elif HAS_SPI_LCD
+  #elif HAS_WIRED_LCD
     #if IS_TX1(BTN_EN2) || IS_RX1(BTN_EN1)
       #error "Serial port pins (1) conflict with Encoder Buttons!"
     #elif ANY_TX(1, SCK_PIN, LCD_PINS_D4, DOGLCD_SCK, LCD_RESET_PIN, LCD_PINS_RS, SHIFT_CLK) \
@@ -191,7 +191,7 @@ static_assert(DISABLED(BAUD_RATE_GCODE), "BAUD_RATE_GCODE is not yet supported o
 //
 // Flag any i2c pin conflicts
 //
-#if ANY(HAS_I2C_DIGIPOT, DAC_STEPPER_CURRENT, EXPERIMENTAL_I2CBUS, I2C_POSITION_ENCODERS, PCA9632, I2C_EEPROM)
+#if ANY(HAS_MOTOR_CURRENT_I2C, HAS_MOTOR_CURRENT_DAC, EXPERIMENTAL_I2CBUS, I2C_POSITION_ENCODERS, PCA9632, I2C_EEPROM)
   #define USEDI2CDEV_M 1  // <Arduino>/Wire.cpp
 
   #if USEDI2CDEV_M == 0         // P0_27 [D57] (AUX-1) .......... P0_28 [D58] (AUX-1)

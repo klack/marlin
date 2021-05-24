@@ -52,8 +52,8 @@ And that's it!
 
 - Mount the BL-Touch to E1.
   Depending on your extruder type, you need to print out a BL-Touch mount! Use supports for only what's touching the build plate.
-  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/BL-Touch/docs/Titan-BL_Touch-Mount.stl)
-  - [![Website](https://img.shields.io/badge/Stock-black?style=flat-square)](https://thingiverse.com)
+  - [![Website](https://img.shields.io/badge/Titan-black?style=flat-square)](https://github.com/klack/marlin/blob/master/docs/Titan-BL_Touch-Mount.stl)
+  - [![Website](https://img.shields.io/badge/Stock-black?style=flat-square)](https://www.thingiverse.com/thing:4726829)
   - Attach the BL-Touch to the mount.
   ![Mount touch](docs/PXL_20210112_202053715.jpg)
   - Attach the mount to the extruder side.
@@ -93,6 +93,7 @@ This can be a little tricky.
 - Take note of the new X and Y positions.
 - The difference between (155, 155) and the new position is your offsets. Negative X is the probe is to the left of the nozzle, positive to the right. Negative Y is the probe is in front of the nozzle, positive behind.
 - Slowly lower your Z axis down to zero without letting it hit your bed. You want 0 to be where you would have the nozzle for first layer. A piece of paper sliding with a little resistance. If you are above that at 0, you need to make your Z offset more negative to get where you want. If you can't make 0 without hitting the bed, it needs to be more positive.
+- Set probe offsets i.e `M851 X8.5 Y-47.9 Z-2.34`
 
 #### Generate bed mesh
 G28 - Home your axis.

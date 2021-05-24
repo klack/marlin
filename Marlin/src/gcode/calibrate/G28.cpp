@@ -121,8 +121,8 @@
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
 
     sync_plan_position();
-    const float currentSafeXpos = current_position.x;
-    const float currentSafeYpos = current_position.y;
+    const float currentSafeXpos = current_position.x; // Used in tenlog config
+    const float currentSafeYpos = current_position.y; // Used in tenlog config
 
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
@@ -144,10 +144,10 @@
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
 
-      destination.set(currentSafeXpos, currentSafeYpos, current_position.z);
-      if (position_is_reachable(destination)) {
-        do_blocking_move_to_xy(destination);
-      }
+      destination.set(currentSafeXpos, currentSafeYpos, current_position.z); // Used in tenlog config
+      if (position_is_reachable(destination)) { // Used in tenlog config
+        do_blocking_move_to_xy(destination); // Used in tenlog config
+      } // Used in tenlog config
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -199,7 +199,6 @@
  *  X   Home to the X endstop
  *  Y   Home to the Y endstop
  *  Z   Home to the Z endstop
- *
  */
 void GcodeSuite::G28() {
   DEBUG_SECTION(log_G28, "G28", DEBUGGING(LEVELING));
@@ -230,8 +229,9 @@ void GcodeSuite::G28() {
     return;
   }
 
-  // Wait for planner moves to finish!
-  planner.synchronize();
+  planner.synchronize();          // Wait for planner moves to finish!
+
+  SET_SOFT_ENDSTOP_LOOSE(false);  // Reset a leftover 'loose' motion state
 
   // Disable the leveling matrix before homing
   #if HAS_LEVELING
@@ -286,7 +286,8 @@ void GcodeSuite::G28() {
     #if DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE)
       const uint8_t old_tool_index = active_extruder;
     #endif
-    tool_change(0, true);
+  
+    tool_change(0, true); // 18/04/2021 Murdock Bug Fix #76 ?#39
   #endif
 
   TERN_(HAS_DUPLICATION_MODE, extruder_duplication_enabled = false);
@@ -417,7 +418,7 @@ void GcodeSuite::G28() {
       raised_parked_position = current_position;
       delayed_move_time = 0;
       active_extruder_parked = true;
-      extruder_duplication_enabled = IDEX_saved_duplication_state;
+      //extruder_duplication_enabled = IDEX_saved_duplication_state; // 18/04/2021 Murdock Bug Fix #104 & #33.
       dual_x_carriage_mode         = IDEX_saved_mode;
       stepper.set_directions();
 

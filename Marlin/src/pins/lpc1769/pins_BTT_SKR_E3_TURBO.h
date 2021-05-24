@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -161,7 +161,7 @@
 //
 #define TEMP_0_PIN                         P0_24
 #define TEMP_1_PIN                         P0_23
-//#define TEMP_2_PIN                       P1_30   // Onboard thermistor
+//#define TEMP_2_PIN                       P1_30  // Onboard thermistor
 #define TEMP_BED_PIN                       P0_25
 
 //
@@ -172,12 +172,6 @@
 #define HEATER_BED_PIN                     P2_05  // BED
 #define FAN_PIN                            P2_01
 #define FAN1_PIN                           P2_02
-
-//
-// USB connect control
-//
-//#define USB_CONNECT_PIN                  P0_29
-//#define USB_CONNECT_INVERTING            false
 
 /**
  *                  _____
@@ -199,7 +193,7 @@
 #define EXPA1_09_PIN                       P0_16
 #define EXPA1_10_PIN                       P2_08
 
-#if HAS_SPI_LCD
+#if HAS_WIRED_LCD
 
   #if ENABLED(CR10_STOCKDISPLAY)
 
@@ -244,7 +238,7 @@
 
   #endif
 
-#endif // HAS_SPI_LCD
+#endif // HAS_WIRED_LCD
 
 //
 // SD Support

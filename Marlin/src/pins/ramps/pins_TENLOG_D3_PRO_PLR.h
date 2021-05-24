@@ -125,10 +125,10 @@
 #define SD_DETECT_PIN      49
 #define SDSS               53
 
-#define LCD_PINS_RS                    6
-#define LCD_PINS_ENABLE                7
+#define LCD_PINS_RS                    -1
+#define LCD_PINS_ENABLE                -1
 
-#define LCD_PINS_D4                   25
+#define LCD_PINS_D4                   -1
 #define LCD_PINS_D5                   -1
 #define LCD_PINS_D6                   -1
 #define LCD_PINS_D7                   -1
@@ -137,9 +137,6 @@
 //#define BEEPER_OFF LOW 
 //#define BEEPER_ON HIGH
 
-//#define BTN_ENC                       35
-//#define BTN_EN1                       31
-//#define BTN_EN2                       33
 #define BTN_ENC                       -1
 #define BTN_EN1                       -1
 #define BTN_EN2                       -1

@@ -30,35 +30,10 @@
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-<<<<<<< HEAD
-  #define X_BED_SIZE        305
-  #define Y_BED_SIZE        305
-  #define TOOL_CHANGE_AREA  10 
-  #define Z_MIN_POS 0
-  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA // 305+10=315
-  #define Z_MAX_POS 350
-  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define DEFAULT_DUPLICATION_X_OFFSET 155
-  #define Y_MIN_POS 0
-  #define X_MIN_POS -50 // Travel limits (mm) after homing, corresponding to endstop positions.
-  #define X_MAX_POS 305
-  #define X2_MIN_POS     10      // Set a minimum to ensure the  second X-carriage can't hit the parked first X-carriage
-  #define X2_MAX_POS   353       // Set this to the distance between toolheads when both heads are homed
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 800, 92.6, 92.6 }
-  #define USE_ZMAX_PLUG
-  #define MIN_SOFTWARE_ENDSTOPS
-  #if ENABLED(MIN_SOFTWARE_ENDSTOPS)
-    #define MIN_SOFTWARE_ENDSTOP_X
-    #define MIN_SOFTWARE_ENDSTOP_Y
-    #define MIN_SOFTWARE_ENDSTOP_Z
-  #endif
-=======
-=======
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
   #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
   #define DUAL_X_CARRIAGE
   #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
->>>>>>> 1f77df2eaa99c492d6b76f4aa83f3699601a2c9d
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
@@ -76,7 +51,6 @@
   #define Z_MIN_POS 0
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
-<<<<<<< HEAD
   #define DEFAULT_DUPLICATION_X_OFFSET 150
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
@@ -93,9 +67,6 @@
   #define Y_MIN_POS 3
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MAX_POS 350
-  #define DEFAULT_DUPLICATION_X_OFFSET 250
->>>>>>> 0100ef7f6867c243aff95e3f06e2ec5b3b584b3f
-=======
   #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define USE_ZMAX_PLUG
   #define MIN_SOFTWARE_ENDSTOPS
@@ -112,7 +83,6 @@
   #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define USE_CONTROLLER_FAN
->>>>>>> 1f77df2eaa99c492d6b76f4aa83f3699601a2c9d
 #endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
@@ -127,9 +97,11 @@
   #define DriverType TMC2208_STANDALONE
 	#define INVERT_X_DIR false
   #define INVERT_Y_DIR true
-	#define INVERT_Z_DIR false
+	#define INVERT_Z_DIR false  
 	#define INVERT_E0_DIR true
 	#define INVERT_E1_DIR false
+  #undef LIN_ADVANCE 
+  #undef LIN_ADVANCE_K
 #elif ENABLED(Driver2209)
   #define verS2 "2209"
   #define DriverType TMC2209_STANDALONE
@@ -252,7 +224,14 @@
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #define verS3 "PLR"
 #endif
-
+#if ENABLED(AC_Bed)
+  #undef THERMAL_PROTECTION_BED_PERIOD
+  #undef WATCH_BED_TEMP_PERIOD
+  #undef TEMP_SENSOR_BED
+  #define THERMAL_PROTECTION_BED_PERIOD 10
+  #define WATCH_BED_TEMP_PERIOD 20
+  #define TEMP_SENSOR_BED 11
+#endif
 #if ENABLED(BL_Touch)
   #define HAS_PROBE
   #define BLTOUCH

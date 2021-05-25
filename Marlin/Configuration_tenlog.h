@@ -26,7 +26,7 @@
 #define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
-
+#define verS3 ""
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
@@ -42,23 +42,32 @@
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
   #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
-  #define X2_MAX_POS 353
+  #define X2_MAX_POS 354
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
-  #define Y_MIN_POS 0
+  #define Y_MIN_POS 3
   #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MIN_POS 0
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
+  #define USE_ZMAX_PLUG
+  #define MIN_SOFTWARE_ENDSTOPS
+  #define MIN_SOFTWARE_ENDSTOP_X
+  #define MIN_SOFTWARE_ENDSTOP_Y
+  #define MIN_SOFTWARE_ENDSTOP_Z
+  #define TOOLCHANGE_NO_RETURN
+  // #define HOST_ACTION_COMMANDS
+  // #define HOST_PROMPT_SUPPORT
   #define HOMING_FEEDRATE_Z  (4*60)
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
+  #undef verS3
   #define verS3 ""
   #define X_BED_SIZE        510
   #define Y_BED_SIZE        510
-  #define TOOL_CHANGE_AREA  0a
+  #define TOOL_CHANGE_AREA  0
   #define X_MIN_POS -50
   #define X_MAX_POS 505
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
@@ -69,18 +78,11 @@
   #define Y_MIN_POS 3
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MAX_POS 350
-  #define DEFAULT_DUPLICATION_X_OFFSET 155
-  #define USE_ZMAX_PLUG
-  #define MIN_SOFTWARE_ENDSTOPS
-  #define MIN_SOFTWARE_ENDSTOP_X
-  #define MIN_SOFTWARE_ENDSTOP_Y
-  #define MIN_SOFTWARE_ENDSTOP_Z
-  #define TOOLCHANGE_NO_RETURN
-  // #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT
+  #define DEFAULT_DUPLICATION_X_OFFSET 250
   #define HOMING_FEEDRATE_Z  (4*60)
 #endif
 #if ENABLED(BTTSKRPRO)
+  #undef verS3
   #define verS3 "BTTSKRPRO"
   #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
@@ -217,6 +219,7 @@
 #endif
 
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+  #undef verS3
   #define verS3 "PLR"
 #endif
 #if ENABLED(AC_Bed)

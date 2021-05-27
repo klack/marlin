@@ -23,14 +23,25 @@
 
 #include "../../inc/MarlinConfig.h"
 
+<<<<<<< HEAD
 #if HAS_SPI_TFT || HAS_FSMC_TFT
+=======
+#if HAS_SPI_TFT || HAS_FSMC_TFT || HAS_LTDC_TFT
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 #if HAS_SPI_TFT
   #include HAL_PATH(../../HAL, tft/tft_spi.h)
 #elif HAS_FSMC_TFT
   #include HAL_PATH(../../HAL, tft/tft_fsmc.h)
+<<<<<<< HEAD
 #else
   #error "TFT IO only supports SPI or FSMC interface"
+=======
+#elif HAS_LTDC_TFT
+  #include HAL_PATH(../../HAL, tft/tft_ltdc.h)
+#else
+  #error "TFT IO only supports SPI, FSMC or LTDC interface"
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 
 #define TFT_EXCHANGE_XY (1UL << 1)
@@ -71,6 +82,30 @@
 //   #define TFT_COLOR   TFT_COLOR_RGB
 // #endif
 
+<<<<<<< HEAD
+=======
+#define TOUCH_ORIENTATION_NONE  0
+#define TOUCH_LANDSCAPE         1
+#define TOUCH_PORTRAIT          2
+
+#ifndef TOUCH_CALIBRATION_X
+  #define TOUCH_CALIBRATION_X   0
+#endif
+#ifndef TOUCH_CALIBRATION_Y
+  #define TOUCH_CALIBRATION_Y   0
+#endif
+#ifndef TOUCH_OFFSET_X
+  #define TOUCH_OFFSET_X        0
+#endif
+#ifndef TOUCH_OFFSET_Y
+  #define TOUCH_OFFSET_Y        0
+#endif
+#ifndef TOUCH_ORIENTATION
+  #define TOUCH_ORIENTATION     TOUCH_LANDSCAPE
+#endif
+
+#define LTDC_RGB        0xABAB
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #define SSD1963         0x5761
 #define ST7735          0x89F0
 #define ST7789          0x8552
@@ -101,7 +136,11 @@ public:
   static void write_esc_sequence(const uint16_t *Sequence);
 
   // Deletaged methods
+<<<<<<< HEAD
   inline static void Init() { io.Init(); };
+=======
+  inline static void Init() { io.Init(); io.Abort(); };
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   inline static bool isBusy() { return io.isBusy(); };
   inline static void Abort() { io.Abort(); };
   inline static uint32_t GetID() { return io.GetID(); };

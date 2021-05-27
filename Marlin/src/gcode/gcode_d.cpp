@@ -29,6 +29,10 @@
   #include "../libs/hex_print.h"
   #include "../HAL/shared/eeprom_if.h"
   #include "../HAL/shared/Delay.h"
+  #include "../sd/cardreader.h"
+  #include "../MarlinCore.h" // for kill
+
+  extern void dump_delay_accuracy_check();
 
   /**
    * Dn: G-code for development and testing
@@ -41,10 +45,14 @@
     switch (dcode) {
 
       case -1:
-        for (;;); // forever
+        for (;;) { /* loop forever (watchdog reset) */ }
 
       case 0:
         HAL_reboot();
+        break;
+
+      case 10:
+        kill(PSTR("D10"), PSTR("KILL TEST"), parser.seen_test('P'));
         break;
 
       case 1: {
@@ -70,7 +78,7 @@
         uint8_t *pointer = parser.hex_adr_val('A');
         uint16_t len = parser.ushortval('C', 1);
         uintptr_t addr = (uintptr_t)pointer;
-        NOMORE(addr, (size_t)(SRAM_SIZE - 1));
+        NOMORE(addr, size_t(SRAM_SIZE - 1));
         NOMORE(len, SRAM_SIZE - addr);
         if (parser.seenval('X')) {
           // Write the hex bytes after the X
@@ -100,7 +108,7 @@
             uint16_t val = parser.hex_val('X');
             #if ENABLED(EEPROM_SETTINGS)
               persistentStore.access_start();
-              while(len--) {
+              while (len--) {
                 int pos = 0;
                 persistentStore.write_data(pos, (uint8_t *)&val, sizeof(val));
               }
@@ -172,19 +180,101 @@
         }
       } break;
 
+      case 6: // D6 Check delay loop accuracy
+        dump_delay_accuracy_check();
+        break;
+
+      case 7: // D7 dump the current serial port type (hence configuration)
+        SERIAL_ECHOLNPAIR("Current serial configuration RX_BS:", RX_BUFFER_SIZE, ", TX_BS:", TX_BUFFER_SIZE);
+        SERIAL_ECHOLN(gtn(&SERIAL_IMPL));
+        break;
+
       case 100: { // D100 Disable heaters and attempt a hard hang (Watchdog Test)
-        SERIAL_ECHOLN("Disabling heaters and attempting to trigger Watchdog");
-        SERIAL_ECHOLN("(USE_WATCHDOG " TERN(USE_WATCHDOG, "ENABLED", "DISABLED") ")");
+        SERIAL_ECHOLNPGM("Disabling heaters and attempting to trigger Watchdog");
+        SERIAL_ECHOLNPGM("(USE_WATCHDOG " TERN(USE_WATCHDOG, "ENABLED", "DISABLED") ")");
         thermalManager.disable_all_heaters();
         delay(1000); // Allow time to print
         DISABLE_ISRS();
         // Use a low-level delay that does not rely on interrupts to function
         // Do not spin forever, to avoid thermal risks if heaters are enabled and
         // watchdog does not work.
-        DELAY_US(10000000);
+        for (int i = 10000; i--;) DELAY_US(1000UL);
         ENABLE_ISRS();
-        SERIAL_ECHOLN("FAILURE: Watchdog did not trigger board reset.");
-      }
+        SERIAL_ECHOLNPGM("FAILURE: Watchdog did not trigger board reset.");
+      } break;
+
+      #if ENABLED(SDSUPPORT)
+
+        case 101: { // D101 Test SD Write
+          card.openFileWrite("test.gco");
+          if (!card.isFileOpen()) {
+            SERIAL_ECHOLNPAIR("Failed to open test.gco to write.");
+            return;
+          }
+          __attribute__((aligned(sizeof(size_t)))) uint8_t buf[512];
+
+          uint16_t c;
+          for (c = 0; c < COUNT(buf); c++)
+            buf[c] = 'A' + (c % ('Z' - 'A'));
+
+          c = 1024 * 4;
+          while (c--) {
+            TERN_(USE_WATCHDOG, watchdog_refresh());
+            card.write(buf, COUNT(buf));
+          }
+          SERIAL_ECHOLNPGM(" done");
+          card.closefile();
+        } break;
+
+        case 102: { // D102 Test SD Read
+          char testfile[] = "test.gco";
+          card.openFileRead(testfile);
+          if (!card.isFileOpen()) {
+            SERIAL_ECHOLNPAIR("Failed to open test.gco to read.");
+            return;
+          }
+          __attribute__((aligned(sizeof(size_t)))) uint8_t buf[512];
+          uint16_t c = 1024 * 4;
+          while (c--) {
+            TERN_(USE_WATCHDOG, watchdog_refresh());
+            card.read(buf, COUNT(buf));
+            bool error = false;
+            for (uint16_t i = 0; i < COUNT(buf); i++) {
+              if (buf[i] != ('A' + (i % ('Z' - 'A')))) {
+                error = true;
+                break;
+              }
+            }
+            if (error) {
+              SERIAL_ECHOLNPGM(" Read error!");
+              break;
+            }
+          }
+          SERIAL_ECHOLNPGM(" done");
+          card.closefile();
+        } break;
+
+      #endif // SDSUPPORT
+
+      #if ENABLED(POSTMORTEM_DEBUGGING)
+
+        case 451: { // Trigger all kind of faults to test exception catcher
+          SERIAL_ECHOLNPGM("Disabling heaters");
+          thermalManager.disable_all_heaters();
+          delay(1000); // Allow time to print
+          volatile uint8_t type[5] = { parser.byteval('T', 1) };
+
+          // The code below is obviously wrong and it's full of quirks to fool the compiler from optimizing away the code
+          switch (type[0]) {
+            case 1: default: *(int*)0 = 451; break; // Write at bad address
+            case 2: { volatile int a = 0; volatile int b = 452 / a; *(int*)&a = b; } break; // Divide by zero (some CPUs accept this, like ARM)
+            case 3: { *(uint32_t*)&type[1] = 453; volatile int a = *(int*)&type[1]; type[0] = a / 255; } break; // Unaligned access (some CPUs accept this)
+            case 4: { volatile void (*func)() = (volatile void (*)()) 0xE0000000; func(); } break; // Invalid instruction
+          }
+          break;
+        }
+
+      #endif
     }
   }
 

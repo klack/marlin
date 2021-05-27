@@ -25,23 +25,33 @@
 
 #if ENABLED(USE_WATCHDOG)
 
-  #include "../../inc/MarlinConfig.h"
+#define WDT_TIMEOUT_US TERN(WATCHDOG_DURATION_8S, 8000000, 4000000) // 4 or 8 second timeout
 
-  #include "watchdog.h"
-  #include <IWatchdog.h>
+#include "../../inc/MarlinConfig.h"
 
+<<<<<<< HEAD
   void watchdog_init() {
     #if DISABLED(DISABLE_WATCHDOG_INIT)
       IWatchdog.begin(4000000); // 4 sec timeout
     #endif
   }
+=======
+#include "watchdog.h"
+#include <IWatchdog.h>
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
-  void HAL_watchdog_refresh() {
-    IWatchdog.reload();
-    #if DISABLED(PINS_DEBUGGING) && PIN_EXISTS(LED)
-      TOGGLE(LED_PIN);  // heartbeat indicator
-    #endif
-  }
+void watchdog_init() {
+  #if DISABLED(DISABLE_WATCHDOG_INIT)
+    IWatchdog.begin(WDT_TIMEOUT_US);
+  #endif
+}
+
+void HAL_watchdog_refresh() {
+  IWatchdog.reload();
+  #if DISABLED(PINS_DEBUGGING) && PIN_EXISTS(LED)
+    TOGGLE(LED_PIN);  // heartbeat indicator
+  #endif
+}
 
 #endif // USE_WATCHDOG
 #endif // ARDUINO_ARCH_STM32 && !STM32GENERIC

@@ -25,9 +25,10 @@
  * Tenlog D3 Hero pins. 
  */
 
-#ifndef __AVR_ATmega2560__
-  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
-#elif HOTENDS > 2 || E_STEPPERS > 2
+#define REQUIRE_MEGA2560
+#include "env_validate.h"
+
+#if HOTENDS > 2 || E_STEPPERS > 2
   #error "Tenlog supports up to 2 hotends / E-steppers. Comment out this line to continue."
 #endif
 
@@ -123,3 +124,26 @@
     #define BTN_EN2                       33
 #endif
 
+<<<<<<< HEAD
+=======
+//#if IS_RRD_SC
+
+#define LCD_PINS_RS                           -1
+#define LCD_PINS_ENABLE                       -1
+#define LCD_PINS_D4                           -1
+#define LCD_PINS_D5                           -1
+#define LCD_PINS_D6                           -1
+#define LCD_PINS_D7                           -1
+//#define BTN_EN1                             31
+//#define BTN_EN2                             33
+//#define BTN_ENC                             35
+#define SD_DETECT_PIN                         49
+//#ifndef KILL_PIN
+  //#define KILL_PIN                          41
+//#endif
+//#ifndef BEEPER_PIN
+#define BEEPER_PIN                            -1
+//#endif
+
+//#endif // IS_RRD_SC
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680

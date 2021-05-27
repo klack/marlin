@@ -30,7 +30,7 @@
  * MORPHEUS Board pin assignments
  */
 
-#if NOT_TARGET(__STM32F1__)
+#if NOT_TARGET(__STM32F1__, STM32F1xx)
   #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
 #endif
 
@@ -90,3 +90,7 @@
 #define LED_PIN                             PC13
 #define SDSS                                PA3
 #define TFTGLCD_CS                          PA4
+<<<<<<< HEAD
+=======
+#define SD_DETECT_PIN                       PC14
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680

@@ -25,20 +25,21 @@
  * MKS Robin nano (STM32F130VET6) board pin assignments
  */
 
-#if NOT_TARGET(__STM32F1__)
-  #error "Oops! Select an STM32F1 board in 'Tools > Board.'"
-#elif HOTENDS > 1 || E_STEPPERS > 1
-  #error "MKS Robin e3p supports up to 1 hotends / E-steppers. Comment out this line to continue."
+#include "env_validate.h"
+
+#if HOTENDS > 1 || E_STEPPERS > 1
+  #error "MKS Robin E3P only supports one hotend / E-stepper. Comment out this line to continue."
 #elif HAS_FSMC_TFT
-  #error "MKS Robin e3p doesn't support FSMC-based TFT displays."
+  #error "MKS Robin E3P doesn't support FSMC-based TFT displays."
 #endif
 
-#define BOARD_INFO_NAME "MKS Robin e3p"
+#define BOARD_INFO_NAME "MKS Robin E3P"
+
+#define BOARD_NO_NATIVE_USB
 
 //
 // Release PB4 (Y_ENABLE_PIN) from JTAG NRST role
 //
-
 #define DISABLE_DEBUG
 
 //
@@ -55,8 +56,12 @@
 //
 // Note: MKS Robin board is using SPI2 interface.
 //
-//#define SPI_MODULE                           2
-#define ENABLE_SPI2
+#define SPI_DEVICE                             2
+
+//
+// Servos
+//
+#define SERVO0_PIN                          PA8   // Enable BLTOUCH
 
 //
 // Limit Switches
@@ -154,7 +159,7 @@
 
   // Reduce baud rate to improve software serial reliability
   #define TMC_BAUD_RATE                    19200
-#endif // TMC2208 || TMC2209
+#endif // HAS_TMC_UART
 
 //
 // Temperature Sensors
@@ -198,8 +203,6 @@
   //#define PS_ON_PIN                       PB2   // PW_OFF
   #define FIL_RUNOUT_PIN                    PA4
 #endif
-
-#define SERVO0_PIN                          PA8   // Enable BLTOUCH
 
 //#define LED_PIN                           PB2
 
@@ -269,6 +272,7 @@
 
 #endif
 
+<<<<<<< HEAD
 #if ENABLED(SPI_GRAPHICAL_TFT)
   // Emulated DOGM SPI
   #ifndef GRAPHICAL_TFT_UPSCALE
@@ -278,16 +282,19 @@
     #define TFT_PIXEL_OFFSET_Y                32
   #endif
 
+=======
+#if HAS_SPI_GRAPHICAL_TFT
+  // Emulated DOGM SPI
+  #define LCD_PINS_ENABLE                   PD13
+  #define LCD_PINS_RS                       PC6
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #define BTN_ENC                           PE13
   #define BTN_EN1                           PE8
   #define BTN_EN2                           PE11
-
-  #define LCD_PINS_ENABLE                   PD13
-  #define LCD_PINS_RS                       PC6
-
 #elif ENABLED(TFT_480x320_SPI)
   #define TFT_DRIVER                      ST7796
   #define TFT_BUFFER_SIZE                  14400
+<<<<<<< HEAD
 #endif
 
 // XPT2046 Touch Screen calibration
@@ -317,6 +324,8 @@
   #ifndef XPT2046_Y_OFFSET
     #define XPT2046_Y_OFFSET                 -18
   #endif
+=======
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 
 #if HAS_WIRED_LCD && !HAS_SPI_TFT
@@ -342,10 +351,15 @@
   #else                                           // !MKS_MINI_12864
 
     #define LCD_PINS_D4                     PE14
-    #if ENABLED(ULTIPANEL)
+    #if IS_ULTIPANEL
       #define LCD_PINS_D5                   PE15
       #define LCD_PINS_D6                   PD11
       #define LCD_PINS_D7                   PD10
+
+      #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
+        #define BTN_ENC_EN           LCD_PINS_D7  // Detect the presence of the encoder
+      #endif
+
     #endif
 
     #ifndef BOARD_ST7920_DELAY_1

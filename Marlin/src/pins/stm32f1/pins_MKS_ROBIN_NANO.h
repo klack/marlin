@@ -23,6 +23,7 @@
 
 /**
  * MKS Robin nano (STM32F130VET6) board pin assignments
+ * https://github.com/makerbase-mks/MKS-Robin-Nano-V1.X/tree/master/hardware
  */
 
 #if NOT_TARGET(STM32F1, STM32F1xx)
@@ -32,6 +33,11 @@
 #endif
 
 #define BOARD_INFO_NAME "MKS Robin Nano"
+
+#define BOARD_NO_NATIVE_USB
+
+// Avoid conflict with TIMER_SERVO when using the STM32 HAL
+#define TEMP_TIMER 5
 
 //
 // Release PB4 (Y_ENABLE_PIN) from JTAG NRST role
@@ -48,7 +54,12 @@
   #define MARLIN_EEPROM_SIZE    EEPROM_PAGE_SIZE  // 2KB
 #endif
 
-#define ENABLE_SPI2
+#define SPI_DEVICE                             2
+
+//
+// Servos
+//
+#define SERVO0_PIN                          PA8   // Enable BLTOUCH
 
 //
 // Limit Switches
@@ -142,8 +153,6 @@
   #define FIL_RUNOUT2_PIN                   PE6
 #endif
 
-#define SERVO0_PIN                          PA8   // Enable BLTOUCH support
-
 //#define LED_PIN                           PB2
 
 //
@@ -165,17 +174,21 @@
 
 /**
  * Note: MKS Robin TFT screens use various TFT controllers.
- * If the screen stays white, disable 'LCD_RESET_PIN'
+ * If the screen stays white, disable 'TFT_RESET_PIN'
  * to let the bootloader init the screen.
  */
-
 // Shared FSMC Configs
 #if HAS_FSMC_TFT
+<<<<<<< HEAD
   #define DOGLCD_MOSI                       -1    // prevent redefine Conditionals_post.h
   #define DOGLCD_SCK                        -1
 
   #define FSMC_CS_PIN                       PD7   // NE4
   #define FSMC_RS_PIN                       PD11  // A0
+=======
+  #define DOGLCD_MOSI                       -1    // Prevent auto-define by Conditionals_post.h
+  #define DOGLCD_SCK                        -1
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   #define TOUCH_CS_PIN                      PA7   // SPI2_NSS
   #define TOUCH_SCK_PIN                     PB13  // SPI2_SCK
@@ -191,10 +204,14 @@
   #define FSMC_DMA_DEV                      DMA2
   #define FSMC_DMA_CHANNEL               DMA_CH5
 
+  #define TFT_CS_PIN                 FSMC_CS_PIN
+  #define TFT_RS_PIN                 FSMC_RS_PIN
+
   #define TOUCH_BUTTONS_HW_SPI
   #define TOUCH_BUTTONS_HW_SPI_DEVICE          2
 
   #define TFT_BUFFER_SIZE                  14400
+<<<<<<< HEAD
 #endif
 
 // XPT2046 Touch Screen calibration
@@ -237,6 +254,8 @@
   #ifndef XPT2046_Y_OFFSET
     #define XPT2046_Y_OFFSET                 -22
   #endif
+=======
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 
 #define HAS_SPI_FLASH                          1

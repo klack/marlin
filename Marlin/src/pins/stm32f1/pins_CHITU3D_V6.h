@@ -21,9 +21,7 @@
  */
 #pragma once
 
-#if NOT_TARGET(__STM32F1__, __STM32F4__)
-  #error "Oops! Select an STM32F1/4 board in 'Tools > Board.'"
-#endif
+#include "env_validate.h"
 
 /**
  * 2017 Victor Perez Marlin for stm32f1 test
@@ -31,6 +29,8 @@
 
 #define BOARD_INFO_NAME      "Chitu3D"
 #define DEFAULT_MACHINE_NAME "STM32F103ZET6"
+
+#define BOARD_NO_NATIVE_USB
 
 #define DISABLE_JTAG
 
@@ -103,7 +103,7 @@
 //
 #define CONTROLLER_FAN_PIN                  PD6   // BOARD FAN
 #define FAN_PIN                             PG13  // FAN
-#define FAN_PIN_2                           PG14
+#define FAN2_PIN                            PG14
 
 //
 // Misc
@@ -167,6 +167,7 @@
   // Color UI
   #define TFT_DRIVER                     ILI9488
   #define TFT_BUFFER_SIZE                  14400
+<<<<<<< HEAD
 #elif ENABLED(TFT_CLASSIC_UI)
   // Emulated DOGM
   #define GRAPHICAL_TFT_UPSCALE                3
@@ -189,25 +190,33 @@
 #elif ENABLED(TFT_CLASSIC_UI)
   #ifndef XPT2046_X_CALIBRATION
     #define XPT2046_X_CALIBRATION         -12316
+=======
+#endif
+
+// XPT2046 Touch Screen calibration
+#if ANY(TFT_LVGL_UI, TFT_COLOR_UI, TFT_CLASSIC_UI)
+  #ifndef TOUCH_CALIBRATION_X
+    #define TOUCH_CALIBRATION_X           -17181
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #endif
-  #ifndef XPT2046_Y_CALIBRATION
-    #define XPT2046_Y_CALIBRATION           8981
+  #ifndef TOUCH_CALIBRATION_Y
+    #define TOUCH_CALIBRATION_Y            11434
   #endif
-  #ifndef XPT2046_X_OFFSET
-    #define XPT2046_X_OFFSET                 340
+  #ifndef TOUCH_OFFSET_X
+    #define TOUCH_OFFSET_X                   501
   #endif
-  #ifndef XPT2046_Y_OFFSET
-    #define XPT2046_Y_OFFSET                 -20
+  #ifndef TOUCH_OFFSET_Y
+    #define TOUCH_OFFSET_Y                    -9
   #endif
 #endif
 
 // SPI1(PA7)=LCD & SPI3(PB5)=STUFF, are not available
 // so SPI2 is required.
-#define ENABLE_SPI2
-#define SCK_PIN                             PB13
-#define MISO_PIN                            PB14
-#define MOSI_PIN                            PB15
-#define SS_PIN                              PB12
+#define SPI_DEVICE                             2
+#define SD_SCK_PIN                          PB13
+#define SD_MISO_PIN                         PB14
+#define SD_MOSI_PIN                         PB15
+#define SD_SS_PIN                           PB12
 
 //
 // SD Card

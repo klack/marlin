@@ -28,7 +28,6 @@
 #include "../../feature/babystep.h"
 #include "../../module/motion.h"
 #include "../../module/probe.h"
-#include "../../module/temperature.h"
 #include "../../module/planner.h"
 
 #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -39,6 +38,7 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
+<<<<<<< HEAD
 #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
   FORCE_INLINE void mod_offset(const float &offs) {
     SERIAL_ECHO_START();
@@ -54,6 +54,19 @@
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         hotend_offset[active_extruder].z -= offs;
         SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET STR_Z ": ", hotend_offset[active_extruder].z);
+=======
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+
+  FORCE_INLINE void mod_probe_offset(const_float_t offs) {
+    if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
+      probe.offset.z += offs;
+      SERIAL_ECHO_MSG(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
+    }
+    else {
+      #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
+        hotend_offset[active_extruder].z -= offs;
+        SERIAL_ECHO_MSG(STR_PROBE_OFFSET STR_Z ": ", hotend_offset[active_extruder].z);
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
       #endif
     }
   }
@@ -74,25 +87,35 @@
  */
 void GcodeSuite::M290() {
   #if ENABLED(BABYSTEP_XY)
-    LOOP_XYZ(a)
-      if (parser.seenval(XYZ_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
+    LOOP_LINEAR_AXES(a)
+      if (parser.seenval(AXIS_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
         const float offs = constrain(parser.value_axis_units((AxisEnum)a), -2, 2);
         babystep.add_mm((AxisEnum)a, offs);
+<<<<<<< HEAD
         #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
           if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_offset(offs);
+=======
+        #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+          if (a == Z_AXIS && parser.boolval('P', true)) mod_probe_offset(offs);
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         #endif
       }
   #else
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
+<<<<<<< HEAD
       #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         if (!parser.seen('P') || parser.value_bool()) mod_offset(offs);
+=======
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+        if (parser.boolval('P', true)) mod_probe_offset(offs);
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
       #endif
     }
   #endif
 
-  if (!parser.seen("XYZ") || parser.seen('R')) {
+  if (!parser.seen(LINEAR_AXIS_GANG("X", "Y", "Z")) || parser.seen('R')) {
     SERIAL_ECHO_START();
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
@@ -103,6 +126,7 @@ void GcodeSuite::M290() {
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
     {
+<<<<<<< HEAD
       if(active_extruder!=0){
         SERIAL_ECHOLNPAIR_P(
           PSTR("Hotend "), int(active_extruder) 
@@ -115,6 +139,19 @@ void GcodeSuite::M290() {
           #endif
         );
       }
+=======
+      SERIAL_ECHOLNPAIR_P(
+        PSTR("Hotend "), active_extruder
+        #if ENABLED(BABYSTEP_XY)
+          , PSTR("Offset X"), hotend_offset[active_extruder].x
+          , SP_Y_STR, hotend_offset[active_extruder].y
+          , SP_Z_STR
+        #else
+          , PSTR("Offset Z")
+        #endif
+        , hotend_offset[active_extruder].z
+      );
+>>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     }
     #endif
 

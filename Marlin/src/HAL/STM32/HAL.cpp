@@ -63,15 +63,12 @@ TERN_(POSTMORTEM_DEBUGGING, extern void install_min_serial());
 void HAL_init() {
   FastIO_init();
 
-<<<<<<< HEAD
-=======
   // Ensure F_CPU is a constant expression.
   // If the compiler breaks here, it means that delay code that should compute at compile time will not work.
   // So better safe than sorry here.
   constexpr int cpuFreq = F_CPU;
   UNUSED(cpuFreq);
 
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #if ENABLED(SDSUPPORT) && DISABLED(SDIO_SUPPORT) && (defined(SDSS) && SDSS != -1)
     OUT_WRITE(SDSS, HIGH); // Try to set SDSS inactive before any other SPI users start up
   #endif
@@ -158,10 +155,6 @@ extern "C" {
 void HAL_adc_start_conversion(const uint8_t adc_pin) { HAL_adc_result = analogRead(adc_pin); }
 uint16_t HAL_adc_get_result() { return HAL_adc_result; }
 
-<<<<<<< HEAD
-// Reset the system (to initiate a firmware flash)
-void flashFirmware(const int16_t) { NVIC_SystemReset(); }
-=======
 // Reset the system to initiate a firmware flash
 void flashFirmware(const int16_t) { HAL_reboot(); }
 
@@ -173,11 +166,5 @@ void HAL_SYSTICK_Callback() {
   systick_uptime_millis++;
   if (systick_user_callback) systick_user_callback();
 }
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
-
-// Maple Compatibility
-systickCallback_t systick_user_callback;
-void systick_attach_callback(systickCallback_t cb) { systick_user_callback = cb; }
-void HAL_SYSTICK_Callback() { if (systick_user_callback) systick_user_callback(); }
 
 #endif // ARDUINO_ARCH_STM32 && !STM32GENERIC

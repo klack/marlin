@@ -107,11 +107,7 @@ uint16_t HAL_adc_get_result();
 inline void HAL_clear_reset_source(void) {}
 inline uint8_t HAL_get_reset_source(void) { return RST_POWER_ON; }
 
-<<<<<<< HEAD
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-=======
 void HAL_reboot(); // Reset the application state and GPIO
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 /* ---------------- Delay in cycles */
 FORCE_INLINE static void DELAY_CYCLES(uint64_t x) {

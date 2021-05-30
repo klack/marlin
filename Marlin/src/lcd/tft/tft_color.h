@@ -74,17 +74,10 @@
   #define COLOR_BACKGROUND    0x20AC  // #1E156E
 #endif
 #ifndef COLOR_SELECTION_BG
-<<<<<<< HEAD
-  #define COLOR_SELECTION_BG    0x9930  // #992380
-#endif
-#ifndef COLOR_WEBSITE_URL
-  #define COLOR_WEBSITE_URL     0x03B7
-=======
   #define COLOR_SELECTION_BG  0x9930  // #992380
 #endif
 #ifndef COLOR_WEBSITE_URL
   #define COLOR_WEBSITE_URL   0x03B7  // #0075BD
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 
 #ifndef COLOR_INACTIVE
@@ -101,12 +94,9 @@
 #endif
 #ifndef COLOR_CHAMBER
   #define COLOR_CHAMBER           COLOR_DARK_ORANGE
-<<<<<<< HEAD
-=======
 #endif
 #ifndef COLOR_COOLER
   #define COLOR_COOLER            COLOR_DARK_ORANGE
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 #ifndef COLOR_FAN
   #define COLOR_FAN               COLOR_AQUA

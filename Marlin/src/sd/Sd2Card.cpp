@@ -235,11 +235,7 @@ bool DiskIODriver_SPI_SD::eraseSingleBlockEnable() {
  * \return true for success, false for failure.
  * The reason for failure can be determined by calling errorCode() and errorData().
  */
-<<<<<<< HEAD
-bool Sd2Card::init(const uint8_t sckRateID, const pin_t chipSelectPin) {
-=======
 bool DiskIODriver_SPI_SD::init(const uint8_t sckRateID, const pin_t chipSelectPin) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #if IS_TEENSY_35_36 || IS_TEENSY_40_41
     chipSelectPin_ = BUILTIN_SDCARD;
     const uint8_t ret = SDHC_CardInit();
@@ -349,11 +345,7 @@ bool DiskIODriver_SPI_SD::init(const uint8_t sckRateID, const pin_t chipSelectPi
  * \param[out] dst Pointer to the location that will receive the data.
  * \return true for success, false for failure.
  */
-<<<<<<< HEAD
-bool Sd2Card::readBlock(uint32_t blockNumber, uint8_t* dst) {
-=======
 bool DiskIODriver_SPI_SD::readBlock(uint32_t blockNumber, uint8_t *dst) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #if IS_TEENSY_35_36 || IS_TEENSY_40_41
     return 0 == SDHC_CardReadBlock(dst, blockNumber);
   #endif

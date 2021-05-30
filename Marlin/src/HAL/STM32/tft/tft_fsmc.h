@@ -38,15 +38,9 @@
   #define LCD_READ_ID4 0xD3   // Read display identification information (0xD3 on ILI9341)
 #endif
 
-<<<<<<< HEAD
-#define DATASIZE_8BIT    SPI_DATASIZE_8BIT
-#define DATASIZE_16BIT   SPI_DATASIZE_16BIT
-#define TFT_IO_DRIVER TFT_FSMC
-=======
 #define DATASIZE_8BIT  SPI_DATASIZE_8BIT
 #define DATASIZE_16BIT SPI_DATASIZE_16BIT
 #define TFT_IO_DRIVER  TFT_FSMC
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 #define TFT_DATASIZE TERN(TFT_INTERFACE_FSMC_8BIT, DATASIZE_8BIT, DATASIZE_16BIT)
 typedef TERN(TFT_INTERFACE_FSMC_8BIT, uint8_t, uint16_t) tft_data_t;

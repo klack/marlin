@@ -13,13 +13,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-<<<<<<< HEAD
-#if defined(__STM32F1__) && defined(USE_USB_COMPOSITE)
-=======
 #include "../../inc/MarlinConfigPre.h"
 
 #if defined(__STM32F1__) && HAS_SD_HOST_DRIVE
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 #include "msc_sd.h"
 #include "SPI.h"
@@ -96,8 +92,4 @@ void MSC_SD_init() {
   #endif
 }
 
-<<<<<<< HEAD
-#endif // __STM32F1__ && USE_USB_COMPOSITE
-=======
 #endif // __STM32F1__ && HAS_SD_HOST_DRIVE
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680

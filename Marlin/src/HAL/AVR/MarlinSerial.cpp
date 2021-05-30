@@ -38,7 +38,7 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if !IS_AT90USB && (defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H))
+#if !defined(USBCON) && (defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H))
 
 #include "MarlinSerial.h"
 #include "../../MarlinCore.h"
@@ -642,16 +642,11 @@ MSerialT1 customizedSerial1(MSerialT1::HasEmergencyParser);
 
 #endif // LCD_SERIAL_PORT
 
-#endif // !IS_AT90USB && (UBRRH || UBRR0H || UBRR1H || UBRR2H || UBRR3H)
+#endif // !USBCON && (UBRRH || UBRR0H || UBRR1H || UBRR2H || UBRR3H)
 
 // For AT90USB targets use the UART for BT interfacing
-<<<<<<< HEAD
-#if BOTH(IS_AT90USB, BLUETOOTH)
-  HardwareSerial bluetoothSerial;
-=======
 #if defined(USBCON) && ENABLED(BLUETOOTH)
   MSerialBT bluetoothSerial(false);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #endif
 
 #endif // __AVR__

@@ -20,16 +20,7 @@
  *
  */
 #pragma once
-/**
- * Tenlog D3 Hero pins. 
- */
 
-#define REQUIRE_MEGA2560
-#include "env_validate.h"
-
-#if HOTENDS > 2 || E_STEPPERS > 2
-  #error "Tenlog supports up to 2 hotends / E-steppers. Comment out this line to continue."
-#endif
 /**
  * Tenlog D3 Pro PLR pins. 
  */
@@ -112,7 +103,7 @@
 //
 #ifdef PSU_CONTROL
    #define PS_ON_PIN               40
-   #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
+   #define PSU_ACTIVE_STATE LOW      // Set 'LOW' for ATX, 'HIGH' for X-Box
 #endif
 
 #ifdef POWER_LOSS_TRIGGER_BY_PIN

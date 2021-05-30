@@ -675,9 +675,6 @@ namespace Language_it {
   PROGMEM Language_Str MSG_REHEAT                          = _UxGT("Riscalda");
   PROGMEM Language_Str MSG_REHEATING                       = _UxGT("Riscaldando...");
 
-<<<<<<< HEAD
-  PROGMEM Language_Str MSG_PROBE_WIZARD                    = _UxGT("Proc.guid.sonda Z");
-=======
   PROGMEM Language_Str MSG_PROBE_WIZARD                    = _UxGT("Wizard Z offset");
   PROGMEM Language_Str MSG_PROBE_WIZARD_PROBING            = _UxGT("Altezza di riferimento sonda");
   PROGMEM Language_Str MSG_PROBE_WIZARD_MOVING             = _UxGT("Spostati in posizione di rilevazione");
@@ -690,5 +687,4 @@ namespace Language_it {
   PROGMEM Language_Str MSG_BOTTOM_RIGHT                    = _UxGT("Basso destra");
   PROGMEM Language_Str MSG_CALIBRATION_COMPLETED           = _UxGT("Calibrazione completata");
   PROGMEM Language_Str MSG_CALIBRATION_FAILED              = _UxGT("Calibrazione fallita");
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 }

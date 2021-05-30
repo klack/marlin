@@ -127,7 +127,6 @@
     sync_plan_position();
     const float currentSafeXpos = current_position.x; // Used in tenlog config
     const float currentSafeYpos = current_position.y; // Used in tenlog config
-
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
      * (Z is already at the right height)
@@ -155,11 +154,10 @@
 
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
-
       destination.set(currentSafeXpos, currentSafeYpos, current_position.z); // Used in tenlog config
       if (position_is_reachable(destination)) { // Used in tenlog config
-        do_blocking_move_to_xy(destination); // Used in tenlog config
-      } // Used in tenlog config
+	      do_blocking_move_to_xy(destination); // Used in tenlog config
+      }
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -241,14 +239,8 @@ void GcodeSuite::G28() {
     return;
   }
 
-<<<<<<< HEAD
-  planner.synchronize();          // Wait for planner moves to finish!
-
-  SET_SOFT_ENDSTOP_LOOSE(false);  // Reset a leftover 'loose' motion state
-=======
   TERN_(DWIN_CREALITY_LCD, DWIN_StartHoming());
   TERN_(EXTENSIBLE_UI, ExtUI::onHomingStart());
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   planner.synchronize();          // Wait for planner moves to finish!
 
@@ -305,16 +297,11 @@ void GcodeSuite::G28() {
     #if DISABLED(DELTA) || ENABLED(DELTA_HOME_TO_SAFE_ZONE)
       const uint8_t old_tool_index = active_extruder;
     #endif
-<<<<<<< HEAD
-  
-    tool_change(0, true); // 18/04/2021 Murdock Bug Fix #76 ?#39
-=======
     // PARKING_EXTRUDER homing requires different handling of movement / solenoid activation, depending on the side of homing
     #if ENABLED(PARKING_EXTRUDER)
       const bool pe_final_change_must_unpark = parking_extruder_unpark_after_homing(old_tool_index, X_HOME_DIR + 1 == old_tool_index * 2);
     #endif
     tool_change(0, true);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #endif
 
   TERN_(HAS_DUPLICATION_MODE, set_duplication_enabled(false));
@@ -417,15 +404,11 @@ void GcodeSuite::G28() {
     // Home Z last if homing towards the bed
     #if DISABLED(HOME_Z_FIRST)
       if (doZ) {
-<<<<<<< HEAD
-        TERN_(BLTOUCH, bltouch.init());
-=======
         #if EITHER(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN)
           stepper.set_all_z_lock(false);
           stepper.set_separate_multi_axis(false);
         #endif
 
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         TERN(Z_SAFE_HOMING, home_z_safely(), homeaxis(Z_AXIS));
         probe.move_z_after_homing();
       }
@@ -459,19 +442,10 @@ void GcodeSuite::G28() {
       homeaxis(X_AXIS);
 
       // Consider the active extruder to be parked
-<<<<<<< HEAD
-      raised_parked_position = current_position;
-      delayed_move_time = 0;
-      active_extruder_parked = true;
-      //extruder_duplication_enabled = IDEX_saved_duplication_state; // 18/04/2021 Murdock Bug Fix #104 & #33.
-      dual_x_carriage_mode         = IDEX_saved_mode;
-      stepper.set_directions();
-=======
       idex_set_parked();
 
       dual_x_carriage_mode = IDEX_saved_mode;
       set_duplication_enabled(IDEX_saved_duplication_state);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(slow_homing));
     }

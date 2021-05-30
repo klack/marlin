@@ -99,18 +99,12 @@
 
 #endif
 
-<<<<<<< HEAD
-#define SETCURSOR_X(col)    SETCURSOR(col, _lcdLineNr)
-#define SETCURSOR_X_RJ(len) SETCURSOR_RJ(len, _lcdLineNr)
-#define START_OF_UTF8_CHAR(C) (((C) & 0xC0u) != 0x80U)
-=======
 #define LCD_COL_X_RJ(len)      (LCD_PIXEL_WIDTH - LCD_COL_X(len))
 #define LCD_BOTTOM_ROW         (LCD_PIXEL_HEIGHT - 1)
 #define SETCURSOR(col, row)    lcd_moveto(LCD_COL_X(col), LCD_ROW_Y(row))
 #define SETCURSOR_RJ(len, row) lcd_moveto(LCD_COL_X_RJ(len), LCD_ROW_Y(row))
 #define SETCURSOR_X(col)       SETCURSOR(col, _lcdLineNr)
 #define SETCURSOR_X_RJ(len)    SETCURSOR_RJ(len, _lcdLineNr)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 int lcd_glyph_height();
 

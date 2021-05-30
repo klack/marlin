@@ -21,7 +21,7 @@
  */
 #pragma once
 
-#include "env_validate.h"
+//#include "env_validate.h"
 
 // If you have the BigTreeTech driver expansion module, enable BTT_MOTOR_EXPANSION
 // https://github.com/bigtreetech/BTT-Expansion-module/tree/master/BTT%20EXP-MOT
@@ -65,18 +65,45 @@
 #define Z2_DIAG_PIN                         PE15  // E0
 #define X2_DIAG_PIN                         PE10  // E1
 #define M1_DIAG_PIN                         PG5   // E2
+
 //
 // Limit Switches
 //
+#ifdef X_STALL_SENSITIVITY
+  #define X_STOP_PIN                  X_DIAG_PIN
+  #if X_HOME_TO_MIN
+    #define X_MAX_PIN                       PE15  // E0
+  #else
+    #define X_MIN_PIN                       PE15  // E0
+  #endif
+#else
   #define X_MIN_PIN                         PB10  // X-
   #define X_MAX_PIN                         PE15  // E0
+#endif
 
+#ifdef Y_STALL_SENSITIVITY
+  #define Y_STOP_PIN                  Y_DIAG_PIN
+  #if Y_HOME_TO_MIN
+    #define Y_MAX_PIN                       PE10  // E1
+  #else
+    #define Y_MIN_PIN                       PE10  // E1
+  #endif
+#else
   #define Y_MIN_PIN                         PE12  // Y-
   #define Y_MAX_PIN                         PE10  // E1
+#endif
 
+#ifdef Z_STALL_SENSITIVITY
+  #define Z_STOP_PIN                  Z_DIAG_PIN
+  #if Z_HOME_TO_MIN
+    #define Z_MAX_PIN                       PG5   // E2
+  #else
+    #define Z_MIN_PIN                       PG5   // E2
+  #endif
+#else
   #define Z_MIN_PIN                         PG8   // Z-
   #define Z_MAX_PIN                         PG5   // E2
-
+#endif
 
 //
 // Z Probe must be this pin
@@ -89,10 +116,10 @@
 // Filament Runout Sensor
 //
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN                    PE10 // Tenlog Change from PE15 to  PE10
+  #define FIL_RUNOUT_PIN                    PE10
 #endif
 #ifndef FIL_RUNOUT2_PIN
-  #define FIL_RUNOUT2_PIN                   PG5 // Tenlog  Change from PE10 to  PG5
+  #define FIL_RUNOUT2_PIN                   PG5
 #endif
 #ifndef FIL_RUNOUT3_PIN
   #define FIL_RUNOUT3_PIN                   PG5
@@ -142,7 +169,6 @@
 #ifndef E0_CS_PIN
   #define E0_CS_PIN                         PG12
 #endif
-
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -219,7 +245,7 @@
 #define HEATER_2_PIN                        PB0   // Heater1
 #define HEATER_BED_PIN                      PD12  // Hotbed
 #define FAN_PIN                             PC8   // Fan0
-#define FAN1_PIN                            PE5   // Fan1
+#define FAN1_PIN                            PE6   // Fan1
 #define FAN2_PIN                            PE6   // Fan2
 #define FAN3_PIN                            HEATER_2_PIN
 
@@ -290,78 +316,60 @@
   #error "CUSTOM_CABLE is not a supported SDCARD_CONNECTION for this board"
 #endif
 
-/**
- *               -----                                             -----
- *           NC | 1 2 | GND                                    5V | 1 2 | GND
- *        RESET | 3 4 | PF12(SD_DETECT)             (LCD_D7)  PG7 | 3 4 | PG6  (LCD_D6)
- *   (MOSI)PB15 | 5 6   PF11(BTN_EN2)               (LCD_D5)  PG3 | 5 6   PG2  (LCD_D4)
- *  (SD_SS)PB12 | 7 8 | PG10(BTN_EN1)               (LCD_RS) PD10 | 7 8 | PD11 (LCD_EN)
- *    (SCK)PB13 | 9 10| PB14(MISO)                 (BTN_ENC)  PA8 | 9 10| PG4  (BEEPER)
- *               -----                                             -----
- *               EXP2                                              EXP1
- */
-
-#define EXPA1_03_PIN                        PG7
-#define EXPA1_04_PIN                        PG6
-#define EXPA1_05_PIN                        PG3
-#define EXPA1_06_PIN                        PG2
-#define EXPA1_07_PIN                        PD10
-#define EXPA1_08_PIN                        PD11
-#define EXPA1_09_PIN                        PA8
-#define EXPA1_10_PIN                        PG4
-
-#define EXPA2_03_PIN                        -1
-#define EXPA2_04_PIN                        PF12
-#define EXPA2_05_PIN                        PB15
-#define EXPA2_06_PIN                        PF11
-#define EXPA2_07_PIN                        PB12
-#define EXPA2_08_PIN                        PG10
-#define EXPA2_09_PIN                        PB13
-#define EXPA2_10_PIN                        PB14
-
 #if ENABLED(BTT_MOTOR_EXPANSION)
-  /**
-   *               _____                                      _____
-   *           NC | · · | GND                             NC | · · | GND
-   *           NC | · · | PF12 (M1EN)            (M2EN)  PG7 | · · | PG6  (M3EN)
-   * (M1STP) PB15 | · ·   PF11 (M1DIR)           (M1RX)  PG3 | · ·   PG2  (M1DIAG)
-   * (M2DIR) PB12 | · · | PG10 (M2STP)           (M2RX) PD10 | · · | PD11 (M2DIAG)
-   * (M3DIR) PB13 | · · | PB14 (M3STP)           (M3RX)  PA8 | · · | PG4  (M3DIAG)
-   *               -----                                      -----
-   *               EXP2                                       EXP1
+  /**       _____                        _____
+   *    NC | . . | GND               NC | . . | GND
+   *    NC | . . | M1EN            M2EN | . . | M3EN
+   * M1STP | . .   M1DIR           M1RX | . .   M1DIAG
+   * M2DIR | . . | M2STP           M2RX | . . | M2DIAG
+   * M3DIR | . . | M3STP           M3RX | . . | M3DIAG
+   *        -----                        -----
+   *        EXP2                         EXP1
+   *
+   * NB In EXP_MOT_USE_EXP2_ONLY mode EXP1 is not used and M2EN and M3EN need to be jumpered to M1EN
    */
 
   // M1 on Driver Expansion Module
-  #define M2_STEP_PIN               EXPA2_05_PIN
-  #define M2_DIR_PIN                EXPA2_06_PIN
-  #define M2_ENABLE_PIN             EXPA2_04_PIN
-  #define M2_DIAG_PIN               EXPA1_06_PIN
-  #define M2_CS_PIN                 EXPA1_05_PIN
-  #if HAS_TMC_UART
-    #define M2_SERIAL_TX_PIN        EXPA1_05_PIN
-    #define M2_SERIAL_RX_PIN        EXPA1_05_PIN
+  #define E3_STEP_PIN                EXP2_05_PIN
+  #define E3_DIR_PIN                 EXP2_06_PIN
+  #define E3_ENABLE_PIN              EXP2_04_PIN
+  #if !EXP_MOT_USE_EXP2_ONLY
+    #define E3_DIAG_PIN              EXP1_06_PIN
+    #define E3_CS_PIN                EXP1_05_PIN
+    #if HAS_TMC_UART
+      #define E3_SERIAL_TX_PIN       EXP1_05_PIN
+      #define E3_SERIAL_RX_PIN       EXP1_05_PIN
+    #endif
   #endif
 
   // M2 on Driver Expansion Module
-  #define E1_STEP_PIN               EXPA2_08_PIN
-  #define E1_DIR_PIN                EXPA2_07_PIN
-  #define E1_ENABLE_PIN             EXPA1_03_PIN
-  #define E1_DIAG_PIN               EXPA1_08_PIN
-  #define E1_CS_PIN                 EXPA1_07_PIN
-  #if HAS_TMC_UART
-    #define E1_SERIAL_TX_PIN        EXPA1_07_PIN
-    #define E1_SERIAL_RX_PIN        EXPA1_07_PIN
+  #define E1_STEP_PIN                EXP2_08_PIN
+  #define E1_DIR_PIN                 EXP2_07_PIN
+  #if !EXP_MOT_USE_EXP2_ONLY
+    #define E1_ENABLE_PIN            EXP1_03_PIN
+    #define E1_DIAG_PIN              EXP1_08_PIN
+    #define E1_CS_PIN                EXP1_07_PIN
+    #if HAS_TMC_UART
+      #define E1_SERIAL_TX_PIN       EXP1_07_PIN
+      #define E1_SERIAL_RX_PIN       EXP1_07_PIN
+    #endif
+  #else
+    #define E1_ENABLE_PIN            EXP2_04_PIN
   #endif
 
   // M3 on Driver Expansion Module
-  #define M3_STEP_PIN               EXPA2_10_PIN
-  #define M3_DIR_PIN                EXPA2_09_PIN
-  #define M3_ENABLE_PIN             EXPA1_04_PIN
-  #define M3_DIAG_PIN               EXPA1_10_PIN
-  #define M3_CS_PIN                 EXPA1_09_PIN
-  #if HAS_TMC_UART
-    #define M3_SERIAL_TX_PIN        EXPA1_09_PIN
-    #define M3_SERIAL_RX_PIN        EXPA1_09_PIN
+  #define E5_STEP_PIN                EXP2_10_PIN
+  #define E5_DIR_PIN                 EXP2_09_PIN
+  #if !EXP_MOT_USE_EXP2_ONLY
+    #define E5_ENABLE_PIN            EXP1_04_PIN
+    #define E5_DIAG_PIN              EXP1_10_PIN
+    #define E5_CS_PIN                EXP1_09_PIN
+    #if HAS_TMC_UART
+      #define E5_SERIAL_TX_PIN       EXP1_09_PIN
+      #define E5_SERIAL_RX_PIN       EXP1_09_PIN
+    #endif
+  #else
+    #define E5_ENABLE_PIN            EXP2_04_PIN
   #endif
 
 #endif // BTT_MOTOR_EXPANSION

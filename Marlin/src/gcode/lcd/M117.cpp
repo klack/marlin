@@ -33,6 +33,7 @@
 void GcodeSuite::M117() {
 
   if (parser.string_arg && parser.string_arg[0])
+    ui.set_status(parser.string_arg);
     {
       ui.set_status(parser.string_arg);
 
@@ -41,6 +42,7 @@ void GcodeSuite::M117() {
     }
   else
     ui.reset_status();
+
 }
 
 #endif // HAS_STATUS_MESSAGE

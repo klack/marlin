@@ -589,11 +589,7 @@ void GcodeSuite::G425() {
   SET_SOFT_ENDSTOP_LOOSE(true);
 
   measurements_t m;
-<<<<<<< HEAD
-  float uncertainty = parser.seenval('U') ? parser.value_float() : CALIBRATION_MEASUREMENT_UNCERTAIN;
-=======
   const float uncertainty = parser.floatval('U', CALIBRATION_MEASUREMENT_UNCERTAIN);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   if (parser.seen_test('B'))
     calibrate_backlash(m, uncertainty);

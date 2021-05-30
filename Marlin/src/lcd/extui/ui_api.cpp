@@ -315,11 +315,7 @@ namespace ExtUI {
     return epos;
   }
 
-<<<<<<< HEAD
-  void setAxisPosition_mm(const float position, const axis_t axis, const feedRate_t feedrate/*=0*/) {
-=======
   void setAxisPosition_mm(const_float_t position, const axis_t axis, const feedRate_t feedrate/*=0*/) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     // Get motion limit from software endstops, if any
     float min, max;
     soft_endstop.get_manual_axis_limits((AxisEnum)axis, min, max);

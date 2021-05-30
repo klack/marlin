@@ -611,13 +611,6 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   unscaled_e_move(-(PAUSE_PARK_RETRACT_LENGTH), feedRate_t(PAUSE_PARK_RETRACT_FEEDRATE));
 
   if (!axes_should_home()) {
-<<<<<<< HEAD
-    // Move XY to starting position, then Z
-    do_blocking_move_to_xy(resume_position, feedRate_t(NOZZLE_PARK_XY_FEEDRATE));
-
-    // Move Z_AXIS to saved position
-    do_blocking_move_to_z(resume_position.z, feedRate_t(NOZZLE_PARK_Z_FEEDRATE));
-=======
     // Move XY back to saved position
     destination.set(resume_position.x, resume_position.y, current_position.z, current_position.e);
     prepare_internal_move_to_destination(NOZZLE_PARK_XY_FEEDRATE);
@@ -625,7 +618,6 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
     // Move Z back to saved position
     destination.z = resume_position.z;
     prepare_internal_move_to_destination(NOZZLE_PARK_Z_FEEDRATE);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   }
 
   // Unretract
@@ -648,14 +640,7 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   // Set extruder to saved position
   planner.set_e_position_mm((destination.e = current_position.e = resume_position.e));
 
-<<<<<<< HEAD
-  // Write PLR now to update the z axis value
-  TERN_(POWER_LOSS_RECOVERY, if (recovery.enabled) recovery.save(true));
-
-  TERN_(HAS_LCD_MENU, lcd_pause_show_message(PAUSE_MESSAGE_STATUS));
-=======
   ui.pause_show_message(PAUSE_MESSAGE_STATUS);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   #ifdef ACTION_ON_RESUMED
     host_action_resumed();

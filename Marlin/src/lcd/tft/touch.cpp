@@ -51,9 +51,6 @@ TouchControlType  Touch::touch_control_type = NONE;
 #if HAS_RESUME_CONTINUE
   extern bool wait_for_user;
 #endif
-#if HAS_RESUME_CONTINUE
-  extern bool wait_for_user;
-#endif
 
 void Touch::init() {
   TERN_(TOUCH_SCREEN_CALIBRATION, touch_calibration.calibration_reset());
@@ -91,10 +88,7 @@ void Touch::idle() {
       if (wait_for_user) {
         touch_control_type = CLICK;
         ui.lcd_clicked = true;
-<<<<<<< HEAD
-=======
         if (ui.external_control) wait_for_user = false;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         return;
       }
     #endif

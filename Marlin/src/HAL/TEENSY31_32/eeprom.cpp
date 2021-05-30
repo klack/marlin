@@ -26,13 +26,6 @@
 
 #if USE_WIRED_EEPROM
 
-<<<<<<< HEAD
-/**
- * HAL PersistentStore for Teensy 3.2 (MK20DX256)
- */
-
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #include "../shared/eeprom_api.h"
 #include <avr/eeprom.h>
 

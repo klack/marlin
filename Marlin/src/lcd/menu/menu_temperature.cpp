@@ -191,8 +191,6 @@ void menu_temperature() {
   //
   // Cooler:
   //
-<<<<<<< HEAD
-=======
   #if HAS_COOLER
     bool cstate = cooler.enabled;
     EDIT_ITEM(bool, MSG_COOLER_TOGGLE, &cstate, cooler.toggle);
@@ -210,7 +208,6 @@ void menu_temperature() {
   //
   // Fan Speed:
   //
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #if HAS_FAN
 
     DEFINE_SINGLENOZZLE_ITEM();

@@ -23,11 +23,6 @@
 
 #include <stdint.h>
 
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/SPI_TFT.h
-#if HAS_TFT_LVGL_UI
-
-#include "../../../tft_io/tft_io.h"
-=======
 typedef enum {
   USB_STATE_INIT,
   USB_STATE_ERROR,
@@ -47,24 +42,9 @@ public:
   uint16_t block_size = 0;
   uint32_t block_count = 0;
 };
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/HAL/STM32/usb_host.h
 
 class BulkStorage {
 public:
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/SPI_TFT.h
-  TFT_IO tftio;
-  void spi_init(uint8_t spiRate);
-  void SetPoint(uint16_t x, uint16_t y, uint16_t point);
-  void setWindow(uint16_t x, uint16_t y, uint16_t with, uint16_t height);
-  void LCD_init();
-  void LCD_clear(uint16_t color);
-  void LCD_Draw_Logo();
-};
-
-extern TFT SPI_TFT;
-
-#endif // HAS_TFT_LVGL_UI
-=======
   BulkStorage(USBHost *usb) : usb(usb) {};
 
   bool LUNIsGood(uint8_t t);
@@ -78,4 +58,3 @@ extern TFT SPI_TFT;
 
 extern USBHost usb;
 extern BulkStorage bulk;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/HAL/STM32/usb_host.h

@@ -142,13 +142,8 @@ static SPISettings spiConfig;
    * @details Only configures SS pin since stm32duino creates and initialize the SPI object
    */
   void spiBegin() {
-<<<<<<< HEAD
-    #if PIN_EXISTS(SS)
-      OUT_WRITE(SS_PIN, HIGH);
-=======
     #if PIN_EXISTS(SD_SS)
       OUT_WRITE(SD_SS_PIN, HIGH);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     #endif
   }
 

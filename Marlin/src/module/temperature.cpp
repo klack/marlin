@@ -385,21 +385,6 @@ const char str_t_thermal_runaway[] PROGMEM = STR_T_THERMAL_RUNAWAY,
 #if HAS_TEMP_CHAMBER
   chamber_info_t Temperature::temp_chamber; // = { 0 }
   #if HAS_HEATED_CHAMBER
-<<<<<<< HEAD
-    int16_t fan_chamber_pwm;
-    bool flag_chamber_off;
-    bool flag_chamber_excess_heat = false;
-    millis_t next_cool_check_ms_2 = 0;
-    float old_temp = 9999;
-    #ifdef CHAMBER_MINTEMP
-      int16_t Temperature::mintemp_raw_CHAMBER = HEATER_CHAMBER_RAW_LO_TEMP;
-    #endif
-    #ifdef CHAMBER_MAXTEMP
-      int16_t Temperature::maxtemp_raw_CHAMBER = HEATER_CHAMBER_RAW_HI_TEMP;
-    #endif
-    #if WATCH_CHAMBER
-      chamber_watch_t Temperature::watch_chamber{0};
-=======
     millis_t next_cool_check_ms_2 = 0;
     celsius_float_t old_temp = 9999;
     int16_t Temperature::mintemp_raw_CHAMBER = TEMP_SENSOR_CHAMBER_RAW_LO_TEMP,
@@ -419,7 +404,6 @@ const char str_t_thermal_runaway[] PROGMEM = STR_T_THERMAL_RUNAWAY,
             Temperature::maxtemp_raw_COOLER = TEMP_SENSOR_COOLER_RAW_HI_TEMP;
     #if WATCH_COOLER
       cooler_watch_t Temperature::watch_cooler{0};
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     #endif
     millis_t Temperature::next_cooler_check_ms, Temperature::cooler_fan_flush_ms;
   #endif

@@ -591,11 +591,7 @@ void do_blocking_move_to_xy_z(const xy_pos_t &raw, const_float_t z, const_feedRa
 void do_z_clearance(const_float_t zclear, const bool lower_allowed/*=false*/) {
   float zdest = zclear;
   if (!lower_allowed) NOLESS(zdest, current_position.z);
-<<<<<<< HEAD
-  do_blocking_move_to_z(_MIN(zdest, Z_MAX_POS), MMM_TO_MMS(TERN(HAS_BED_PROBE, Z_PROBE_SPEED_FAST, HOMING_FEEDRATE_Z)));
-=======
   do_blocking_move_to_z(_MIN(zdest, Z_MAX_POS), TERN(HAS_BED_PROBE, z_probe_fast_mm_s, homing_feedrate(Z_AXIS)));
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 }
 
 //
@@ -622,13 +618,8 @@ void restore_feedrate_and_scaling() {
   // Software Endstops are based on the configured limits.
   soft_endstops_t soft_endstop = {
     true, false,
-<<<<<<< HEAD
-    { X_MIN_POS, Y_MIN_POS, Z_MIN_POS },
-    { X_MAX_POS, Y_MAX_POS, Z_MAX_POS }
-=======
     LINEAR_AXIS_ARRAY(X_MIN_POS, Y_MIN_POS, Z_MIN_POS),
     LINEAR_AXIS_ARRAY(X_MAX_BED, Y_MAX_BED, Z_MAX_POS)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   };
 
   /**
@@ -713,11 +704,7 @@ void restore_feedrate_and_scaling() {
     #endif
 
     if (DEBUGGING(LEVELING))
-<<<<<<< HEAD
-      SERIAL_ECHOLNPAIR("Axis ", XYZ_CHAR(axis), " min:", soft_endstop.min[axis], " max:", soft_endstop.max[axis]);
-=======
       SERIAL_ECHOLNPAIR("Axis ", AS_CHAR(AXIS_CHAR(axis)), " min:", soft_endstop.min[axis], " max:", soft_endstop.max[axis]);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   }
 
   /**
@@ -1116,52 +1103,41 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
             if (dual_x_carriage_mode == DXC_DUPLICATION_MODE)
               new_pos.x += duplicate_extruder_x_offset;
             else
-<<<<<<< HEAD
-              new_pos.x = inactive_extruder_x_pos;
-            
-            // 26/04/2021 Murdock Z Safety Unpark for duplication mode (For avoid bed clips. Fix issue #36).
-            if (SAFETY_Z_UNPARK > 0)
-            {
-                #define CUR_Z    current_position.z
-                #undef RAISED_Z
-                #define RAISED_Z     current_position.z
-
-                if (current_position.z <= SAFETY_Z_UNPARK) {  
-                    if (current_position.y <= SAFETY_Y_UNPARK) {
-                        RAISED_Z = SAFETY_Z_UNPARK;
-                        new_pos.z = SAFETY_Z_UNPARK;
-                    }
-                }  
-
-                
-                // move duplicate extruder into correct duplication position.
-                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x_pos, " ... Line to X", new_pos.x);
-                if ( planner.buffer_line(current_position.x, current_position.y, RAISED_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) {
-                    planner.set_position_mm(inactive_extruder_x_pos, current_position.y, current_position.z, current_position.e);
-                    if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) {
-                        planner.synchronize();
-                        planner.buffer_line(new_pos.x, new_pos.y, CUR_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                // move duplicate extruder into correct duplication position.
-                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x_pos, " ... Line to X", new_pos.x);
-                planner.set_position_mm(inactive_extruder_x_pos, current_position.y, current_position.z, current_position.e);
-                if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
-            }
-            // End fix #36.
-            
-=======
               new_pos.x = inactive_extruder_x;
-            // Move duplicate extruder into correct duplication position.
-            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
-            planner.set_position_mm(inactive_extruder_x, current_position.y, current_position.z, current_position.e);
-            if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+              			// 26/04/2021 Murdock Z Safety Unpark for duplication mode (For avoid bed clips. Fix issue #36).
+			if (SAFETY_Z_UNPARK > 0)
+			{
+				#define CUR_Z    current_position.z
+				#undef RAISED_Z
+				#define RAISED_Z     current_position.z
 
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
+				if (current_position.z <= SAFETY_Z_UNPARK) {  
+					if (current_position.y <= SAFETY_Y_UNPARK) {
+						RAISED_Z = SAFETY_Z_UNPARK;
+						new_pos.z = SAFETY_Z_UNPARK;
+					}
+				}  
+
+				
+				// move duplicate extruder into correct duplication position.
+				if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
+				if ( planner.buffer_line(current_position.x, current_position.y, RAISED_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) {
+					planner.set_position_mm(inactive_extruder_x, current_position.y, current_position.z, current_position.e);
+					if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) {
+						planner.synchronize();
+						planner.buffer_line(new_pos.x, new_pos.y, CUR_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1);
+						break;
+					}
+				}
+			}
+			else
+			{
+				// move duplicate extruder into correct duplication position.
+				if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
+				planner.set_position_mm(inactive_extruder_x, current_position.y, current_position.z, current_position.e);
+				if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+			}
+			// End fix #36.
             planner.synchronize();
             sync_plan_position();
 
@@ -1267,20 +1243,6 @@ void prepare_line_to_destination() {
     return axis_bits;
   }
 
-<<<<<<< HEAD
-/**
- * Homing bump feedrate (mm/s)
- */
-feedRate_t get_homing_bump_feedrate(const AxisEnum axis) {
-  #if HOMING_Z_WITH_PROBE
-    if (axis == Z_AXIS) return MMM_TO_MMS(Z_PROBE_SPEED_SLOW);
-  #endif
-  static const uint8_t homing_bump_divisor[] PROGMEM = HOMING_BUMP_DIVISOR;
-  uint8_t hbd = pgm_read_byte(&homing_bump_divisor[axis]);
-  if (hbd < 1) {
-    hbd = 10;
-    SERIAL_ECHO_MSG("Warning: Homing Bump Divisor < 1");
-=======
   bool homing_needed_error(linear_axis_bits_t axis_bits/*=linear_bits*/) {
     if ((axis_bits = axes_should_home(axis_bits))) {
       PGM_P home_first = GET_TEXT(MSG_HOME_FIRST);
@@ -1298,7 +1260,6 @@ feedRate_t get_homing_bump_feedrate(const AxisEnum axis) {
       return true;
     }
     return false;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   }
 
   /**
@@ -1553,40 +1514,6 @@ feedRate_t get_homing_bump_feedrate(const AxisEnum axis) {
     TERN_(I2C_POSITION_ENCODERS, I2CPEM.unhomed(axis));
   }
 
-<<<<<<< HEAD
-    #define PHASE_PER_MICROSTEP(N) (256 / _MAX(1, N##_MICROSTEPS))
-
-    switch (axis) {
-      #ifdef X_MICROSTEPS
-        case X_AXIS:
-          phasePerUStep = PHASE_PER_MICROSTEP(X);
-          phaseCurrent = stepperX.get_microstep_counter();
-          effectorBackoutDir = -X_HOME_DIR;
-          stepperBackoutDir = INVERT_X_DIR ? effectorBackoutDir : -effectorBackoutDir;
-          break;
-      #endif
-      #ifdef Y_MICROSTEPS
-        case Y_AXIS:
-          phasePerUStep = PHASE_PER_MICROSTEP(Y);
-          phaseCurrent = stepperY.get_microstep_counter();
-          effectorBackoutDir = -Y_HOME_DIR;
-          stepperBackoutDir = INVERT_Y_DIR ? effectorBackoutDir : -effectorBackoutDir;
-          break;
-      #endif
-      #ifdef Z_MICROSTEPS
-        case Z_AXIS:
-          phasePerUStep = PHASE_PER_MICROSTEP(Z);
-          phaseCurrent = stepperZ.get_microstep_counter();
-          effectorBackoutDir = -Z_HOME_DIR;
-          stepperBackoutDir = INVERT_Z_DIR ? effectorBackoutDir : -effectorBackoutDir;
-          break;
-      #endif
-      default: return;
-    }
-
-    // Phase distance to nearest home phase position when moving in the backout direction from endstop(may be negative).
-    int16_t phaseDelta = (home_phase[axis] - phaseCurrent) * stepperBackoutDir;
-=======
   #ifdef TMC_HOME_PHASE
     /**
      * Move the axis back to its home_phase if set and driver is capable (TMC)
@@ -1597,7 +1524,6 @@ feedRate_t get_homing_bump_feedrate(const AxisEnum axis) {
      */
     void backout_to_tmc_homing_phase(const AxisEnum axis) {
       const xyz_long_t home_phase = TMC_HOME_PHASE;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
       // check if home phase is disabled for this axis.
       if (home_phase[axis] < 0) return;
@@ -1695,16 +1621,8 @@ feedRate_t get_homing_bump_feedrate(const AxisEnum axis) {
 
     if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR(">>> homeaxis(", AS_CHAR(AXIS_CHAR(axis)), ")");
 
-<<<<<<< HEAD
-  // When homing Z with probe respect probe clearance
-  const bool use_probe_bump = TERN0(HOMING_Z_WITH_PROBE, axis == Z_AXIS && home_bump_mm(Z_AXIS));
-  const float bump = axis_home_dir * (
-    use_probe_bump ? _MAX(TERN0(HOMING_Z_WITH_PROBE, Z_CLEARANCE_BETWEEN_PROBES), home_bump_mm(Z_AXIS)) : home_bump_mm(axis)
-  );
-=======
     const int axis_home_dir = TERN0(DUAL_X_CARRIAGE, axis == X_AXIS)
                 ? TOOL_X_HOME_DIR(active_extruder) : home_dir(axis);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
     //
     // Homing Z with a probe? Raise Z (maybe) and deploy the Z probe.

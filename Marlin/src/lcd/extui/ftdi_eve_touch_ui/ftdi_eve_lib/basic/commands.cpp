@@ -1073,13 +1073,7 @@ void CLCD::init() {
   for (counter = 0; counter < 250; counter++) {
    uint8_t device_id = mem_read_8(REG::ID);            // Read Device ID, Should Be 0x7C;
    if (device_id == 0x7C) {
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/ftdi_eve_touch_ui/ftdi_eve_lib/basic/commands.cpp
-     #if ENABLED(TOUCH_UI_DEBUG)
-       SERIAL_ECHO_MSG("FTDI chip initialized ");
-     #endif
-=======
      if (ENABLED(TOUCH_UI_DEBUG)) SERIAL_ECHO_MSG("FTDI chip initialized ");
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/ftdi_eve_touch_ui/ftdi_eve_lib/basic/commands.cpp
      break;
    }
    else

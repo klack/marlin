@@ -1954,30 +1954,6 @@ LINEAR_AXIS_CODE(
   #endif
 #endif
 
-#if ENABLED(CHAMBER_FAN) && !(defined(CHAMBER_FAN_MODE) && WITHIN(CHAMBER_FAN_MODE, 0, 2))
-  #error "CHAMBER_FAN_MODE must be between 0 and 2. Please update your Configuration_adv.h."
-#endif
-
-#if ENABLED(CHAMBER_VENT)
-  #ifndef CHAMBER_VENT_SERVO_NR
-    #error "CHAMBER_VENT_SERVO_NR is required for CHAMBER SERVO. Update your Configuration_adv.h."
-  #elif !NUM_SERVOS
-    #error "NUM_SERVOS is required for a Heated Chamber vent servo (CHAMBER_VENT_SERVO_NR)."
-  #elif CHAMBER_VENT_SERVO_NR >= NUM_SERVOS
-    #error "CHAMBER_VENT_SERVO_NR must be smaller than NUM_SERVOS."
-  #elif HAS_Z_SERVO_PROBE && CHAMBER_VENT_SERVO_NR == Z_PROBE_SERVO_NR
-    #error "CHAMBER SERVO is already used by BLTOUCH. Please change."
-  #elif CHAMBER_VENT_SERVO_NR == 0 && !PIN_EXISTS(SERVO0)
-    #error "SERVO0_PIN must be defined for your Heated Chamber vent servo."
-  #elif CHAMBER_VENT_SERVO_NR == 1 && !PIN_EXISTS(SERVO1)
-    #error "SERVO1_PIN must be defined for your Heated Chamber vent servo."
-  #elif CHAMBER_VENT_SERVO_NR == 2 && !PIN_EXISTS(SERVO2)
-    #error "SERVO2_PIN must be defined for your Heated Chamber vent servo."
-  #elif CHAMBER_VENT_SERVO_NR == 3 && !PIN_EXISTS(SERVO3)
-    #error "SERVO3_PIN must be defined for your Heated Chamber vent servo."
-  #endif
-#endif
-
 #if TEMP_SENSOR_PROBE
   #if !PIN_EXISTS(TEMP_PROBE)
     #error "TEMP_SENSOR_PROBE requires TEMP_PROBE_PIN."
@@ -2183,7 +2159,7 @@ LINEAR_AXIS_CODE(
 /**
  * Emergency Command Parser
  */
-#if BOTH(IS_AT90USB, EMERGENCY_PARSER)
+#if ENABLED(EMERGENCY_PARSER) && defined(__AVR__) && defined(USBCON)
   #error "EMERGENCY_PARSER does not work on boards with AT90USB processors (USBCON)."
 #endif
 

@@ -32,11 +32,7 @@
  * and supports color output.
  */
 
-<<<<<<< HEAD:Marlin/src/lcd/TFTGLCD/ultralcd_TFTGLCD.cpp
-#if NONE(__AVR__, TARGET_LPC1768, __STM32F1__, STM32F4xx)
-=======
 #if NONE(__AVR__, TARGET_LPC1768, STM32F1, STM32F4xx)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/TFTGLCD/marlinui_TFTGLCD.cpp
   #warning "Selected platform not yet tested. Please contribute your good pin mappings."
 #endif
 
@@ -133,11 +129,7 @@ static uint8_t PanelDetected = 0;
 #if ANY(__AVR__, TARGET_LPC1768, __STM32F1__, ARDUINO_ARCH_SAM, __SAMD51__, __MK20DX256__, __MK64FX512__)
   #define SPI_SEND_ONE(V) SPI.transfer(V);
   #define SPI_SEND_TWO(V) SPI.transfer16(V);
-<<<<<<< HEAD:Marlin/src/lcd/TFTGLCD/ultralcd_TFTGLCD.cpp
-#elif defined(STM32F4xx)
-=======
 #elif EITHER(STM32F4xx, STM32F1xx)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/TFTGLCD/marlinui_TFTGLCD.cpp
   #define SPI_SEND_ONE(V) SPI.transfer(V, SPI_CONTINUE);
   #define SPI_SEND_TWO(V) SPI.transfer16(V, SPI_CONTINUE);
 #elif defined(ARDUINO_ARCH_ESP32)
@@ -147,11 +139,7 @@ static uint8_t PanelDetected = 0;
 
 #if ANY(__AVR__, ARDUINO_ARCH_SAM, __SAMD51__, __MK20DX256__, __MK64FX512__)
   #define SPI_SEND_SOME(V,L,Z)  SPI.transfer(&V[Z], L);
-<<<<<<< HEAD:Marlin/src/lcd/TFTGLCD/ultralcd_TFTGLCD.cpp
-#elif defined(STM32F4xx)
-=======
 #elif EITHER(STM32F4xx, STM32F1xx)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/TFTGLCD/marlinui_TFTGLCD.cpp
   #define SPI_SEND_SOME(V,L,Z)  SPI.transfer(&V[Z], L, SPI_CONTINUE);
 #elif ANY(TARGET_LPC1768, __STM32F1__, ARDUINO_ARCH_ESP32)
   #define SPI_SEND_SOME(V,L,Z)  do{ for (uint16_t i = 0; i < L; i++) SPI_SEND_ONE(V[(Z)+i]); }while(0)
@@ -342,11 +330,7 @@ void MarlinUI::init_lcd() {
     Wire.endTransmission(); // send buffer
     #ifdef __AVR__
       Wire.requestFrom((uint8_t)LCD_I2C_ADDRESS, 1, 0, 0, 1);
-<<<<<<< HEAD:Marlin/src/lcd/TFTGLCD/ultralcd_TFTGLCD.cpp
-    #elif ANY(__STM32F1__, STM32F4xx, TARGET_LPC1768)
-=======
     #elif ANY(STM32F1, STM32F4xx, TARGET_LPC1768)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/TFTGLCD/marlinui_TFTGLCD.cpp
       Wire.requestFrom(LCD_I2C_ADDRESS, 1);
     #endif
     t = (uint8_t)Wire.read();
@@ -872,11 +856,7 @@ void MarlinUI::draw_status_screen() {
 
   // Low-level draw_edit_screen can be used to draw an edit screen from anyplace
   // This line moves to the last line of the screen for UBL plot screen on the panel side
-<<<<<<< HEAD:Marlin/src/lcd/TFTGLCD/ultralcd_TFTGLCD.cpp
-  void MenuEditItemBase::draw_edit_screen(PGM_P const pstr, const char* const value/*=nullptr*/) {
-=======
   void MenuEditItemBase::draw_edit_screen(PGM_P const pstr, const char * const value/*=nullptr*/) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/TFTGLCD/marlinui_TFTGLCD.cpp
     if (!PanelDetected) return;
     ui.encoder_direction_normal();
     const uint8_t y = TERN0(AUTO_BED_LEVELING_UBL, ui.external_control) ? LCD_HEIGHT - 1 : MIDDLE_Y;

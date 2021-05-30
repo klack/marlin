@@ -53,10 +53,7 @@ def add_to_feat_cnf(feature, flines):
 	except:
 		FEATURE_CONFIG[feature] = {}
 
-<<<<<<< HEAD
-=======
 	# Get a reference to the FEATURE_CONFIG under construction
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 	feat = FEATURE_CONFIG[feature]
 
 	# Split up passed lines on commas or newlines and iterate

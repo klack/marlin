@@ -122,15 +122,8 @@ uint32_t getWifiTick() { return millis(); }
 uint32_t getWifiTickDiff(int32_t lastTick, int32_t curTick) {
   if (lastTick <= curTick)
     return (curTick - lastTick) * TICK_CYCLE;
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/wifi_module.cpp
-  }
-  else {
-    return (0xFFFFFFFF - lastTick + curTick) * TICK_CYCLE;
-  }
-=======
   else
     return (0xFFFFFFFF - lastTick + curTick) * TICK_CYCLE;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/mks_ui/wifi_module.cpp
 }
 
 void wifi_delay(int n) {
@@ -338,15 +331,9 @@ void wifi_ret_ack() {}
 
 uint8_t buf_to_wifi[256];
 int index_to_wifi = 0;
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/wifi_module.cpp
-int package_to_wifi(WIFI_RET_TYPE type,char *buf, int len) {
-  char wifi_ret_head = 0xA5;
-  char wifi_ret_tail = 0xFC;
-=======
 int package_to_wifi(WIFI_RET_TYPE type, uint8_t *buf, int len) {
   uint8_t wifi_ret_head = 0xA5;
   uint8_t wifi_ret_tail = 0xFC;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/mks_ui/wifi_module.cpp
 
   if (type == WIFI_PARA_SET) {
     int data_offset = 4;
@@ -435,23 +422,11 @@ int package_to_wifi(WIFI_RET_TYPE type, uint8_t *buf, int len) {
     ZERO(buf_to_wifi);
     index_to_wifi = 0;
 
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/wifi_module.cpp
-    if (gCfgItems.cloud_enable == true)
-      buf_to_wifi[data_offset] = 0x0A;
-    else
-      buf_to_wifi[data_offset] = 0x05;
-
-    buf_to_wifi[data_offset + 1]  = urlLen;
-    strncpy(&buf_to_wifi[data_offset + 2], (const char *)uiCfg.cloud_hostUrl, urlLen);
-    buf_to_wifi[data_offset + urlLen + 2]  = uiCfg.cloud_port & 0xFF;
-    buf_to_wifi[data_offset + urlLen + 3]  = (uiCfg.cloud_port >> 8) & 0xFF;
-=======
     buf_to_wifi[data_offset] = gCfgItems.cloud_enable ? 0x0A : 0x05;
     buf_to_wifi[data_offset + 1]  = urlLen;
     memcpy(&buf_to_wifi[data_offset + 2], (const char *)uiCfg.cloud_hostUrl, urlLen);
     buf_to_wifi[data_offset + urlLen + 2] = uiCfg.cloud_port & 0xFF;
     buf_to_wifi[data_offset + urlLen + 3] = (uiCfg.cloud_port >> 8) & 0xFF;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/mks_ui/wifi_module.cpp
     buf_to_wifi[data_offset + urlLen + 4] = wifi_ret_tail;
 
     index_to_wifi = urlLen + 4;
@@ -1257,14 +1232,8 @@ void utf8_2_unicode(uint8_t *source, uint8_t Len) {
     }
     else if (char_byte_num == 0xC0 || char_byte_num == 0xD0) {
       //--2byte
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/wifi_module.cpp
-
-      u16_h = (((uint16_t)source[i] <<8) & 0x1F00) >> 2;
-      u16_l = ((uint16_t)source[i+1] & 0x003F);
-=======
       u16_h = (((uint16_t)source[i] << 8) & 0x1F00) >> 2;
       u16_l = ((uint16_t)source[i + 1] & 0x003F);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/mks_ui/wifi_module.cpp
       u16_value = (u16_h | u16_l);
       FileName_unicode[char_i] = (uint8_t)((u16_value & 0xFF00) >> 8);
       FileName_unicode[char_i + 1] = (uint8_t)(u16_value & 0x00FF);
@@ -1273,15 +1242,9 @@ void utf8_2_unicode(uint8_t *source, uint8_t Len) {
     }
     else if (char_byte_num == 0xE0) {
       //--3byte
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/mks_ui/wifi_module.cpp
-      u16_h = (((uint16_t)source[i] <<8 ) & 0x0F00) << 4;
-      u16_m = (((uint16_t)source[i+1] << 8) & 0x3F00) >> 2;
-      u16_l = ((uint16_t)source[i+2] & 0x003F);
-=======
       u16_h = (((uint16_t)source[i] << 8) & 0x0F00) << 4;
       u16_m = (((uint16_t)source[i + 1] << 8) & 0x3F00) >> 2;
       u16_l = ((uint16_t)source[i + 2] & 0x003F);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/mks_ui/wifi_module.cpp
       u16_value = (u16_h | u16_m | u16_l);
       FileName_unicode[char_i] = (uint8_t)((u16_value & 0xFF00) >> 8);
       FileName_unicode[char_i + 1] = (uint8_t)(u16_value & 0x00FF);

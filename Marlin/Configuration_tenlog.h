@@ -60,7 +60,8 @@
   #define TOOLCHANGE_NO_RETURN
   // #define HOST_ACTION_COMMANDS
   // #define HOST_PROMPT_SUPPORT
-  #define HOMING_FEEDRATE_Z  (4*60)
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
   #undef verS3
@@ -79,11 +80,18 @@
   #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 250
-  #define HOMING_FEEDRATE_Z  (4*60)
-#endif
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+#endif 
 #if ENABLED(BTTSKRPRO)
   #undef verS3
   #define verS3 "BTTSKRPRO"
+  #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
+  #define USE_CONTROLLER_FAN
+#endif
+#if ENABLED(OCTOPUS)
+  #undef verS3
+  #define verS3 "OCTOPUS"
   #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define USE_CONTROLLER_FAN
@@ -235,8 +243,8 @@
   #define BLTOUCH
   #if ENABLED(BMGExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { +20, -57, +0.5 }
-    #undef HOMING_FEEDRATE_Z
-    #define HOMING_FEEDRATE_Z  16000
+    #undef HOMING_FEEDRATE_MM_M
+    #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (16000) }
   #else
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #endif
@@ -255,8 +263,8 @@
   #endif
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
-  #undef HOMING_FEEDRATE_Z
-  #define HOMING_FEEDRATE_Z  (8*60)
+  #undef HOMING_FEEDRATE_MM_M
+  #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (16000) }
   #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
   #define EXTRA_PROBING    1
@@ -281,9 +289,14 @@
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PA2
-    #define XY_PROBE_SPEED 16000
+    #define XY_PROBE_FEEDRATE 16000
+  #elif ENABLED(OCTOPUS)
+    #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+    #undef Z_MIN_PROBE_PIN
+    #define Z_MIN_PROBE_PIN                   PA2
+    #define XY_PROBE_FEEDRATE 16000
   #else
-    #define XY_PROBE_SPEED (133*60)
+    #define XY_PROBE_FEEDRATE (133*60)
     #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #endif
   #undef MIN_SOFTWARE_ENDSTOP_Z
@@ -320,6 +333,12 @@
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 verS2 verS3 
 #if ENABLED(BTTSKRPRO)
+  #define NUM_RUNOUT_SENSORS   2 
+  #define FIL_RUNOUT_STATE HIGH
+  #define FIL_RUNOUT_PULLUP
+  #define FIL_RUNOUT2_STATE HIGH
+  #define FIL_RUNOUT2_PULLUP
+#elif ENABLED(OCTOPUS)
   #define NUM_RUNOUT_SENSORS   2 
   #define FIL_RUNOUT_STATE HIGH
   #define FIL_RUNOUT_PULLUP

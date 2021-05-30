@@ -34,11 +34,7 @@ public:
   static void set_current_value(const uint8_t channel, uint16_t val);
   static void print_values();
   static void commit_eeprom();
-<<<<<<< HEAD
-  static uint8_t get_current_percent(AxisEnum axis);
-=======
   static uint8_t get_current_percent(const AxisEnum axis);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   static void set_current_percents(xyze_uint8_t &pct);
 };
 

@@ -29,16 +29,8 @@
 
 #include "../../inc/MarlinConfig.h"
 
-<<<<<<< HEAD
-  void watchdog_init() {
-    #if DISABLED(DISABLE_WATCHDOG_INIT)
-      IWatchdog.begin(4000000); // 4 sec timeout
-    #endif
-  }
-=======
 #include "watchdog.h"
 #include <IWatchdog.h>
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 void watchdog_init() {
   #if DISABLED(DISABLE_WATCHDOG_INIT)

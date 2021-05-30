@@ -26,11 +26,6 @@
  * Used by common-dependencies.py
  */
 
-<<<<<<< HEAD
-#define NUM_SERIAL 1 // Normally provided by HAL/HAL.h
-
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #include "../../../../Marlin/src/inc/MarlinConfig.h"
 
 //
@@ -52,10 +47,6 @@
 
 #if ENABLED(HOST_PROMPT_SUPPORT) && DISABLED(EMERGENCY_PARSER)
   #define HAS_GCODE_M876
-#endif
-
-#if ENABLED(DUET_SMART_EFFECTOR) && PIN_EXISTS(SMART_EFFECTOR_MOD)
-  #define HAS_SMART_EFF_MOD
 #endif
 
 #if ENABLED(DUET_SMART_EFFECTOR) && PIN_EXISTS(SMART_EFFECTOR_MOD)

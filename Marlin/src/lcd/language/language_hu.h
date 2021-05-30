@@ -400,15 +400,6 @@ namespace Language_hu {
   PROGMEM Language_Str MSG_CONTROL_RETRACTF                = _UxGT("Viszahúzás");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_ZHOP            = _UxGT("Ugrás mm");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER         = _UxGT("Visszah.helyre mm");
-<<<<<<< HEAD
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAP    = _UxGT("Csere.Visszah.helyre mm");
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVERF        = _UxGT("Unretract V");
-  PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAPF   = _UxGT("S UnRet V");
-  PROGMEM Language_Str MSG_AUTORETRACT                     = _UxGT("AutoVisszah.");
-  PROGMEM Language_Str MSG_FILAMENT_SWAP_LENGTH            = _UxGT("Visszahúzás Távolság");
-  PROGMEM Language_Str MSG_FILAMENT_SWAP_EXTRA             = _UxGT("Extra Csere");
-  PROGMEM Language_Str MSG_FILAMENT_PURGE_LENGTH           = _UxGT("Tisztítási Távolság");
-=======
   PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAP    = _UxGT("Csere.visszah.helyre mm");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVERF        = _UxGT("Visszahúzás V");
   PROGMEM Language_Str MSG_CONTROL_RETRACT_RECOVER_SWAPF   = _UxGT("S Vissza.h V");
@@ -416,7 +407,6 @@ namespace Language_hu {
   PROGMEM Language_Str MSG_FILAMENT_SWAP_LENGTH            = _UxGT("Visszahúzás távolság");
   PROGMEM Language_Str MSG_FILAMENT_SWAP_EXTRA             = _UxGT("Extra csere");
   PROGMEM Language_Str MSG_FILAMENT_PURGE_LENGTH           = _UxGT("Tisztítási távolság");
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   PROGMEM Language_Str MSG_TOOL_CHANGE                     = _UxGT("Szerszámcsere");
   PROGMEM Language_Str MSG_TOOL_CHANGE_ZLIFT               = _UxGT("Z emelés");
   PROGMEM Language_Str MSG_SINGLENOZZLE_PRIME_SPEED        = _UxGT("Fösebesség");

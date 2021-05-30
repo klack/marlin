@@ -32,19 +32,11 @@
 #include "../../../inc/MarlinConfig.h"
 
 // command sending macro's with debugging capability
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/anycubic_i3mega/anycubic_i3mega_lcd.cpp
-#define SEND_PGM(x)                                 send_P(PSTR(x))
-#define SENDLINE_PGM(x)                             sendLine_P(PSTR(x))
-#define SEND_PGM_VAL(x,y)                           (send_P(PSTR(x)), sendLine(i16tostr3rj(y)))
-#define SEND(x)                                     send(x)
-#define SENDLINE(x)                                 sendLine(x)
-=======
 #define SEND_PGM(x)       send_P(PSTR(x))
 #define SENDLINE_PGM(x)   sendLine_P(PSTR(x))
 #define SEND_PGM_VAL(x,y) (send_P(PSTR(x)), sendLine(i16tostr3rj(y)))
 #define SEND(x)           send(x)
 #define SENDLINE(x)       sendLine(x)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/anycubic_i3mega/anycubic_i3mega_lcd.cpp
 #if ENABLED(ANYCUBIC_LCD_DEBUG)
   #define SENDLINE_DBG_PGM(x,y)       (sendLine_P(PSTR(x)), SERIAL_ECHOLNPGM(y))
   #define SENDLINE_DBG_PGM_VAL(x,y,z) (sendLine_P(PSTR(x)), SERIAL_ECHOPGM(y), SERIAL_ECHOLN(z))

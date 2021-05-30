@@ -244,60 +244,9 @@ G29_TYPE GcodeSuite::G29() {
     G29_RETURN(false);
   }
 
-<<<<<<< HEAD
-  // Define local vars 'static' for manual probing, 'auto' otherwise
-  #define ABL_VAR TERN_(PROBE_MANUALLY, static)
-
-  ABL_VAR int verbose_level;
-  ABL_VAR xy_pos_t probePos;
-  ABL_VAR float measured_z;
-  ABL_VAR bool dryrun, abl_should_enable;
-
-  #if EITHER(PROBE_MANUALLY, AUTO_BED_LEVELING_LINEAR)
-    ABL_VAR int abl_probe_index;
-  #endif
-
-  #if ABL_GRID
-
-    #if ENABLED(PROBE_MANUALLY)
-      ABL_VAR xy_int8_t meshCount;
-    #endif
-
-    ABL_VAR xy_pos_t probe_position_lf, probe_position_rb;
-    ABL_VAR xy_float_t gridSpacing = { 0, 0 };
-
-    #if ENABLED(AUTO_BED_LEVELING_LINEAR)
-      ABL_VAR bool do_topography_map;
-      ABL_VAR xy_uint8_t abl_grid_points;
-    #else // Bilinear
-      constexpr xy_uint8_t abl_grid_points = { GRID_MAX_POINTS_X, GRID_MAX_POINTS_Y };
-    #endif
-
-    #if ENABLED(AUTO_BED_LEVELING_LINEAR)
-      ABL_VAR int abl_points;
-    #else
-      int constexpr abl_points = GRID_MAX_POINTS;
-    #endif
-
-    #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
-
-      ABL_VAR float zoffset;
-
-    #elif ENABLED(AUTO_BED_LEVELING_LINEAR)
-
-      ABL_VAR int indexIntoAB[GRID_MAX_POINTS_X][GRID_MAX_POINTS_Y];
-
-      ABL_VAR float eqnAMatrix[(GRID_MAX_POINTS) * 3], // "A" matrix of the linear system of equations
-                    eqnBVector[GRID_MAX_POINTS],       // "B" vector of Z points
-                    mean;
-    #endif
-
-  #elif ENABLED(AUTO_BED_LEVELING_3POINT)
-=======
   // Send 'N' to force homing before G29 (internal only)
   if (parser.seen_test('N'))
     process_subcommands_now_P(TERN(G28_L0_ENSURES_LEVELING_OFF, PSTR("G28L0"), G28_STR));
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   // Don't allow auto-leveling without homing first
   if (homing_needed_error()) G29_RETURN(false);
@@ -515,11 +464,7 @@ G29_TYPE GcodeSuite::G29() {
     if (seenA && g29_in_progress) {
       SERIAL_ECHOLNPGM("Manual G29 aborted");
       SET_SOFT_ENDSTOP_LOOSE(false);
-<<<<<<< HEAD
-      set_bed_leveling_enabled(abl_should_enable);
-=======
       set_bed_leveling_enabled(abl.reenable);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
       g29_in_progress = false;
       TERN_(LCD_BED_LEVELING, ui.wait_for_move = false);
     }

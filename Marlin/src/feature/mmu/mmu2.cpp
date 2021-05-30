@@ -317,33 +317,20 @@ void MMU2::mmu_loop() {
       #endif
 
       if (rx_ok()) {
-<<<<<<< HEAD:Marlin/src/feature/mmu2/mmu2.cpp
-        // Response to C0 mmu command in PRUSA_MMU2_S_MODE
-        bool can_reset = true;
-        #if ENABLED(PRUSA_MMU2_S_MODE)
-          if (!mmu2s_triggered && last_cmd == MMU_CMD_C0) {
-            can_reset = false;
-=======
         #if HAS_PRUSA_MMU2S
           // Respond to C0 MMU command in MMU2S model
           const bool keep_trying = !mmu2s_triggered && last_cmd == MMU_CMD_C0;
           if (keep_trying) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/feature/mmu/mmu2.cpp
             // MMU ok received but filament sensor not triggered, retrying...
             DEBUG_ECHOLNPGM("MMU => 'ok' (filament not present in gears)");
             DEBUG_ECHOLNPGM("MMU <= 'C0' (keep trying)");
             MMU2_COMMAND("C0");
           }
-<<<<<<< HEAD:Marlin/src/feature/mmu2/mmu2.cpp
-        #endif
-        if (can_reset) {
-=======
         #else
           constexpr bool keep_trying = false;
         #endif
 
         if (!keep_trying) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/feature/mmu/mmu2.cpp
           DEBUG_ECHOLNPGM("MMU => 'ok'");
           ready = true;
           state = 1;

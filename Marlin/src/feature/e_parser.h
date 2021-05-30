@@ -106,11 +106,6 @@ public:
       case EP_N:
         switch (c) {
           case '0' ... '9':
-<<<<<<< HEAD
-          case '-': case ' ':   break;
-          case 'M': state = EP_M;      break;
-          default:  state = EP_IGNORE;
-=======
           case '-': case ' ':     break;
           case 'M': state = EP_M; break;
           #if ENABLED(REALTIME_REPORTING_COMMANDS)
@@ -119,7 +114,6 @@ public:
             case 'R': state = EP_R; break;
           #endif
           default: state = EP_IGNORE;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         }
         break;
 
@@ -192,18 +186,6 @@ public:
           }
           break;
 
-<<<<<<< HEAD
-      case EP_M876S:
-        switch (c) {
-          case ' ': break;
-          case '0' ... '9':
-            state = EP_M876SN;
-            M876_reason = (uint8_t)(c - '0');
-            break;
-        }
-        break;
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
       #endif
 
       case EP_IGNORE:

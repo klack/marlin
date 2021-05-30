@@ -26,8 +26,6 @@
  * with simple implementations supplied by Marlin.
  */
 
-#ifdef __STM32F1__
-
 #include "../../inc/MarlinConfig.h"
 
 #if ENABLED(IIC_BL24CXX_EEPROM)

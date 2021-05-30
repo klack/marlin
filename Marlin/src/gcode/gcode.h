@@ -314,7 +314,14 @@
   #define HAS_FAST_MOVES 1
 #endif
 
-enum AxisRelative : uint8_t { REL_X, REL_Y, REL_Z, REL_E, E_MODE_ABS, E_MODE_REL };
+enum AxisRelative : uint8_t {
+  LOGICAL_AXIS_LIST(REL_E, REL_X, REL_Y, REL_Z)
+  #if HAS_EXTRUDERS
+    , E_MODE_ABS, E_MODE_REL
+  #endif
+};
+
+extern const char G28_STR[];
 
 class GcodeSuite {
 public:
@@ -497,13 +504,17 @@ private:
     static void G33();
   #endif
 
-  #if EITHER(Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
+  #if ANY(Z_MULTI_ENDSTOPS, Z_STEPPER_AUTO_ALIGN, MECHANICAL_GANTRY_CALIBRATION)
     static void G34();
   #endif
 
-  TERN_(Z_STEPPER_AUTO_ALIGN, static void M422());
+  #if ENABLED(Z_STEPPER_AUTO_ALIGN)
+    static void M422();
+  #endif
 
-  TERN_(ASSISTED_TRAMMING, static void G35());
+  #if ENABLED(ASSISTED_TRAMMING)
+    static void G35();
+  #endif
 
   #if ENABLED(G38_PROBE_TARGET)
     static void G38(const int8_t subcode);

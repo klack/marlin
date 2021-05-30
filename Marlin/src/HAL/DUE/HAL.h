@@ -120,11 +120,7 @@ void sei();                     // Enable interrupts
 void HAL_clear_reset_source();  // clear reset reason
 uint8_t HAL_get_reset_source(); // get reset reason
 
-<<<<<<< HEAD
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-=======
 void HAL_reboot();
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 //
 // ADC

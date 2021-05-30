@@ -55,13 +55,8 @@ void GcodeSuite::M118() {
   PORT_REDIRECT(WITHIN(port, 0, NUM_SERIAL) ? (port ? SERIAL_PORTMASK(port - 1) : SerialMask::All) : multiSerial.portMask);
 
   if (hasE) SERIAL_ECHO_START();
-  if (hasA) SERIAL_ECHOPGM("//");
+  if (hasA) SERIAL_ECHOPGM("// ");
   SERIAL_ECHOLN(p);
-<<<<<<< HEAD
 
   MYSERIAL1.print(p);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-
-  TERN_(HAS_MULTI_SERIAL, serial_port_index = old_serial);
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 }

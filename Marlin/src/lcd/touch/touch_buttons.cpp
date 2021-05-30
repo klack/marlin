@@ -58,16 +58,6 @@ uint8_t TouchButtons::read_buttons() {
   #ifdef HAS_WIRED_LCD
     int16_t x, y;
 
-<<<<<<< HEAD
-    if (!touchIO.getRawPoint(&x, &y)) return 0;
-
-    x = uint16_t((uint32_t(x) * XPT2046_X_CALIBRATION) >> 16) + XPT2046_X_OFFSET;
-    y = uint16_t((uint32_t(y) * XPT2046_Y_CALIBRATION) >> 16) + XPT2046_Y_OFFSET;
-
-    #if (TFT_ROTATION & TFT_ROTATE_180)
-      x = TOUCH_SENSOR_WIDTH - x;
-      y = TOUCH_SENSOR_HEIGHT - y;
-=======
     const bool is_touched = (TERN(TOUCH_SCREEN_CALIBRATION, touch_calibration.calibration.orientation, TOUCH_ORIENTATION) == TOUCH_PORTRAIT ? touchIO.getRawPoint(&y, &x) : touchIO.getRawPoint(&x, &y));
     if (!is_touched) return 0;
 
@@ -82,7 +72,6 @@ uint8_t TouchButtons::read_buttons() {
     #else
       x = uint16_t((uint32_t(x) * TOUCH_CALIBRATION_X) >> 16) + TOUCH_OFFSET_X;
       y = uint16_t((uint32_t(y) * TOUCH_CALIBRATION_Y) >> 16) + TOUCH_OFFSET_Y;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     #endif
 
     // Touch within the button area simulates an encoder button

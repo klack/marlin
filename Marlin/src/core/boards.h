@@ -109,7 +109,7 @@
 #define BOARD_MKS_GEN_L_V21           1153  // MKS GEN L V2.1
 #define BOARD_COPYMASTER_3D           1154  // Copymaster 3D
 #define BOARD_ORTUR_4                 1155  // Ortur 4
-#define BOARD_TENLOG_D3_HERO          1156  // Tenlog D3 Hero IDEX printer
+//#define BOARD_TENLOG_D3_HERO          1156  // Tenlog D3 Hero IDEX printer
 #define BOARD_TENLOG_D3_PRO_PLR       1156  // Tenlog D3 PRO with Powerloss Resume
 #define BOARD_RAMPS_S_12_EEFB         1157  // Ramps S 1.2 by Sakul.cz (Power outputs: Hotend0, Hotend1, Fan, Bed)
 #define BOARD_RAMPS_S_12_EEEB         1158  // Ramps S 1.2 by Sakul.cz (Power outputs: Hotend0, Hotend1, Hotend2, Bed)
@@ -160,6 +160,7 @@
 #define BOARD_PICA_REVB               1324  // PICA Shield (original version)
 #define BOARD_PICA                    1325  // PICA Shield (rev C or later)
 #define BOARD_INTAMSYS40              1326  // Intamsys 4.0 (Funmat HT)
+#define BOARD_MALYAN_M180             1327  // Malyan M180 Mainboard Version 2 (no display function, direct gcode only)
 
 //
 // ATmega1281, ATmega2561

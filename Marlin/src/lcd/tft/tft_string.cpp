@@ -123,23 +123,14 @@ void TFT_String::add(uint8_t *string, int8_t index, uint8_t *itemString) {
   eol();
 }
 
-<<<<<<< HEAD
-void TFT_String::add(uint8_t *string) {
-  wchar_t wchar;
-  while (*string) {
-=======
 void TFT_String::add(uint8_t *string, uint8_t max_len) {
   wchar_t wchar;
   while (*string && max_len) {
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     string = get_utf8_value_cb(string, read_byte, &wchar);
     if (wchar > 255) wchar |= 0x0080;
     uint8_t ch = uint8_t(wchar & 0x00FF);
     add_character(ch);
-<<<<<<< HEAD
-=======
     max_len--;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   }
   eol();
 }

@@ -64,7 +64,7 @@ def sanity_check_target():
 	if not result:
 		err = "Error: Build environment '%s' is incompatible with %s. Use one of these: %s" % \
 			  ( build_env, motherboard, ", ".join([ e[4:] for e in board_envs if e.startswith("env:") ]) )
-		raise SystemExit(err)
+		#raise SystemExit(err)
 
 	#
 	# Check for Config files in two common incorrect places

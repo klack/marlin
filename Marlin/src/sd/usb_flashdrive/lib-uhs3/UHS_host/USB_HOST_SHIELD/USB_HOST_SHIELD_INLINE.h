@@ -136,11 +136,7 @@ uint8_t* UHS_NI MAX3421E_HOST::bytesRd(uint8_t reg, uint8_t nbytes, uint8_t *dat
 uint8_t UHS_NI MAX3421E_HOST::gpioRd() {
         uint8_t gpin = 0;
         gpin = regRd(rIOPINS2); //pins 4-7
-<<<<<<< HEAD
-        gpin &= 0xF0; //clean lower nibble
-=======
         gpin &= 0xF0; //clean lower nybble
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         gpin |= (regRd(rIOPINS1) >> 4); //shift low bits and OR with upper from previous operation.
         return ( gpin);
 }

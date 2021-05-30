@@ -260,11 +260,7 @@
  *               _____                                             _____
  *           NC | · · | GND                                    5V | · · | GND
  *        RESET | · · | 1.31 (SD_DETECT)            (LCD_D7) 1.23 | · · | 1.22 (LCD_D6)
-<<<<<<< HEAD
- *  (MOSI) 0.18 | · · | 3.25 (BTN_EN2)              (LCD_D5) 1.21 | · · | 1.20 (LCD_D4)
-=======
  *  (MOSI) 0.18 | · ·   3.25 (BTN_EN2)              (LCD_D5) 1.21 | · ·   1.20 (LCD_D4)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
  * (SD_SS) 0.16 | · · | 3.26 (BTN_EN1)              (LCD_RS) 1.19 | · · | 1.18 (LCD_EN)
  *   (SCK) 0.15 | · · | 0.17 (MISO)                (BTN_ENC) 0.28 | · · | 1.30 (BEEPER)
  *               -----                                             -----
@@ -401,57 +397,12 @@
     #define TOUCH_BUTTONS_HW_SPI
     #define TOUCH_BUTTONS_HW_SPI_DEVICE        1
 
-<<<<<<< HEAD
-    #ifndef GRAPHICAL_TFT_UPSCALE
-      #define GRAPHICAL_TFT_UPSCALE            3
-    #endif
-    // SPI 1
-    #define SCK_PIN                        P0_15
-    #define MISO_PIN                       P0_17
-    #define MOSI_PIN                       P0_18
-
-    // Disable any LCD related PINs config
-    #define LCD_PINS_ENABLE                -1
-    #define LCD_PINS_RS                    -1
-
-    // XPT2046 Touch Screen calibration
-    #if ENABLED(TFT_CLASSIC_UI)
-      #ifndef XPT2046_X_CALIBRATION
-        #define XPT2046_X_CALIBRATION     -11245
-      #endif
-      #ifndef XPT2046_Y_CALIBRATION
-        #define XPT2046_Y_CALIBRATION       8629
-      #endif
-      #ifndef XPT2046_X_OFFSET
-        #define XPT2046_X_OFFSET             685
-      #endif
-      #ifndef XPT2046_Y_OFFSET
-        #define XPT2046_Y_OFFSET            -285
-      #endif
-    #elif ENABLED(TFT_480x320_SPI)
-      #ifndef XPT2046_X_CALIBRATION
-        #define XPT2046_X_CALIBRATION     -17232
-      #endif
-      #ifndef XPT2046_Y_CALIBRATION
-        #define XPT2046_Y_CALIBRATION      11196
-      #endif
-      #ifndef XPT2046_X_OFFSET
-        #define XPT2046_X_OFFSET            1047
-      #endif
-      #ifndef XPT2046_Y_OFFSET
-        #define XPT2046_Y_OFFSET            -358
-      #endif
-
-      #define TFT_BUFFER_SIZE               2400
-    #endif
-=======
     // SPI 1
     #define SD_SCK_PIN               EXP2_09_PIN
     #define SD_MISO_PIN              EXP2_10_PIN
     #define SD_MOSI_PIN              EXP2_05_PIN
 
     #define TFT_BUFFER_SIZE                 2400
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
   #elif IS_TFTGLCD_PANEL
 

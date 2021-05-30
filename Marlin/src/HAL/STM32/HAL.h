@@ -154,11 +154,7 @@ void HAL_clear_reset_source();
 // Reset reason
 uint8_t HAL_get_reset_source();
 
-<<<<<<< HEAD
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-=======
 void HAL_reboot();
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 void _delay_ms(const int delay);
 
@@ -208,8 +204,6 @@ void flashFirmware(const int16_t);
 typedef void (*systickCallback_t)(void);
 void systick_attach_callback(systickCallback_t cb);
 void HAL_SYSTICK_Callback();
-<<<<<<< HEAD
-=======
 
 extern volatile uint32_t systick_uptime_millis;
 
@@ -229,4 +223,3 @@ void set_pwm_frequency(const pin_t pin, int f_desired);
  *  Optionally allows changing the maximum size of the provided value to enable finer PWM duty control [default = 255]
  */
 void set_pwm_duty(const pin_t pin, const uint16_t v, const uint16_t v_size=255, const bool invert=false);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680

@@ -98,11 +98,7 @@
 //
 // LCD / Controller
 //
-<<<<<<< HEAD
-#if HAS_WIRED_LCD && DISABLED(LCD_USE_I2C_BUZZER)
-=======
 #if !defined(BEEPER_PIN) && HAS_WIRED_LCD && DISABLED(LCD_USE_I2C_BUZZER)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #define BEEPER_PIN                       P1_30  // (37) not 5V tolerant
 #endif
 

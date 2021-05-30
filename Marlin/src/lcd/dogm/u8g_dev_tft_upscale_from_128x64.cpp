@@ -135,11 +135,7 @@ static void setWindow(u8g_t *u8g, u8g_dev_t *dev, uint16_t Xmin, uint16_t Ymin, 
   tftio.set_window(Xmin, Ymin, Xmax, Ymax);
 }
 
-<<<<<<< HEAD:Marlin/src/lcd/dogm/u8g_dev_tft_upscale_from_128x64.cpp
-#if HAS_TOUCH_XPT2046
-=======
 #if HAS_TOUCH_BUTTONS
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/dogm/u8g_dev_tft_320x240_upscale_from_128x64.cpp
 
   static const uint8_t buttonD[] = {
     B01111111,B11111111,B11111111,B11111110,
@@ -358,13 +354,7 @@ uint8_t u8g_dev_tft_320x240_upscale_from_128x64_fn(u8g_t *u8g, u8g_dev_t *dev, u
 
   switch (msg) {
     case U8G_DEV_MSG_INIT:
-<<<<<<< HEAD:Marlin/src/lcd/dogm/u8g_dev_tft_upscale_from_128x64.cpp
-      dev->com_fn(u8g, U8G_COM_MSG_INIT, U8G_SPI_CLK_CYCLE_NONE, NULL);
-      tftio.Init();
-      tftio.InitTFT();
-=======
       dev->com_fn(u8g, U8G_COM_MSG_INIT, U8G_SPI_CLK_CYCLE_NONE, nullptr);
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/dogm/u8g_dev_tft_320x240_upscale_from_128x64.cpp
 
       if (preinit) {
         preinit = false;
@@ -446,11 +436,6 @@ uint8_t u8g_com_hal_tft_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_p
   switch (msg) {
     case U8G_COM_MSG_STOP: break;
     case U8G_COM_MSG_INIT:
-<<<<<<< HEAD:Marlin/src/lcd/dogm/u8g_dev_tft_upscale_from_128x64.cpp
-      u8g_SetPIOutput(u8g, U8G_PI_RESET);
-      u8g_Delay(50);
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/dogm/u8g_dev_tft_320x240_upscale_from_128x64.cpp
       isCommand = 0;
       break;
 

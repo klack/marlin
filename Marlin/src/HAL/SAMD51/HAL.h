@@ -32,12 +32,6 @@
   #include "MarlinSerial_AGCM4.h"
 
   // Serial ports
-<<<<<<< HEAD
-
-  // MYSERIAL0 required before MarlinSerial includes!
-
-  #define __MSERIAL(X) Serial##X
-=======
   typedef ForwardSerial1Class< decltype(Serial) > DefaultSerial1;
   typedef ForwardSerial1Class< decltype(Serial1) > DefaultSerial2;
   typedef ForwardSerial1Class< decltype(Serial2) > DefaultSerial3;
@@ -50,7 +44,6 @@
   extern DefaultSerial5 MSerial4;
 
   #define __MSERIAL(X) MSerial##X
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
   #define _MSERIAL(X) __MSERIAL(X)
   #define MSERIAL(X) _MSERIAL(INCREMENT(X))
 
@@ -114,11 +107,7 @@ typedef int8_t pin_t;
 void HAL_clear_reset_source();  // clear reset reason
 uint8_t HAL_get_reset_source(); // get reset reason
 
-<<<<<<< HEAD
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-=======
 void HAL_reboot();
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
 //
 // ADC

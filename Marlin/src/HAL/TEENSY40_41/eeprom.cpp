@@ -30,13 +30,6 @@
 
 #if USE_WIRED_EEPROM
 
-<<<<<<< HEAD
-/**
- * HAL PersistentStore for Teensy 4.0 (IMXRT1062DVL6A) / 4.1 (IMXRT1062DVJ6A)
- */
-
-=======
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 #include "../shared/eeprom_api.h"
 #include <avr/eeprom.h>
 

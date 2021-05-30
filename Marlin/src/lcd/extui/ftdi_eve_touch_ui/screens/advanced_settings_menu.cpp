@@ -36,11 +36,7 @@ void AdvancedSettingsMenu::onRedraw(draw_mode_t what) {
        .cmd(CLEAR(true,true,true));
   }
 
-<<<<<<< HEAD:Marlin/src/lcd/extui/lib/ftdi_eve_touch_ui/screens/advanced_settings_menu.cpp
-    #ifdef TOUCH_UI_PORTRAIT
-=======
     #if ENABLED(TOUCH_UI_PORTRAIT)
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/extui/ftdi_eve_touch_ui/screens/advanced_settings_menu.cpp
       #if EITHER(HAS_MULTI_HOTEND, SENSORLESS_HOMING)
         #define GRID_ROWS 9
       #else

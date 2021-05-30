@@ -37,14 +37,8 @@ void GcodeSuite::M21() { card.mount(); }
  * M22: Release SD Card
  */
 void GcodeSuite::M22() {
-<<<<<<< HEAD
-
-  if (!IS_SD_PRINTING()) card.release();
-
-=======
   if (!IS_SD_PRINTING()) card.release();
   IF_ENABLED(TFT_COLOR_UI, ui.refresh(LCDVIEW_CALL_REDRAW_NEXT));
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 }
 
 #endif // SDSUPPORT

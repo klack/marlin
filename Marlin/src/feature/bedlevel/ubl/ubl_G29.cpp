@@ -1033,20 +1033,6 @@ void set_message_with_feedback(PGM_P const msg_P) {
 
       SET_SOFT_ENDSTOP_LOOSE(false);
 
-<<<<<<< HEAD
-        SET_SOFT_ENDSTOP_LOOSE(true);
-
-        do {
-          idle();
-          new_z = lcd_mesh_edit();
-          TERN_(UBL_MESH_EDIT_MOVES_Z, do_blocking_move_to_z(h_offset + new_z)); // Move the nozzle as the point is edited
-          SERIAL_FLUSH();                                   // Prevent host M105 buffer overrun.
-        } while (!ui.button_pressed());
-
-        SET_SOFT_ENDSTOP_LOOSE(false);
-
-        if (!lcd_map_control) ui.return_to_status();        // Just editing a single point? Return to status
-=======
       if (!lcd_map_control) ui.return_to_status();        // Just editing a single point? Return to status
 
       // Button held down? Abort editing
@@ -1055,7 +1041,6 @@ void set_message_with_feedback(PGM_P const msg_P) {
         do_z_clearance(Z_CLEARANCE_BETWEEN_PROBES);
         set_message_with_feedback(GET_TEXT(MSG_EDITING_STOPPED));
       })) break;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
 
       // TODO: Disable leveling here so the Z value becomes the 'native' Z value.
 

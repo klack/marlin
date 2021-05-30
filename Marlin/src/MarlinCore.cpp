@@ -264,33 +264,11 @@ bool wait_for_heatup = true;
  * ******************************** FUNCTIONS ********************************
  * ***************************************************************************
  */
-
-void setup_killpin() {
-  #if HAS_KILL
-    #if KILL_PIN_STATE
-      SET_INPUT_PULLDOWN(KILL_PIN);
-    #else
-      SET_INPUT_PULLUP(KILL_PIN);
-    #endif
-  #endif
-}
-
 void setup_poweroff() {
   #ifdef POWER_LOSS_TRIGGER_BY_PIN
     SET_INPUT_PULLDOWN(POWER_OFF_PIN);
   #endif
 }
-
-void setup_powerhold() {
-  #if HAS_SUICIDE
-    OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_INVERTING);
-  #endif
-  #if ENABLED(PSU_CONTROL)
-    powersupply_on = ENABLED(PSU_DEFAULT_OFF);
-    if (ENABLED(PSU_DEFAULT_OFF)) PSU_OFF(); else PSU_ON();
-  #endif
-}
-
 /**
  * Stepper Reset (RigidBoard, et.al.)
  */
@@ -509,44 +487,8 @@ inline void manage_inactivity(const bool ignore_stepper_queue=false) {
     }
   #endif
 
-  #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
-    //Poweroff Pin dectection
-    static bool hadPower = false;
-    if (power_off_state() == false) { //Power is on
-      hadPower = true;
-    } else {
-      if (hadPower == true) {
-        SERIAL_ECHO_MSG("//lux:power_pin");
-        #if SERIAL_PORT_2 == 2
-          MYSERIAL1.print("//lux:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-        #endif
-        
-        //Safe Power off
-        stepper.quick_stop();
-        thermalManager.disable_all_heaters();
-        // print_job_timer.stop();
-        // planner.finish_and_disable();
-
-        #if HAS_FAN
-          thermalManager.zero_fan_speeds();
-          #if ENABLED(PROBING_FANS_OFF)
-            thermalManager.fans_paused = false;
-            ZERO(thermalManager.saved_fan_speed);
-          #endif
-        #endif
-
-        // safe_delay(1000); // Wait 1 second before switching off
-
-        #if HAS_SUICIDE
-          suicide();
-        #elif ENABLED(PSU_CONTROL)
-          PSU_OFF();
-          kill(M112_KILL_STR, nullptr, true);
-        #endif
-
-        hadPower = false;
-      }
-    }
+  #if HAS_FREEZE_PIN
+    Stepper::frozen = !READ(FREEZE_PIN);
   #endif
 
   #if HAS_HOME
@@ -892,6 +834,9 @@ void kill(PGM_P const lcd_error/*=nullptr*/, PGM_P const lcd_component/*=nullptr
   MYSERIAL1.print("Error:");
   MYSERIAL1.print(STR_ERR_KILLED);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
 
+  // Echo the LCD message to serial for extra context
+  if (lcd_error) { SERIAL_ECHO_START(); SERIAL_ECHOLNPGM_P(lcd_error); }
+
   #if HAS_DISPLAY
     ui.kill_screen(lcd_error ?: GET_TEXT(MSG_KILLED), lcd_component ?: NUL_STR);
   #else
@@ -1183,17 +1128,7 @@ void setup() {
     #endif
   #endif
 
-  MYSERIAL0.begin(BAUDRATE);
-  uint32_t serial_connect_timeout = millis() + 1000UL;
-  while (!MYSERIAL0 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-  #if HAS_MULTI_SERIAL
-    MYSERIAL1.begin(9600);
-    serial_connect_timeout = millis() + 1000UL;
-    while (!MYSERIAL1 && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
-  #endif
-  SERIAL_ECHO_MSG("start");
-
-  #if BOTH(HAS_TFT_LVGL_UI, USE_WIFI_FUNCTION)
+  #if BOTH(HAS_TFT_LVGL_UI, MKS_WIFI_MODULE)
     mks_esp_wifi_init();
     WIFISERIAL.begin(WIFI_BAUDRATE);
     serial_connect_timeout = millis() + 1000UL;
@@ -1220,6 +1155,7 @@ void setup() {
     SETUP_RUN(runout.setup());
   #endif
 
+  SETUP_RUN(setup_poweroff());
   #if HAS_TMC220x
     SETUP_RUN(tmc_serial_begin());
   #endif
@@ -1230,10 +1166,8 @@ void setup() {
     if (ENABLED(PSU_DEFAULT_OFF)) PSU_OFF(); else PSU_ON();
   #endif
 
-  SETUP_RUN(setup_poweroff());
-
-  #if HAS_TMC220x
-    SETUP_RUN(tmc_serial_begin());
+  #if ENABLED(POWER_LOSS_RECOVERY)
+    SETUP_RUN(recovery.setup());
   #endif
 
   #if HAS_L64XX
@@ -1282,11 +1216,6 @@ void setup() {
 
   // Some HAL need precise delay adjustment
   calibrate_delay_loop();
-
-  // Init buzzer pin(s)
-  #if USE_BEEPER
-    SETUP_RUN(buzzer.init());
-  #endif
 
   // Init buzzer pin(s)
   #if USE_BEEPER
@@ -1406,7 +1335,45 @@ void setup() {
   #if EITHER(Z_PROBE_SLED, SOLENOID_PROBE) && HAS_SOLENOID_1
     OUT_WRITE(SOL1_PIN, LOW); // OFF
   #endif
+    #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+	//Poweroff Pin dectection
+	static bool hadPower = false;
+	if (power_off_state() == false) { //Power is on
+	  hadPower = true;
+	} else {
+	  if (hadPower == true) {
+		SERIAL_ECHO_MSG("//lux:power_pin");
+		#if SERIAL_PORT_2 == 2
+		  MYSERIAL1.print("//lux:power_pin"); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+		#endif
+		
+		//Safe Power off
+		stepper.quick_stop();
+		thermalManager.disable_all_heaters();
+		// print_job_timer.stop();
+		// planner.finish_and_disable();
 
+		#if HAS_FAN
+		  thermalManager.zero_fan_speeds();
+		  #if ENABLED(PROBING_FANS_OFF)
+			thermalManager.fans_paused = false;
+			ZERO(thermalManager.saved_fan_speed);
+		  #endif
+		#endif
+
+		// safe_delay(1000); // Wait 1 second before switching off
+
+		#if HAS_SUICIDE
+		  suicide();
+		#elif ENABLED(PSU_CONTROL)
+		  PSU_OFF();
+		  kill(M112_KILL_STR, nullptr, true);
+		#endif
+
+		hadPower = false;
+	  }
+	}
+  #endif
   #if HAS_HOME
     SET_INPUT_PULLUP(HOME_PIN);
   #endif

@@ -1891,11 +1891,7 @@ void HMI_SDCardUpdate() {
       else if (checkkey == PrintProcess || checkkey == Tune || printingIsActive()) {
         // TODO: Move card removed abort handling
         //       to CardReader::manage_media.
-<<<<<<< HEAD
-        card.flag.abort_sd_printing = true;
-=======
         card.abortFilePrintSoon();
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         wait_for_heatup = wait_for_user = false;
         dwin_abort_flag = true; // Reset feedrate, return to Home
       }
@@ -2315,11 +2311,7 @@ void HMI_PauseOrStop() {
         checkkey = Back_Main;
         if (HMI_flag.home_flag) planner.synchronize(); // Wait for planner moves to finish!
         wait_for_heatup = wait_for_user = false;       // Stop waiting for heating/user
-<<<<<<< HEAD
-        card.flag.abort_sd_printing = true;            // Let the main loop handle SD abort
-=======
         card.abortFilePrintSoon();                     // Let the main loop handle SD abort
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
         dwin_abort_flag = true;                        // Reset feedrate, return to Home
         #ifdef ACTION_ON_CANCEL
           host_action_cancel();
@@ -3984,11 +3976,7 @@ void EachMomentUpdate() {
   else if (dwin_abort_flag && !HMI_flag.home_flag) { // Print Stop
     dwin_abort_flag = false;
     HMI_ValueStruct.print_speed = feedrate_percentage = 100;
-<<<<<<< HEAD
-    dwin_zoffset = TERN0(HAS_BED_PROBE, probe.offset.z);
-=======
     dwin_zoffset = BABY_Z_VAR;
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
     select_page.set(0);
     Goto_MainMenu();
   }

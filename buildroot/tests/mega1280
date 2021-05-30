@@ -49,11 +49,7 @@ exec_test $1 $2 "RAMPS | DELTA | RRD LCD | DELTA_AUTO_CALIBRATION | DELTA_CALIBR
 use_example_configs delta/generic
 opt_set LCD_LANGUAGE cz
 opt_enable REPRAP_DISCOUNT_SMART_CONTROLLER DELTA_CALIBRATION_MENU AUTO_BED_LEVELING_BILINEAR BLTOUCH
-<<<<<<< HEAD:buildroot/tests/mega1280-tests
-exec_test $1 $2 "DELTA | RRD LCD | ABL Bilinear | BLTOUCH"
-=======
 exec_test $1 $2 "DELTA | RRD LCD | ABL Bilinear | BLTOUCH" "$3"
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:buildroot/tests/mega1280
 
 # clean up
 restore_configs

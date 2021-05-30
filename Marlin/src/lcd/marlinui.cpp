@@ -44,11 +44,6 @@ MarlinUI ui;
   #include "../gcode/queue.h"
   #include "fontutils.h"
   #include "../sd/cardreader.h"
-<<<<<<< HEAD:Marlin/src/lcd/ultralcd.cpp
-  #if EITHER(EXTENSIBLE_UI, DWIN_CREALITY_LCD)
-    #define START_OF_UTF8_CHAR(C) (((C) & 0xC0u) != 0x80U)
-  #endif
-=======
 #endif
 
 #if ENABLED(DWIN_CREALITY_LCD)
@@ -61,7 +56,6 @@ MarlinUI ui;
 
 #if ANY(HAS_DISPLAY, HAS_STATUS_MESSAGE, BASIC_PROGRESS_BAR)
   #include "../module/printcounter.h"
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680:Marlin/src/lcd/marlinui.cpp
 #endif
 
 #if LCD_HAS_WAIT_FOR_MOVE

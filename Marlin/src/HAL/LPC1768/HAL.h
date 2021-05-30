@@ -228,13 +228,4 @@ void set_pwm_duty(const pin_t pin, const uint16_t v, const uint16_t v_size=255, 
 void HAL_clear_reset_source(void);
 uint8_t HAL_get_reset_source(void);
 
-<<<<<<< HEAD
-inline void HAL_reboot() {}  // reboot the board or restart the bootloader
-
-// Add strcmp_P if missing
-#ifndef strcmp_P
-  #define strcmp_P(a, b) strcmp((a), (b))
-#endif
-=======
 void HAL_reboot();
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680

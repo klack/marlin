@@ -189,13 +189,8 @@ void _lcd_ubl_edit_mesh() {
    * UBL Validate Custom Mesh Command
    */
   void _lcd_ubl_validate_custom_mesh() {
-<<<<<<< HEAD
-    char ubl_lcd_gcode[24];
-    sprintf_P(ubl_lcd_gcode, PSTR("G28\nG26 C P H%" PRIi16 TERN_(HAS_HEATED_BED, " B%" PRIi16))
-=======
     char ubl_lcd_gcode[20];
     sprintf_P(ubl_lcd_gcode, PSTR("G28\nG26CPH%" PRIi16 TERN_(HAS_HEATED_BED, "B%" PRIi16))
->>>>>>> 605b539ecdcaaa54cfaec2317c2fe7eab0ba2680
       , custom_hotend_temp
       #if HAS_HEATED_BED
         , custom_bed_temp

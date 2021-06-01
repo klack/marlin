@@ -111,8 +111,9 @@ bool pin_is_protected(const pin_t pin);
 
 inline bool power_off_state() { 
   #ifdef POWER_LOSS_TRIGGER_BY_PIN
-	return READ(POWER_OFF_PIN) == POWER_OFF_STATE; 
+	  return READ(POWER_OFF_PIN) == POWER_OFF_STATE; 
   #endif
   return false;
 }
+
 extern const char M112_KILL_STR[];

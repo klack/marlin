@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "2.0.7.2 for Luxuri 0.8.x"
+#define SHORT_BUILD_VERSION "bugfix 2.0.8.2.20210529 for Luxuri 0.8.x"
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }

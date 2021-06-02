@@ -103,7 +103,7 @@
 //
 #ifdef PSU_CONTROL
    #define PS_ON_PIN               40
-   #define PSU_ACTIVE_STATE LOW      // Set 'LOW' for ATX, 'HIGH' for X-Box
+   #define PSU_ACTIVE_STATE HIGH      // Set 'LOW' for ATX, 'HIGH' for X-Box
 #endif
 
 #ifdef POWER_LOSS_TRIGGER_BY_PIN

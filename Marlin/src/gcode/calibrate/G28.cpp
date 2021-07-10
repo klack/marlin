@@ -445,7 +445,7 @@ void GcodeSuite::G28() {
       idex_set_parked();
 
       dual_x_carriage_mode = IDEX_saved_mode;
-      set_duplication_enabled(IDEX_saved_duplication_state);
+      //set_duplication_enabled(IDEX_saved_duplication_state); // 30/06/2021 Murdock Bug Fix #104 & #33
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(slow_homing));
     }

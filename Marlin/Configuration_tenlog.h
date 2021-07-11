@@ -16,7 +16,6 @@
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
 #define BABYSTEP_HOTEND_Z_OFFSET 
-
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
@@ -58,10 +57,7 @@
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
-  // #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
-
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
   #undef verS3
@@ -121,7 +117,11 @@
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false
 	#define INVERT_E0_DIR true
-	#define INVERT_E1_DIR false
+  #if ENABLED(TitanExtruder)
+    #define INVERT_E1_DIR true
+  #else
+    #define INVERT_E1_DIR false
+	#endif
 #elif ENABLED(Driver2209BTTSKRPRO)
   #define verS2 "2209BTTSKRPRO"
   #define DriverType TMC2209

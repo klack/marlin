@@ -542,8 +542,13 @@
  * Multiple extruders can be assigned to the same pin in which case
  * the fan will turn on when any selected extruder is above the threshold.
  */
-#define E0_AUTO_FAN_PIN FAN2_PIN
-#define E1_AUTO_FAN_PIN FAN2_PIN
+#if ENABLED(OCTOPUS)
+  #define E0_AUTO_FAN_PIN PA8
+  #define E1_AUTO_FAN_PIN PE5
+#else 
+  #define E0_AUTO_FAN_PIN FAN2_PIN
+  #define E1_AUTO_FAN_PIN FAN2_PIN
+#endif 
 #define E2_AUTO_FAN_PIN -1
 #define E3_AUTO_FAN_PIN -1
 #define E4_AUTO_FAN_PIN -1
@@ -568,9 +573,15 @@
  * The multiplexer is automatically switched at tool-change.
  * Set FANMUX[012]_PINs below for up to 2, 4, or 8 multiplexed fans.
  */
-#define FANMUX0_PIN -1
-#define FANMUX1_PIN -1
-#define FANMUX2_PIN -1
+#if ENABLED(OCTOPUS)
+  #define FANMUX0_PIN PD12
+  #define FANMUX1_PIN PD13
+  #define FANMUX2_PIN -1
+#else
+  #define FANMUX0_PIN -1
+  #define FANMUX1_PIN -1
+  #define FANMUX2_PIN -1
+#endif
 
 /**
  * M355 Case Light on-off / brightness
@@ -2231,8 +2242,8 @@
  */
 #if HAS_MULTI_EXTRUDER
   // Z raise distance for tool-change, as needed for some extruders
-  #define TOOLCHANGE_ZRAISE                 2 // (mm)
-  //#define TOOLCHANGE_ZRAISE_BEFORE_RETRACT  // Apply raise before swap retraction (if enabled)
+  #define TOOLCHANGE_ZRAISE                 5 // (mm)
+  #define TOOLCHANGE_ZRAISE_BEFORE_RETRACT  // Apply raise before swap retraction (if enabled)
   //#define TOOLCHANGE_NO_RETURN              // Never return to previous position on tool-change
   #if ENABLED(TOOLCHANGE_NO_RETURN)
     //#define EVENT_GCODE_AFTER_TOOLCHANGE "G12X"   // Extra G-code to run after tool-change

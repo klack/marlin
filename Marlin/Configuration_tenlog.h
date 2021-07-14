@@ -92,9 +92,7 @@
 #if ENABLED(OCTOPUS)
   #undef verS3
   #define verS3 "OCTOPUS"
-  #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
-  #define USE_CONTROLLER_FAN
 #endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
@@ -125,19 +123,25 @@
 #elif ENABLED(Driver2209BTTSKRPRO)
   #define verS2 "2209BTTSKRPRO"
   #define DriverType TMC2209
-  #define INVERT_X_DIR true
-  #define INVERT_Y_DIR false
-  #define INVERT_Z_DIR true
+  #define INVERT_Z_DIR false
   #define INVERT_Z2_VS_Z_DIR false
   #define INVERT_X2_VS_X_DIR false
   #define INVERT_E0_DIR true
-  #define INVERT_E1_DIR false
+  #define INVERT_E1_DIR true
   #define X_MIN_ENDSTOP_INVERTING true
   #define Z_MIN_ENDSTOP_INVERTING true
   #define Z_MAX_ENDSTOP_INVERTING true
   #define X_MAX_ENDSTOP_INVERTING true
   #define TMC_DEBUG
-  #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z E \n M106 P1 S255"
+  #if ENABLED(BTTSKRPRO)
+    #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z" // Enable stealthchop for all steppers except extruders
+    #define INVERT_X_DIR true
+    #define INVERT_Y_DIR false
+  #elif ENABLED(OCTOPUS)
+    #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E" // Disable stealthchop for extruders
+    #define INVERT_X_DIR false
+    #define INVERT_Y_DIR true
+  #endif
 #endif
 #if ENABLED(Driver2209BTTSKRPRO)
   #define X_CURRENT       580 
@@ -187,7 +191,7 @@
   #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 428, 428 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
 #endif
 
 #define OPTICALY_Y_OFFSET 4
@@ -242,9 +246,11 @@
   #define HAS_PROBE
   #define BLTOUCH
   #if ENABLED(BMGExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { +20, -57, +0.5 }
+    #define NOZZLE_TO_PROBE_OFFSET { +20, -57, -3.35 }
     #undef HOMING_FEEDRATE_MM_M
     #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (16000) }
+    #define Z_HOMING_HEIGHT  7 
+    #define Z_AFTER_HOMING  2 
   #else
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #endif
@@ -293,8 +299,9 @@
   #elif ENABLED(OCTOPUS)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
-    #define Z_MIN_PROBE_PIN                   PA2
+    #define Z_MIN_PROBE_PIN                   PB7
     #define XY_PROBE_FEEDRATE 16000
+    #define USE_PROBE_FOR_Z_HOMING
   #else
     #define XY_PROBE_FEEDRATE (133*60)
     #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN

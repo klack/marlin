@@ -57,8 +57,6 @@
   #define MIN_SOFTWARE_ENDSTOP_Y
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
-  // #define HOST_ACTION_COMMANDS
-  // #define HOST_PROMPT_SUPPORT
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
@@ -99,7 +97,11 @@
   #define INVERT_Y_DIR false
   #define INVERT_Z_DIR true
   #define INVERT_E0_DIR false
-  #define INVERT_E1_DIR true
+  #if ENABLED(TitanExtruder)
+    #define INVERT_E1_DIR false
+  #else
+    #define INVERT_E1_DIR true
+	#endif
 #elif ENABLED(Driver2208)
   #define verS2 "2208"
   #define DriverType TMC2208_STANDALONE

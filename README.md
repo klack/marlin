@@ -1,3 +1,4 @@
+/Marlin/
 THIS WILL VOID YOUR MANUFACTURER WARRANTY
 
 Do not run this firmware on production machines.
@@ -66,16 +67,16 @@ And that's it!
 - Unplug your Z endstops. Yep, both of them. You won't need them with the Z-alignment option and we are using the probe as our endstop!
 - Plug the wires into each endstop to the correct matchup.
   - Right Endstop
-    - Red->Red
-    - Green->Orange
-    - White->Brown
-    ![Right endstop wires](docs/PXL_20210112_201922725.jpg)
+	- Red->Red
+	- Green->Orange
+	- White->Brown
+	![Right endstop wires](docs/PXL_20210112_201922725.jpg)
   - Left Endstop
-    - Black->White
-    ![Left endstop wires](docs/PXL_20210112_201846120.jpg)
-    
+	- Black->White
+	![Left endstop wires](docs/PXL_20210112_201846120.jpg)
+	
 That's it! I taped multiple jumper wires together to make the right length cables. All the plugging in is done above the printer!
-    
+	
 ### How to configure...
 
 #### Install BL-Touch Firmware

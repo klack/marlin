@@ -30,7 +30,7 @@
   #include "../../feature/backlash.h"
 #endif
 
-#include "../../lcd/ultralcd.h"
+#include "../../lcd/marlinui.h"
 #include "../../module/motion.h"
 #include "../../module/planner.h"
 #include "../../module/tool_change.h"
@@ -143,14 +143,16 @@ inline void park_above_object(measurements_t &m, const float uncertainty) {
 
 #endif
 
+#if !PIN_EXISTS(CALIBRATION)
+  #include "../../module/probe.h"
+#endif
+
 inline bool read_calibration_pin() {
   return (
     #if PIN_EXISTS(CALIBRATION)
       READ(CALIBRATION_PIN) != CALIBRATION_PIN_INVERTING
-    #elif HAS_CUSTOM_PROBE_PIN
-      READ(Z_MIN_PROBE_PIN) != Z_MIN_PROBE_ENDSTOP_INVERTING
     #else
-      READ(Z_MIN_PIN) != Z_MIN_ENDSTOP_INVERTING
+      PROBE_TRIGGERED()
     #endif
   );
 }
@@ -192,16 +194,20 @@ float measuring_movement(const AxisEnum axis, const int dir, const bool stop_sta
 inline float measure(const AxisEnum axis, const int dir, const bool stop_state, float * const backlash_ptr, const float uncertainty) {
   const bool fast = uncertainty == CALIBRATION_MEASUREMENT_UNKNOWN;
 
-  // Save position
-  destination = current_position;
-  const float start_pos = destination[axis];
+  // Save the current position of the specified axis
+  const float start_pos = current_position[axis];
+
+  // Take a measurement. Only the specified axis will be affected.
   const float measured_pos = measuring_movement(axis, dir, stop_state, fast);
+
   // Measure backlash
   if (backlash_ptr && !fast) {
     const float release_pos = measuring_movement(axis, -dir, !stop_state, fast);
     *backlash_ptr = ABS(release_pos - measured_pos);
   }
-  // Return to starting position
+
+  // Move back to the starting position
+  destination = current_position;
   destination[axis] = start_pos;
   do_blocking_move_to(destination, MMM_TO_MMS(CALIBRATION_FEEDRATE_TRAVEL));
   return measured_pos;
@@ -233,12 +239,12 @@ inline void probe_side(measurements_t &m, const float uncertainty, const side_t 
       }
     #endif
     #if AXIS_CAN_CALIBRATE(X)
+      case RIGHT: dir = -1;
       case LEFT:  axis = X_AXIS; break;
-      case RIGHT: axis = X_AXIS; dir = -1; break;
     #endif
     #if AXIS_CAN_CALIBRATE(Y)
+      case BACK:  dir = -1;
       case FRONT: axis = Y_AXIS; break;
-      case BACK:  axis = Y_AXIS; dir = -1; break;
     #endif
     default: return;
   }
@@ -301,17 +307,11 @@ inline void probe_sides(measurements_t &m, const float uncertainty) {
 
   // The difference between the known and the measured location
   // of the calibration object is the positional error
-  m.pos_error.x = (0
-    #if HAS_X_CENTER
-      + true_center.x - m.obj_center.x
-    #endif
+  LINEAR_AXIS_CODE(
+    m.pos_error.x = TERN0(HAS_X_CENTER, true_center.x - m.obj_center.x),
+    m.pos_error.y = TERN0(HAS_Y_CENTER, true_center.y - m.obj_center.y),
+    m.pos_error.z = true_center.z - m.obj_center.z
   );
-  m.pos_error.y = (0
-    #if HAS_Y_CENTER
-      + true_center.y - m.obj_center.y
-    #endif
-  );
-  m.pos_error.z = true_center.z - m.obj_center.z;
 }
 
 #if ENABLED(CALIBRATION_REPORTING)
@@ -373,7 +373,7 @@ inline void probe_sides(measurements_t &m, const float uncertainty) {
 
   inline void report_measured_positional_error(const measurements_t &m) {
     SERIAL_CHAR('T');
-    SERIAL_ECHO(int(active_extruder));
+    SERIAL_ECHO(active_extruder);
     SERIAL_ECHOLNPGM(" Positional Error:");
     #if HAS_X_CENTER
       SERIAL_ECHOLNPAIR_P(SP_X_STR, m.pos_error.x);
@@ -406,7 +406,7 @@ inline void probe_sides(measurements_t &m, const float uncertainty) {
     //
     inline void report_hotend_offsets() {
       LOOP_S_L_N(e, 1, HOTENDS)
-        SERIAL_ECHOLNPAIR_P(PSTR("T"), int(e), PSTR(" Hotend Offset X"), hotend_offset[e].x, SP_Y_STR, hotend_offset[e].y, SP_Z_STR, hotend_offset[e].z);
+        SERIAL_ECHOLNPAIR_P(PSTR("T"), e, PSTR(" Hotend Offset X"), hotend_offset[e].x, SP_Y_STR, hotend_offset[e].y, SP_Z_STR, hotend_offset[e].z);
     }
   #endif
 
@@ -457,7 +457,9 @@ inline void calibrate_backlash(measurements_t &m, const float uncertainty) {
       // New scope for TEMPORARY_BACKLASH_CORRECTION
       TEMPORARY_BACKLASH_CORRECTION(all_on);
       TEMPORARY_BACKLASH_SMOOTHING(0.0f);
-      const xyz_float_t move = { AXIS_CAN_CALIBRATE(X) * 3, AXIS_CAN_CALIBRATE(Y) * 3, AXIS_CAN_CALIBRATE(Z) * 3 };
+      const xyz_float_t move = LINEAR_AXIS_ARRAY(
+        AXIS_CAN_CALIBRATE(X) * 3, AXIS_CAN_CALIBRATE(Y) * 3, AXIS_CAN_CALIBRATE(Z) * 3
+      );
       current_position += move; calibration_move();
       current_position -= move; calibration_move();
     }
@@ -587,12 +589,12 @@ void GcodeSuite::G425() {
   SET_SOFT_ENDSTOP_LOOSE(true);
 
   measurements_t m;
-  float uncertainty = parser.seenval('U') ? parser.value_float() : CALIBRATION_MEASUREMENT_UNCERTAIN;
+  const float uncertainty = parser.floatval('U', CALIBRATION_MEASUREMENT_UNCERTAIN);
 
-  if (parser.seen('B'))
+  if (parser.seen_test('B'))
     calibrate_backlash(m, uncertainty);
-  else if (parser.seen('T'))
-    calibrate_toolhead(m, uncertainty, parser.has_value() ? parser.value_int() : active_extruder);
+  else if (parser.seen_test('T'))
+    calibrate_toolhead(m, uncertainty, parser.intval('T', active_extruder));
   #if ENABLED(CALIBRATION_REPORTING)
     else if (parser.seen('V')) {
       probe_sides(m, uncertainty);

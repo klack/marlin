@@ -35,8 +35,10 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 
-enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
-#define TMC_INIT(ST, STEALTH_INDEX) tmc_init(stepper##ST, ST##_CURRENT, ST##_MICROSTEPS, ST##_HYBRID_THRESHOLD, stealthchop_by_axis[STEALTH_INDEX])
+enum StealthIndex : uint8_t {
+  LOGICAL_AXIS_LIST(STEALTH_AXIS_E, STEALTH_AXIS_X, STEALTH_AXIS_Y, STEALTH_AXIS_Z)
+};
+#define TMC_INIT(ST, STEALTH_INDEX) tmc_init(stepper##ST, ST##_CURRENT, ST##_MICROSTEPS, ST##_HYBRID_THRESHOLD, stealthchop_by_axis[STEALTH_INDEX], chopper_timing_##ST, ST##_INTERPOLATE)
 
 //   IC = TMC model number
 //   ST = Stepper object letter
@@ -62,7 +64,7 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 #define _TMC_UART_DEFINE(SWHW, IC, ST, AI) TMC_UART_##SWHW##_DEFINE(IC, ST, TMC_##ST##_LABEL, AI)
 #define TMC_UART_DEFINE(SWHW, ST, AI) _TMC_UART_DEFINE(SWHW, ST##_DRIVER_TYPE, ST, AI##_AXIS)
 
-#if DISTINCT_E > 1
+#if ENABLED(DISTINCT_E_FACTORS)
   #define TMC_SPI_DEFINE_E(AI) TMC_SPI_DEFINE(E##AI, E##AI)
   #define TMC_UART_DEFINE_E(SWHW, AI) TMC_UART_DEFINE(SWHW, E##AI, E##AI)
 #else
@@ -131,15 +133,15 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC2130)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC2130Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC2130Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     st.begin();
 
     CHOPCONF_t chopconf{0};
-    chopconf.tbl = 1;
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.tbl = 0b01;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -166,15 +168,15 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC2160)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC2160Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC2160Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     st.begin();
 
     CHOPCONF_t chopconf{0};
-    chopconf.tbl = 1;
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.tbl = 0b01;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -351,7 +353,7 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
     #endif
   #endif
 
-  enum TMCAxis : uint8_t { X, Y, Z, X2, Y2, Z2, Z3, Z4, E0, E1, E2, E3, E4, E5, E6, E7, TOTAL };
+  enum TMCAxis : uint8_t { LINEAR_AXIS_LIST(X, Y, Z), X2, Y2, Z2, Z3, Z4, E0, E1, E2, E3, E4, E5, E6, E7, TOTAL };
 
   void tmc_serial_begin() {
     #if HAS_TMC_HW_SERIAL
@@ -484,7 +486,7 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC2208)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC2208Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC2208Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     TMC2208_n::GCONF_t gconf{0};
     gconf.pdn_disable = true; // Use UART
     gconf.mstep_reg_select = true; // Select microsteps with UART
@@ -495,10 +497,10 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
     TMC2208_n::CHOPCONF_t chopconf{0};
     chopconf.tbl = 0b01; // blank_time = 24
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -526,7 +528,7 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC2209)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC2209Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC2209Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     TMC2208_n::GCONF_t gconf{0};
     gconf.pdn_disable = true; // Use UART
     gconf.mstep_reg_select = true; // Select microsteps with UART
@@ -537,10 +539,10 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
     TMC2208_n::CHOPCONF_t chopconf{0};
     chopconf.tbl = 0b01; // blank_time = 24
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -568,21 +570,21 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC2660)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC2660Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t, const bool) {
+  void tmc_init(TMCMarlin<TMC2660Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t, const bool, const chopper_timing_t &chop_init, const bool interpolate) {
     st.begin();
 
     TMC2660_n::CHOPCONF_t chopconf{0};
-    chopconf.tbl = 1;
-    chopconf.toff = chopper_timing.toff;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.tbl = 0b01;
+    chopconf.toff = chop_init.toff;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     st.CHOPCONF(chopconf.sr);
 
     st.sdoff(0);
     st.rms_current(mA);
     st.microsteps(microsteps);
     TERN_(SQUARE_WAVE_STEPPING, st.dedge(true));
-    st.intpol(INTERPOLATE);
+    st.intpol(interpolate);
     st.diss2g(true); // Disable short to ground protection. Too many false readings?
     TERN_(TMC_DEBUG, st.rdsel(0b01));
   }
@@ -590,15 +592,15 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC5130)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC5130Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC5130Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     st.begin();
 
     CHOPCONF_t chopconf{0};
-    chopconf.tbl = 1;
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.tbl = 0b01;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -625,15 +627,15 @@ enum StealthIndex : uint8_t { STEALTH_AXIS_XY, STEALTH_AXIS_Z, STEALTH_AXIS_E };
 
 #if HAS_DRIVER(TMC5160)
   template<char AXIS_LETTER, char DRIVER_ID, AxisEnum AXIS_ID>
-  void tmc_init(TMCMarlin<TMC5160Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth) {
+  void tmc_init(TMCMarlin<TMC5160Stepper, AXIS_LETTER, DRIVER_ID, AXIS_ID> &st, const uint16_t mA, const uint16_t microsteps, const uint32_t hyb_thrs, const bool stealth, const chopper_timing_t &chop_init, const bool interpolate) {
     st.begin();
 
     CHOPCONF_t chopconf{0};
-    chopconf.tbl = 1;
-    chopconf.toff = chopper_timing.toff;
-    chopconf.intpol = INTERPOLATE;
-    chopconf.hend = chopper_timing.hend + 3;
-    chopconf.hstrt = chopper_timing.hstrt - 1;
+    chopconf.tbl = 0b01;
+    chopconf.toff = chop_init.toff;
+    chopconf.intpol = interpolate;
+    chopconf.hend = chop_init.hend + 3;
+    chopconf.hstrt = chop_init.hstrt - 1;
     TERN_(SQUARE_WAVE_STEPPING, chopconf.dedge = true);
     st.CHOPCONF(chopconf.sr);
 
@@ -716,19 +718,24 @@ void restore_trinamic_drivers() {
 }
 
 void reset_trinamic_drivers() {
-  static constexpr bool stealthchop_by_axis[] = { ENABLED(STEALTHCHOP_XY), ENABLED(STEALTHCHOP_Z), ENABLED(STEALTHCHOP_E) };
+  static constexpr bool stealthchop_by_axis[] = LOGICAL_AXIS_ARRAY(
+    ENABLED(STEALTHCHOP_E),
+    ENABLED(STEALTHCHOP_XY),
+    ENABLED(STEALTHCHOP_XY),
+    ENABLED(STEALTHCHOP_Z)
+  );
 
   #if AXIS_IS_TMC(X)
-    TMC_INIT(X, STEALTH_AXIS_XY);
+    TMC_INIT(X, STEALTH_AXIS_X);
   #endif
   #if AXIS_IS_TMC(X2)
-    TMC_INIT(X2, STEALTH_AXIS_XY);
+    TMC_INIT(X2, STEALTH_AXIS_X);
   #endif
   #if AXIS_IS_TMC(Y)
-    TMC_INIT(Y, STEALTH_AXIS_XY);
+    TMC_INIT(Y, STEALTH_AXIS_Y);
   #endif
   #if AXIS_IS_TMC(Y2)
-    TMC_INIT(Y2, STEALTH_AXIS_XY);
+    TMC_INIT(Y2, STEALTH_AXIS_Y);
   #endif
   #if AXIS_IS_TMC(Z)
     TMC_INIT(Z, STEALTH_AXIS_Z);
@@ -792,7 +799,7 @@ void reset_trinamic_drivers() {
         stepperZ4.homing_threshold(CAT(TERN(Z4_SENSORLESS, Z4, Z), _STALL_SENSITIVITY));
       #endif
     #endif
-  #endif
+  #endif // USE SENSORLESS
 
   #ifdef TMC_ADV
     TMC_ADV()
@@ -830,11 +837,11 @@ void reset_trinamic_drivers() {
   }
 
   constexpr bool sc_hw_done(size_t start, size_t end) { return start == end; }
-  constexpr bool sc_hw_skip(const char* port_name) { return !(*port_name); }
-  constexpr bool sc_hw_match(const char* port_name, uint32_t address, size_t start, size_t end) {
+  constexpr bool sc_hw_skip(const char *port_name) { return !(*port_name); }
+  constexpr bool sc_hw_match(const char *port_name, uint32_t address, size_t start, size_t end) {
     return !sc_hw_done(start, end) && !sc_hw_skip(port_name) && (address == sanity_tmc_hw_details[start].address && str_eq_ce(port_name, sanity_tmc_hw_details[start].port));
   }
-  constexpr int count_tmc_hw_serial_matches(const char* port_name, uint32_t address, size_t start, size_t end) {
+  constexpr int count_tmc_hw_serial_matches(const char *port_name, uint32_t address, size_t start, size_t end) {
     return sc_hw_done(start, end) ? 0 : ((sc_hw_skip(port_name) ? 0 : (sc_hw_match(port_name, address, start, end) ? 1 : 0)) + count_tmc_hw_serial_matches(port_name, address, start + 1, end));
   }
 

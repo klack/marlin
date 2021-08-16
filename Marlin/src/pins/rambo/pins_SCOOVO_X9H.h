@@ -25,7 +25,9 @@
  * Rambo pin assignments MODIFIED FOR Scoovo X9H
  ************************************************/
 
-#include "env_target.h"
+#if NOT_TARGET(__AVR_ATmega2560__)
+  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
+#endif
 
 #define BOARD_INFO_NAME "Scoovo X9H"
 
@@ -90,7 +92,7 @@
 #define E1_MS2_PIN                            64
 
 #define DIGIPOTSS_PIN                         38
-#define DIGIPOT_CHANNELS { 4, 5, 3, 0, 1 }        // X Y Z E0 E1 digipot channels to stepper driver mapping
+#define DIGIPOT_CHANNELS {4,5,3,0,1}              // X Y Z E0 E1 digipot channels to stepper driver mapping
 
 //
 // Temperature Sensors

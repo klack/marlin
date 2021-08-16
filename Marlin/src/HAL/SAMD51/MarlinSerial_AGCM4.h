@@ -20,10 +20,6 @@
  */
 #pragma once
 
-#include "../../core/serial_hook.h"
-
-typedef Serial1Class<Uart> UartT;
-
-extern UartT Serial2;
-extern UartT Serial3;
-extern UartT Serial4;
+extern Uart Serial2;
+extern Uart Serial3;
+extern Uart Serial4;

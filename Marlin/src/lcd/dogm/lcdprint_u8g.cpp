@@ -11,9 +11,9 @@
 
 #if HAS_MARLINUI_U8GLIB
 
-#include "marlinui_DOGM.h"
+#include "ultralcd_DOGM.h"
 
-#include "../marlinui.h"
+#include "../ultralcd.h"
 #include "../../MarlinCore.h"
 
 #include "../fontutils.h"

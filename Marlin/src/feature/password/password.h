@@ -21,20 +21,20 @@
  */
 #pragma once
 
-#include "../../lcd/marlinui.h"
+#include "../../lcd/ultralcd.h"
 
 class Password {
 public:
-  static bool is_set, is_locked, did_first_run;
+  static bool is_set, is_locked;
   static uint32_t value, value_entry;
 
-  Password() {}
+  Password() { is_locked = false; }
 
   static void lock_machine();
-  static void authentication_check();
 
   #if HAS_LCD_MENU
     static void access_menu_password();
+    static void authentication_check();
     static void authentication_done();
     static void media_gatekeeper();
 
@@ -47,7 +47,7 @@ public:
     static void start_over();
 
     static void digit_entered();
-    static void set_password_done(const bool with_set=true);
+    static void set_password_done();
     static void menu_password_report();
 
     static void remove_password();

@@ -34,8 +34,6 @@ uint8_t ControllerFan::speed;
 
 #if ENABLED(CONTROLLER_FAN_EDITABLE)
   controllerFan_settings_t ControllerFan::settings; // {0}
- #else
-   const controllerFan_settings_t &ControllerFan::settings = controllerFan_defaults;
 #endif
 
 void ControllerFan::setup() {

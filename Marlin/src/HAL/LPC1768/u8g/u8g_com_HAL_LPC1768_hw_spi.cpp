@@ -62,13 +62,10 @@
 #include <U8glib.h>
 #include "../../shared/HAL_SPI.h"
 
-#ifndef LCD_SPI_SPEED
-  #ifdef SD_SPI_SPEED
-    #define LCD_SPI_SPEED SD_SPI_SPEED    // Assume SPI speed shared with SD
-  #else
-    #define LCD_SPI_SPEED SPI_FULL_SPEED  // Use full speed if SD speed is not supplied
-  #endif
-#endif
+void spiBegin();
+void spiInit(uint8_t spiRate);
+void spiSend(uint8_t b);
+void spiSend(const uint8_t* buf, size_t n);
 
 uint8_t u8g_com_HAL_LPC1768_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr) {
   switch (msg) {
@@ -84,7 +81,10 @@ uint8_t u8g_com_HAL_LPC1768_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, 
       u8g_SetPIOutput(u8g, U8G_PI_RESET);
       u8g_Delay(5);
       spiBegin();
-      spiInit(LCD_SPI_SPEED);
+      #ifndef SPI_SPEED
+        #define SPI_SPEED SPI_FULL_SPEED  // use same SPI speed as SD card
+      #endif
+      spiInit(SPI_SPEED);
       break;
 
     case U8G_COM_MSG_ADDRESS:                     /* define cmd (arg_val = 0) or data mode (arg_val = 1) */

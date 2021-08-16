@@ -25,9 +25,7 @@
 #include "tft_string.h"
 #include "tft_image.h"
 
-#ifndef TFT_QUEUE_SIZE
-  #define TFT_QUEUE_SIZE              8192
-#endif
+#define QUEUE_SIZE              8192
 
 enum QueueTaskType : uint8_t {
   TASK_END_OF_QUEUE = 0x00,
@@ -75,13 +73,11 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
   CanvasSubtype type;
-  uint8_t *nextParameter;
   uint16_t color;
 } parametersCanvasBackground_t;
 
 typedef struct __attribute__((__packed__)) {
   CanvasSubtype type;
-  uint8_t *nextParameter;
   uint16_t x;
   uint16_t y;
   uint16_t color;
@@ -92,7 +88,6 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
   CanvasSubtype type;
-  uint8_t *nextParameter;
   int16_t x;
   int16_t y;
   MarlinImage image;
@@ -100,7 +95,6 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
   CanvasSubtype type;
-  uint8_t *nextParameter;
   uint16_t x;
   uint16_t y;
   uint16_t width;
@@ -110,7 +104,6 @@ typedef struct __attribute__((__packed__)) {
 
 typedef struct __attribute__((__packed__)) {
   CanvasSubtype type;
-  uint8_t *nextParameter;
   uint16_t x;
   uint16_t y;
   uint16_t width;
@@ -120,16 +113,14 @@ typedef struct __attribute__((__packed__)) {
 
 class TFT_Queue {
   private:
-    static uint8_t queue[TFT_QUEUE_SIZE];
+    static uint8_t queue[QUEUE_SIZE];
     static uint8_t *end_of_queue;
     static uint8_t *current_task;
     static uint8_t *last_task;
-    static uint8_t *last_parameter;
 
     static void finish_sketch();
     static void fill(queueTask_t *task);
     static void canvas(queueTask_t *task);
-    static void handle_queue_overflow(uint16_t sizeNeeded);
 
   public:
     static void reset();

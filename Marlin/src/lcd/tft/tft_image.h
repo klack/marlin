@@ -21,9 +21,8 @@
  */
 #pragma once
 
-#include "../../inc/MarlinConfigPre.h"
+#include "stdint.h"
 
-#include <stdint.h>
 
 extern const uint8_t marlin_logo_112x38x1[];
 extern const uint8_t marlin_logo_228x255x2[];
@@ -42,7 +41,6 @@ extern const uint8_t fan_fast0_64x64x4[], fan_fast1_64x64x4[];
 extern const uint8_t sd_64x64x4[];
 extern const uint8_t home_64x64x4[];
 extern const uint8_t btn_rounded_64x52x4[];
-extern const uint8_t btn_rounded_42x39x4[];
 extern const uint8_t menu_64x64x4[];
 extern const uint8_t settings_64x64x4[];
 extern const uint8_t confirm_64x64x4[];
@@ -96,7 +94,6 @@ enum MarlinImage : uint8_t {
   imgSlider,
   imgHome,
   imgBtn52Rounded,
-  imgBtn39Rounded,
   imgCount,
   noImage = imgCount,
   imgPageUp = imgLeft,
@@ -123,14 +120,12 @@ typedef struct __attribute__((__packed__)) {
 
 extern const tImage NoLogo;
 
-#if ENABLED(SHOW_BOOTSCREEN)
-  extern const tImage MarlinLogo112x38x1;
-  extern const tImage MarlinLogo228x255x2;
-  extern const tImage MarlinLogo228x255x4;
-  extern const tImage MarlinLogo195x59x16;
-  extern const tImage MarlinLogo320x240x16;
-  extern const tImage MarlinLogo480x320x16;
-#endif
+extern const tImage MarlinLogo112x38x1;
+extern const tImage MarlinLogo228x255x2;
+extern const tImage MarlinLogo228x255x4;
+extern const tImage MarlinLogo195x59x16;
+extern const tImage MarlinLogo320x240x16;
+extern const tImage MarlinLogo480x320x16;
 extern const tImage Background320x30x16;
 
 extern const tImage HotEnd_64x64x4;
@@ -147,7 +142,6 @@ extern const tImage Fan_Fast1_64x64x4;
 extern const tImage SD_64x64x4;
 extern const tImage Home_64x64x4;
 extern const tImage BtnRounded_64x52x4;
-extern const tImage BtnRounded_42x39x4;
 extern const tImage Menu_64x64x4;
 extern const tImage Settings_64x64x4;
 extern const tImage Confirm_64x64x4;

@@ -37,11 +37,11 @@
 
 #if IS_TFTGLCD_PANEL
 
-#include "../marlinui.h"
+#include "../ultralcd.h"
 #include "../../MarlinCore.h"
 #include "../../libs/numtostr.h"
 
-#include "marlinui_TFTGLCD.h"
+#include "ultralcd_TFTGLCD.h"
 
 #include <string.h>
 

@@ -32,7 +32,19 @@
 
 #include "../gcode.h"
 #include "../../module/temperature.h"
-#include "../../lcd/marlinui.h"
+
+#include "../../module/motion.h"
+#include "../../lcd/ultralcd.h"
+
+#if ENABLED(PRINTJOB_TIMER_AUTOSTART)
+  #include "../../module/printcounter.h"
+#endif
+
+#if ENABLED(PRINTER_EVENT_LEDS)
+  #include "../../feature/leds/leds.h"
+#endif
+
+#include "../../MarlinCore.h" // for wait_for_heatup, idle, startOrResumeJob
 
 /**
  * M141: Set chamber temperature
@@ -48,7 +60,7 @@ void GcodeSuite::M141() {
        * temperatures need to be set below mintemp. Order of M140, M104, and M141
        * at the end of the print does not matter.
        */
-      thermalManager.auto_job_check_timer(false, true);
+      thermalManager.check_timer_autostart(false, true);
     #endif
   }
 }
@@ -63,7 +75,7 @@ void GcodeSuite::M191() {
   const bool no_wait_for_cooling = parser.seenval('S');
   if (no_wait_for_cooling || parser.seenval('R')) {
     thermalManager.setTargetChamber(parser.value_celsius());
-    TERN_(PRINTJOB_TIMER_AUTOSTART, thermalManager.auto_job_check_timer(true, false));
+    TERN_(PRINTJOB_TIMER_AUTOSTART, thermalManager.check_timer_autostart(true, false));
   }
   else return;
 

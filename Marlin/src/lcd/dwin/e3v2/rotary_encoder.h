@@ -30,8 +30,18 @@
   ****************************************************************************/
 
 #include "../../../inc/MarlinConfig.h"
+#include "../../../MarlinCore.h"
 
 /*********************** Encoder Set ***********************/
+
+#define ENCODER_PHASE_0  0
+#define ENCODER_PHASE_1  2
+#define ENCODER_PHASE_2  3
+#define ENCODER_PHASE_3  1
+
+#define ENCODER_PULSES_PER_STEP  4
+
+#define BUTTON_PRESSED(BN) !READ(BTN_## BN)
 
 typedef struct {
   bool enabled = false;
@@ -49,10 +59,10 @@ typedef enum {
 } ENCODER_DiffState;
 
 // Encoder initialization
-void Encoder_Configuration();
+void Encoder_Configuration(void);
 
 // Analyze encoder value and return state
-ENCODER_DiffState Encoder_ReceiveAnalyze();
+ENCODER_DiffState Encoder_ReceiveAnalyze(void);
 
 /*********************** Encoder LED ***********************/
 
@@ -72,23 +82,23 @@ ENCODER_DiffState Encoder_ReceiveAnalyze();
   extern unsigned int LED_DataArray[LED_NUM];
 
   // LED light operation
-  void LED_Action();
+  void LED_Action(void);
 
   // LED initialization
-  void LED_Configuration();
+  void LED_Configuration(void);
 
   // LED write data
-  void LED_WriteData();
+  void LED_WriteData(void);
 
   // LED control
   //  RGB_Scale: RGB color ratio
   //  luminance: brightness (0~0xFF)
-  void LED_Control(const uint8_t RGB_Scale, const uint8_t luminance);
+  void LED_Control(unsigned char RGB_Scale, unsigned char luminance);
 
   // LED gradient control
   //  RGB_Scale: RGB color ratio
   //  luminance: brightness (0~0xFF)
   //  change_Time: gradient time (ms)
-  void LED_GraduallyControl(const uint8_t RGB_Scale, const uint8_t luminance, const uint16_t change_Interval);
+  void LED_GraduallyControl(unsigned char RGB_Scale, unsigned char luminance, unsigned int change_Interval);
 
 #endif // LCD_LED

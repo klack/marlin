@@ -27,7 +27,9 @@
  *          www.reprapobchod.cz
  */
 
-#include "env_validate.h"
+#if NOT_TARGET(__AVR_ATmega2560__)
+  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
+#endif
 
 #define BOARD_INFO_NAME "Cheaptronic v2.0"
 
@@ -117,10 +119,6 @@
 #define LCD_PINS_D6                           41
 #define LCD_PINS_D7                           40
 
-#if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-  #define BTN_ENC_EN                 LCD_PINS_D7  // Detect the presence of the encoder
-#endif
-
 //
 // Beeper, SD Card, Encoder
 //
@@ -131,7 +129,7 @@
   #define SD_DETECT_PIN                       49
 #endif
 
-#if IS_NEWPANEL
+#if ENABLED(NEWPANEL)
   #define BTN_EN1                             11
   #define BTN_EN2                             12
   #define BTN_ENC                             43

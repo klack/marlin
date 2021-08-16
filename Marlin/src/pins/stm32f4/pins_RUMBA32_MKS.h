@@ -46,6 +46,8 @@
   #define FLASH_EEPROM_LEVELING
 #endif
 
+#define ENABLE_SPI1
+
 #include "pins_RUMBA32_common.h"
 
 #if HAS_TMC_UART

@@ -62,7 +62,9 @@
  *   4. The programmer is no longer needed. Remove it.
  */
 
-#include "env_validate.h"
+#if NOT_TARGET(__AVR_AT90USB1286__)
+  #error "Oops! Select 'Teensy++ 2.0' or 'Printrboard' in 'Tools > Board.'"
+#endif
 
 #define BOARD_INFO_NAME "Printrboard"
 
@@ -122,7 +124,7 @@
 //
 // LCD / Controller
 //
-#if IS_ULTRA_LCD && IS_NEWPANEL
+#if BOTH(ULTRA_LCD, NEWPANEL)
 
   #define LCD_PINS_RS                          9  // E1       JP11-11
   #define LCD_PINS_ENABLE                      8  // E0       JP11-10
@@ -164,4 +166,4 @@
 
   #endif
 
-#endif // IS_ULTRA_LCD && IS_NEWPANEL
+#endif // ULTRA_LCD && NEWPANEL

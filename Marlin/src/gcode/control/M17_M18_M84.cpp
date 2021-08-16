@@ -22,7 +22,7 @@
 
 #include "../gcode.h"
 #include "../../MarlinCore.h" // for stepper_inactive_time, disable_e_steppers
-#include "../../lcd/marlinui.h"
+#include "../../lcd/ultralcd.h"
 #include "../../module/stepper.h"
 
 #if ENABLED(AUTO_BED_LEVELING_UBL)
@@ -33,13 +33,11 @@
  * M17: Enable stepper motors
  */
 void GcodeSuite::M17() {
-  if (parser.seen(LOGICAL_AXIS_GANG("E", "X", "Y", "Z"))) {
-    LOGICAL_AXIS_CODE(
-      if (TERN0(HAS_E_STEPPER_ENABLE, parser.seen_test('E'))) enable_e_steppers(),
-      if (parser.seen_test('X'))        ENABLE_AXIS_X(),
-      if (parser.seen_test('Y'))        ENABLE_AXIS_Y(),
-      if (parser.seen_test('Z'))        ENABLE_AXIS_Z()
-    );
+  if (parser.seen("XYZE")) {
+    if (parser.seen('X')) ENABLE_AXIS_X();
+    if (parser.seen('Y')) ENABLE_AXIS_Y();
+    if (parser.seen('Z')) ENABLE_AXIS_Z();
+    if (TERN0(HAS_E_STEPPER_ENABLE, parser.seen('E'))) enable_e_steppers();
   }
   else {
     LCD_MESSAGEPGM(MSG_NO_MOVE);
@@ -56,14 +54,12 @@ void GcodeSuite::M18_M84() {
     stepper_inactive_time = parser.value_millis_from_seconds();
   }
   else {
-    if (parser.seen(LOGICAL_AXIS_GANG("E", "X", "Y", "Z"))) {
+    if (parser.seen("XYZE")) {
       planner.synchronize();
-      LOGICAL_AXIS_CODE(
-        if (TERN0(HAS_E_STEPPER_ENABLE, parser.seen_test('E'))) disable_e_steppers(),
-        if (parser.seen_test('X'))        DISABLE_AXIS_X(),
-        if (parser.seen_test('Y'))        DISABLE_AXIS_Y(),
-        if (parser.seen_test('Z'))        DISABLE_AXIS_Z()
-      );
+      if (parser.seen('X')) DISABLE_AXIS_X();
+      if (parser.seen('Y')) DISABLE_AXIS_Y();
+      if (parser.seen('Z')) DISABLE_AXIS_Z();
+      if (TERN0(HAS_E_STEPPER_ENABLE, parser.seen('E'))) disable_e_steppers();
     }
     else
       planner.finish_and_disable();

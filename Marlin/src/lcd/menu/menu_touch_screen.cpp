@@ -25,11 +25,11 @@
 #if BOTH(HAS_LCD_MENU, TOUCH_SCREEN_CALIBRATION)
 
 #include "menu_item.h"
-#include "../marlinui.h"
+#include "../ultralcd.h"
 
 void touch_screen_calibration() {
 
-  ui.touch_calibration_screen();
+  ui.touch_calibration();
 
 }
 

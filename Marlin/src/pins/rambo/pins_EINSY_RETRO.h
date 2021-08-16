@@ -25,7 +25,9 @@
  * Einsy-Retro pin assignments
  */
 
-#include "env_validate.h"
+#if NOT_TARGET(__AVR_ATmega2560__)
+  #error "Oops! Select 'Arduino Mega 2560 or Rambo' in 'Tools > Board.'"
+#endif
 
 #define BOARD_INFO_NAME "Einsy Retro"
 
@@ -61,7 +63,7 @@
 
 #else
 
-  #if X_HOME_TO_MIN
+  #if X_HOME_DIR < 0
     #define X_MIN_PIN                 X_DIAG_PIN
     #define X_MAX_PIN                         81  // X+
   #else
@@ -69,7 +71,7 @@
     #define X_MAX_PIN                 X_DIAG_PIN
   #endif
 
-  #if Y_HOME_TO_MIN
+  #if Y_HOME_DIR < 0
     #define Y_MIN_PIN                 Y_DIAG_PIN
     #define Y_MAX_PIN                         57  // Y+
   #else
@@ -168,7 +170,7 @@
 
   #define KILL_PIN                            32
 
-  #if ANY(IS_ULTIPANEL, TOUCH_UI_ULTIPANEL, TOUCH_UI_FTDI_EVE)
+  #if ANY(ULTIPANEL, TOUCH_UI_ULTIPANEL, TOUCH_UI_FTDI_EVE)
 
     #if ENABLED(CR10_STOCKDISPLAY)
       #define LCD_PINS_RS                     85
@@ -192,10 +194,6 @@
 
     #define SD_DETECT_PIN                     15
 
-    #if ENABLED(REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
-      #define BTN_ENC_EN             LCD_PINS_D7  // Detect the presence of the encoder
-    #endif
-
-  #endif // IS_ULTIPANEL || TOUCH_UI_ULTIPANEL || TOUCH_UI_FTDI_EVE
+  #endif // ULTIPANEL || TOUCH_UI_ULTIPANEL || TOUCH_UI_FTDI_EVE
 
 #endif // HAS_WIRED_LCD || TOUCH_UI_ULTIPANEL || TOUCH_UI_FTDI_EVE

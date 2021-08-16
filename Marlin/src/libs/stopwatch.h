@@ -56,7 +56,6 @@ class Stopwatch {
      * @return true on success
      */
     static bool stop();
-    static inline bool abort() { return stop(); } // Alias by default
 
     /**
      * @brief Pause the stopwatch

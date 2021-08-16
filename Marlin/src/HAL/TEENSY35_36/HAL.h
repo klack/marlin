@@ -53,27 +53,14 @@
   #define IS_TEENSY35 1
 #endif
 
-#include "../../core/serial_hook.h"
-
-#define Serial0 Serial
-#define _DECLARE_SERIAL(X) \
-  typedef ForwardSerial1Class<decltype(Serial##X)> DefaultSerial##X; \
-  extern DefaultSerial##X MSerial##X
-#define DECLARE_SERIAL(X) _DECLARE_SERIAL(X)
-
-typedef ForwardSerial1Class<decltype(SerialUSB)> USBSerialType;
-extern USBSerialType USBSerial;
-
-#define _MSERIAL(X) MSerial##X
+#define _MSERIAL(X) Serial##X
 #define MSERIAL(X) _MSERIAL(X)
+#define Serial0 Serial
 
 #if SERIAL_PORT == -1
-  #define MYSERIAL1 USBSerial
+  #define MYSERIAL0 SerialUSB
 #elif WITHIN(SERIAL_PORT, 0, 3)
-  #define MYSERIAL1 MSERIAL(SERIAL_PORT)
-  DECLARE_SERIAL(SERIAL_PORT);
-#else
-  #error "SERIAL_PORT must be from 0 to 3, or -1 for Native USB."
+  #define MYSERIAL0 MSERIAL(SERIAL_PORT)
 #endif
 
 #define HAL_SERVO_LIB libServo
@@ -93,6 +80,17 @@ typedef int8_t pin_t;
 #undef sq
 #define sq(x) ((x)*(x))
 
+#ifndef strncpy_P
+  #define strncpy_P(dest, src, num) strncpy((dest), (src), (num))
+#endif
+
+// Fix bug in pgm_read_ptr
+#undef pgm_read_ptr
+#define pgm_read_ptr(addr) (*((void**)(addr)))
+// Add type-checking to pgm_read_word
+#undef pgm_read_word
+#define pgm_read_word(addr) (*((uint16_t*)(addr)))
+
 inline void HAL_init() {}
 
 // Clear reset reason
@@ -101,20 +99,16 @@ void HAL_clear_reset_source();
 // Reset reason
 uint8_t HAL_get_reset_source();
 
-void HAL_reboot();
+inline void HAL_reboot() {}  // reboot the board or restart the bootloader
 
 FORCE_INLINE void _delay_ms(const int delay_ms) { delay(delay_ms); }
 
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wunused-function"
-#endif
-
-extern "C" int freeMemory();
-
-#if GCC_VERSION <= 50000
-  #pragma GCC diagnostic pop
-#endif
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+extern "C" {
+  int freeMemory();
+}
+#pragma GCC diagnostic pop
 
 // ADC
 

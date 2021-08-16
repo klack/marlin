@@ -92,9 +92,9 @@ void safe_delay(millis_t ms) {
           SERIAL_ECHOPGM(" (Aligned With");
 
         if (probe.offset_xy.y > 0)
-          SERIAL_ECHOPGM_P(ENABLED(IS_SCARA) ? PSTR("-Distal") : PSTR("-Back"));
+          serialprintPGM(ENABLED(IS_SCARA) ? PSTR("-Distal") : PSTR("-Back"));
         else if (probe.offset_xy.y < 0)
-          SERIAL_ECHOPGM_P(ENABLED(IS_SCARA) ? PSTR("-Proximal") : PSTR("-Front"));
+          serialprintPGM(ENABLED(IS_SCARA) ? PSTR("-Proximal") : PSTR("-Front"));
         else if (probe.offset_xy.x != 0)
           SERIAL_ECHOPGM("-Center");
 
@@ -102,7 +102,7 @@ void safe_delay(millis_t ms) {
 
       #endif
 
-      SERIAL_ECHOPGM_P(probe.offset.z < 0 ? PSTR("Below") : probe.offset.z > 0 ? PSTR("Above") : PSTR("Same Z as"));
+      serialprintPGM(probe.offset.z < 0 ? PSTR("Below") : probe.offset.z > 0 ? PSTR("Above") : PSTR("Same Z as"));
       SERIAL_ECHOLNPGM(" Nozzle)");
 
     #endif
@@ -123,9 +123,9 @@ void safe_delay(millis_t ms) {
         #endif
         #if ABL_PLANAR
           SERIAL_ECHOPGM("ABL Adjustment X");
-          LOOP_LINEAR_AXES(a) {
+          LOOP_XYZ(a) {
             const float v = planner.get_axis_position_mm(AxisEnum(a)) - current_position[a];
-            SERIAL_CHAR(' ', AXIS_CHAR(a));
+            SERIAL_CHAR(' ', XYZ_CHAR(a));
             if (v > 0) SERIAL_CHAR('+');
             SERIAL_DECIMAL(v);
           }

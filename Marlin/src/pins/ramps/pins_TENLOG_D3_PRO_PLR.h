@@ -114,9 +114,7 @@
 //
 // Filament Runout Sensor
 //
-
 #ifdef FILAMENT_RUNOUT_SENSOR
-  
   #define FIL_RUNOUT_PIN       15
   #define FIL_RUNOUT_STATE     LOW        // Pin state indicating that filament is NOT present.
 #endif

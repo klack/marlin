@@ -32,7 +32,7 @@
 #include "../../MarlinCore.h"     // for wait_for_user_response()
 
 #if HAS_LCD_MENU
-  #include "../../lcd/marlinui.h"
+  #include "../../lcd/ultralcd.h"
 #elif ENABLED(EXTENSIBLE_UI)
   #include "../../lcd/extui/ui_api.h"
 #endif

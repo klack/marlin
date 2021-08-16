@@ -64,11 +64,12 @@
 
 #include "../../../MarlinCore.h"
 
-#ifndef LCD_SPI_SPEED
-  #define LCD_SPI_SPEED SPI_QUARTER_SPEED
-#endif
+void spiBegin();
+void spiInit(uint8_t spiRate);
+void spiSend(uint8_t b);
+void spiSend(const uint8_t* buf, size_t n);
 
-#include "../../shared/HAL_SPI.h"
+#include "../../shared/Marduino.h"
 #include "../fastio.h"
 
 void u8g_SetPIOutput_DUE_hw_spi(u8g_t *u8g, uint8_t pin_index) {
@@ -99,7 +100,11 @@ uint8_t u8g_com_HAL_DUE_shared_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_va
 
       spiBegin();
 
-      spiInit(LCD_SPI_SPEED);
+      #ifndef SPI_SPEED
+        #define SPI_SPEED SPI_FULL_SPEED  // use same SPI speed as SD card
+      #endif
+      spiInit(2);
+
       break;
 
     case U8G_COM_MSG_ADDRESS:                     /* define cmd (arg_val = 0) or data mode (arg_val = 1) */

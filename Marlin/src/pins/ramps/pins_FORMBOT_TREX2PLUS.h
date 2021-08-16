@@ -25,10 +25,9 @@
  * Formbot pin assignments
  */
 
-#define REQUIRE_MEGA2560
-#include "env_validate.h"
-
-#if HOTENDS > 2 || E_STEPPERS > 2
+#if NOT_TARGET(__AVR_ATmega2560__)
+  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
+#elif HOTENDS > 2 || E_STEPPERS > 2
   #error "Formbot supports up to 2 hotends / E-steppers. Comment out this line to continue."
 #endif
 
@@ -176,7 +175,7 @@
 //
 // Formbot only supports REPRAP_DISCOUNT_SMART_CONTROLLER
 //
-#if IS_RRD_SC
+#if ENABLED(REPRAP_DISCOUNT_SMART_CONTROLLER)
   #ifndef BEEPER_PIN
     #define BEEPER_PIN                        37
   #endif

@@ -40,26 +40,24 @@ bool FilamentMonitorBase::enabled = true,
 #endif
 
 #if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
+  //#define DEBUG_TOOLCHANGE_MIGRATION_FEATURE
   #include "../module/tool_change.h"
-  #define DEBUG_OUT ENABLED(DEBUG_TOOLCHANGE_MIGRATION_FEATURE)
-  #include "../core/debug_out.h"
 #endif
 
 #if HAS_FILAMENT_RUNOUT_DISTANCE
   float RunoutResponseDelayed::runout_distance_mm = FILAMENT_RUNOUT_DISTANCE_MM;
-  volatile float RunoutResponseDelayed::runout_mm_countdown[NUM_RUNOUT_SENSORS];
+  volatile float RunoutResponseDelayed::runout_mm_countdown[EXTRUDERS];
   #if ENABLED(FILAMENT_MOTION_SENSOR)
     uint8_t FilamentSensorEncoder::motion_detected;
   #endif
 #else
-  int8_t RunoutResponseDebounced::runout_count[NUM_RUNOUT_SENSORS]; // = 0
+  int8_t RunoutResponseDebounced::runout_count; // = 0
 #endif
 
 //
 // Filament Runout event handler
 //
 #include "../MarlinCore.h"
-#include "../feature/pause.h"
 #include "../gcode/queue.h"
 
 #if ENABLED(HOST_ACTION_COMMANDS)
@@ -70,25 +68,33 @@ bool FilamentMonitorBase::enabled = true,
   #include "../lcd/extui/ui_api.h"
 #endif
 
-void event_filament_runout(const uint8_t extruder) {
+void event_filament_runout() {
 
-  if (did_pause_print) return;  // Action already in progress. Purge triggered repeated runout.
+  if (TERN0(ADVANCED_PAUSE_FEATURE, did_pause_print)) return;  // Action already in progress. Purge triggered repeated runout.
 
   #if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
     if (migration.in_progress) {
-      DEBUG_ECHOLNPGM("Migration Already In Progress");
+      #if ENABLED(DEBUG_TOOLCHANGE_MIGRATION_FEATURE)
+        SERIAL_ECHOLN("Migration Already In Progress");
+      #endif
       return;  // Action already in progress. Purge triggered repeated runout.
     }
     if (migration.automode) {
-      DEBUG_ECHOLNPGM("Migration Starting");
+      #if ENABLED(DEBUG_TOOLCHANGE_MIGRATION_FEATURE)
+        SERIAL_ECHOLN("Migration Starting");
+      #endif
       if (extruder_migration()) return;
     }
   #endif
 
-  TERN_(EXTENSIBLE_UI, ExtUI::onFilamentRunout(ExtUI::getTool(extruder)));
+  TERN_(EXTENSIBLE_UI, ExtUI::onFilamentRunout(ExtUI::getActiveTool()));
 
-  #if ANY(HOST_PROMPT_SUPPORT, HOST_ACTION_COMMANDS, MULTI_FILAMENT_SENSOR)
-    const char tool = '0' + TERN0(MULTI_FILAMENT_SENSOR, extruder);
+  #if EITHER(HOST_PROMPT_SUPPORT, HOST_ACTION_COMMANDS)
+    const char tool = '0'
+      #if NUM_RUNOUT_SENSORS > 1
+        + active_extruder
+      #endif
+    ;
   #endif
 
   //action:out_of_filament
@@ -103,7 +109,9 @@ void event_filament_runout(const uint8_t extruder) {
     if (run_runout_script
       && ( strstr(FILAMENT_RUNOUT_SCRIPT, "M600")
         || strstr(FILAMENT_RUNOUT_SCRIPT, "M125")
-        || TERN0(ADVANCED_PAUSE_FEATURE, strstr(FILAMENT_RUNOUT_SCRIPT, "M25"))
+        #if ENABLED(ADVANCED_PAUSE_FEATURE)
+          || strstr(FILAMENT_RUNOUT_SCRIPT, "M25")
+        #endif
       )
     ) {
       host_action_paused(false);
@@ -124,22 +132,8 @@ void event_filament_runout(const uint8_t extruder) {
     SERIAL_EOL();
   #endif // HOST_ACTION_COMMANDS
 
-  if (run_runout_script) {
-    #if MULTI_FILAMENT_SENSOR
-      char script[strlen(FILAMENT_RUNOUT_SCRIPT) + 1];
-      sprintf_P(script, PSTR(FILAMENT_RUNOUT_SCRIPT), tool);
-      #if ENABLED(FILAMENT_RUNOUT_SENSOR_DEBUG)
-        SERIAL_ECHOLNPAIR("Runout Command: ", script);
-      #endif
-      queue.inject(script);
-    #else
-      #if ENABLED(FILAMENT_RUNOUT_SENSOR_DEBUG)
-        SERIAL_ECHOPGM("Runout Command: ");
-        SERIAL_ECHOLNPGM(FILAMENT_RUNOUT_SCRIPT);
-      #endif
-      queue.inject_P(PSTR(FILAMENT_RUNOUT_SCRIPT));
-    #endif
-  }
+  if (run_runout_script)
+    queue.inject_P(PSTR(FILAMENT_RUNOUT_SCRIPT));
 }
 
 #endif // HAS_FILAMENT_SENSOR

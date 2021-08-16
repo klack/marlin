@@ -40,8 +40,6 @@ uint16_t HAL_adc_result;
 // Public functions
 // ------------------------
 
-TERN_(POSTMORTEM_DEBUGGING, extern void install_min_serial());
-
 // HAL initialization task
 void HAL_init() {
   // Initialize the USB stack
@@ -49,7 +47,6 @@ void HAL_init() {
     OUT_WRITE(SDSS, HIGH);  // Try to set SDSS inactive before any other SPI users start up
   #endif
   usb_task_init();
-  TERN_(POSTMORTEM_DEBUGGING, install_min_serial()); // Install the min serial handler
 }
 
 // HAL idle task
@@ -76,8 +73,6 @@ uint8_t HAL_get_reset_source() {
     default: return 0;
   }
 }
-
-void HAL_reboot() { rstc_start_software_reset(RSTC); }
 
 void _delay_ms(const int delay_ms) {
   // Todo: port for Due?
@@ -106,19 +101,5 @@ uint16_t HAL_adc_get_result() {
   // nop
   return HAL_adc_result;
 }
-
-// Forward the default serial ports
-#if USING_HW_SERIAL0
-  DefaultSerial1 MSerial0(false, Serial);
-#endif
-#if USING_HW_SERIAL1
-  DefaultSerial2 MSerial1(false, Serial1);
-#endif
-#if USING_HW_SERIAL2
-  DefaultSerial3 MSerial2(false, Serial2);
-#endif
-#if USING_HW_SERIAL3
-  DefaultSerial4 MSerial3(false, Serial3);
-#endif
 
 #endif // ARDUINO_ARCH_SAM

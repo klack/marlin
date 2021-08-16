@@ -34,9 +34,8 @@
   #include "../HAL/platforms.h"
 #endif
 
-#include "../core/macros.h"
 #include "../core/boards.h"
-#include "../../Configuration_tenlog.h"
+#include "../core/macros.h"
 #include "../../Configuration.h"
 
 #ifdef CUSTOM_VERSION_FILE

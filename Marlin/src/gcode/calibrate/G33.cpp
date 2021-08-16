@@ -29,7 +29,7 @@
 #include "../../module/motion.h"
 #include "../../module/stepper.h"
 #include "../../module/endstops.h"
-#include "../../lcd/marlinui.h"
+#include "../../lcd/ultralcd.h"
 
 #if HAS_BED_PROBE
   #include "../../module/probe.h"
@@ -63,9 +63,7 @@ enum CalEnum : char {                        // the 7 main calibration points - 
 #define LOOP_CAL_RAD(VAR) LOOP_CAL_PT(VAR, __A, _7P_STEP)
 #define LOOP_CAL_ACT(VAR, _4P, _OP) LOOP_CAL_PT(VAR, _OP ? _AB : __A, _4P ? _4P_STEP : _7P_STEP)
 
-#if ENABLED(HAS_MULTI_HOTEND)
-  const uint8_t old_tool_index = active_extruder;
-#endif
+TERN_(HAS_MULTI_HOTEND, const uint8_t old_tool_index = active_extruder);
 
 float lcd_probe_pt(const xy_pos_t &xy);
 
@@ -93,9 +91,9 @@ void ac_cleanup(TERN_(HAS_MULTI_HOTEND, const uint8_t old_tool_index)) {
   TERN_(HAS_MULTI_HOTEND, tool_change(old_tool_index, true));
 }
 
-void print_signed_float(PGM_P const prefix, const_float_t f) {
+void print_signed_float(PGM_P const prefix, const float &f) {
   SERIAL_ECHOPGM("  ");
-  SERIAL_ECHOPGM_P(prefix);
+  serialprintPGM(prefix);
   SERIAL_CHAR(':');
   if (f >= 0) SERIAL_CHAR('+');
   SERIAL_ECHO_F(f, 2);
@@ -347,7 +345,7 @@ static float auto_tune_a() {
   abc_float_t delta_e = { 0.0f }, delta_t = { 0.0f };
 
   delta_t.reset();
-  LOOP_LINEAR_AXES(axis) {
+  LOOP_XYZ(axis) {
     delta_t[axis] = diff;
     calc_kinematics_diff_probe_points(z_pt, delta_e, delta_r, delta_t);
     delta_t[axis] = 0;
@@ -387,15 +385,13 @@ static float auto_tune_a() {
  */
 void GcodeSuite::G33() {
 
-  TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_PROBE));
-
   const int8_t probe_points = parser.intval('P', DELTA_CALIBRATION_DEFAULT_POINTS);
   if (!WITHIN(probe_points, 0, 10)) {
     SERIAL_ECHOLNPGM("?(P)oints implausible (0-10).");
     return;
   }
 
-  const bool towers_set = !parser.seen_test('T');
+  const bool towers_set = !parser.seen('T');
 
   const float calibration_precision = parser.floatval('C', 0.0f);
   if (calibration_precision < 0) {
@@ -415,7 +411,7 @@ void GcodeSuite::G33() {
     return;
   }
 
-  const bool stow_after_each = parser.seen_test('E');
+  const bool stow_after_each = parser.seen('E');
 
   const bool _0p_calibration      = probe_points == 0,
              _1p_calibration      = probe_points == 1 || probe_points == -1,
@@ -453,7 +449,7 @@ void GcodeSuite::G33() {
 
   // Report settings
   PGM_P const checkingac = PSTR("Checking... AC");
-  SERIAL_ECHOPGM_P(checkingac);
+  serialprintPGM(checkingac);
   if (verbose_level == 0) SERIAL_ECHOPGM(" (DRY-RUN)");
   SERIAL_EOL();
   ui.set_status_P(checkingac);
@@ -525,7 +521,7 @@ void GcodeSuite::G33() {
 
         case 1:
           test_precision = 0.0f; // forced end
-          LOOP_LINEAR_AXES(axis) e_delta[axis] = +Z4(CEN);
+          LOOP_XYZ(axis) e_delta[axis] = +Z4(CEN);
           break;
 
         case 2:
@@ -573,14 +569,14 @@ void GcodeSuite::G33() {
       // Normalize angles to least-squares
       if (_angle_results) {
         float a_sum = 0.0f;
-        LOOP_LINEAR_AXES(axis) a_sum += delta_tower_angle_trim[axis];
-        LOOP_LINEAR_AXES(axis) delta_tower_angle_trim[axis] -= a_sum / 3.0f;
+        LOOP_XYZ(axis) a_sum += delta_tower_angle_trim[axis];
+        LOOP_XYZ(axis) delta_tower_angle_trim[axis] -= a_sum / 3.0f;
       }
 
       // adjust delta_height and endstops by the max amount
       const float z_temp = _MAX(delta_endstop_adj.a, delta_endstop_adj.b, delta_endstop_adj.c);
       delta_height -= z_temp;
-      LOOP_LINEAR_AXES(axis) delta_endstop_adj[axis] -= z_temp;
+      LOOP_XYZ(axis) delta_endstop_adj[axis] -= z_temp;
     }
     recalc_delta_settings();
     NOMORE(zero_std_dev_min, zero_std_dev);
@@ -629,7 +625,7 @@ void GcodeSuite::G33() {
     }
     else { // dry run
       PGM_P const enddryrun = PSTR("End DRY-RUN");
-      SERIAL_ECHOPGM_P(enddryrun);
+      serialprintPGM(enddryrun);
       SERIAL_ECHO_SP(35);
       SERIAL_ECHOLNPAIR_F("std dev:", zero_std_dev, 3);
 
@@ -647,8 +643,6 @@ void GcodeSuite::G33() {
   while (((zero_std_dev < test_precision && iterations < 31) || iterations <= force_iterations) && zero_std_dev > calibration_precision);
 
   ac_cleanup(TERN_(HAS_MULTI_HOTEND, old_tool_index));
-
-  TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_IDLE));
 }
 
 #endif // DELTA_AUTO_CALIBRATION

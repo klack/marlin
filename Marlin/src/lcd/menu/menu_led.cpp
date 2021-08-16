@@ -84,20 +84,18 @@
     EDIT_ITEM(uint8, MSG_INTENSITY_R, &leds.color.r, 0, 255, leds.update, true);
     EDIT_ITEM(uint8, MSG_INTENSITY_G, &leds.color.g, 0, 255, leds.update, true);
     EDIT_ITEM(uint8, MSG_INTENSITY_B, &leds.color.b, 0, 255, leds.update, true);
-    #if HAS_WHITE_LED
+    #if EITHER(RGBW_LED, NEOPIXEL_LED)
       EDIT_ITEM(uint8, MSG_INTENSITY_W, &leds.color.w, 0, 255, leds.update, true);
-    #endif
-    #if ENABLED(NEOPIXEL_LED)
-      EDIT_ITEM(uint8, MSG_LED_BRIGHTNESS, &leds.color.i, 0, 255, leds.update, true);
+      #if ENABLED(NEOPIXEL_LED)
+        EDIT_ITEM(uint8, MSG_LED_BRIGHTNESS, &leds.color.i, 0, 255, leds.update, true);
+      #endif
     #endif
     #if ENABLED(NEOPIXEL2_SEPARATE)
       STATIC_ITEM_N(MSG_LED_CHANNEL_N, 2, SS_DEFAULT|SS_INVERT);
       EDIT_ITEM(uint8, MSG_INTENSITY_R, &leds2.color.r, 0, 255, leds2.update, true);
       EDIT_ITEM(uint8, MSG_INTENSITY_G, &leds2.color.g, 0, 255, leds2.update, true);
       EDIT_ITEM(uint8, MSG_INTENSITY_B, &leds2.color.b, 0, 255, leds2.update, true);
-      #if HAS_WHITE_LED2
-        EDIT_ITEM(uint8, MSG_INTENSITY_W, &leds2.color.w, 0, 255, leds2.update, true);
-      #endif
+      EDIT_ITEM(uint8, MSG_INTENSITY_W, &leds2.color.w, 0, 255, leds2.update, true);
       EDIT_ITEM(uint8, MSG_NEO2_BRIGHTNESS, &leds2.color.i, 0, 255, leds2.update, true);
     #endif
     END_MENU();
@@ -107,14 +105,12 @@
 #if ENABLED(CASE_LIGHT_MENU)
   #include "../../feature/caselight.h"
 
-  #define CASELIGHT_TOGGLE_ITEM() EDIT_ITEM(bool, MSG_CASE_LIGHT, (bool*)&caselight.on, caselight.update_enabled)
-
-  #if CASELIGHT_USES_BRIGHTNESS
+  #if DISABLED(CASE_LIGHT_NO_BRIGHTNESS)
     void menu_case_light() {
       START_MENU();
       BACK_ITEM(MSG_CONFIGURATION);
       EDIT_ITEM(percent, MSG_CASE_LIGHT_BRIGHTNESS, &caselight.brightness, 0, 255, caselight.update_brightness, true);
-      CASELIGHT_TOGGLE_ITEM();
+      EDIT_ITEM(bool, MSG_CASE_LIGHT, (bool*)&caselight.on, caselight.update_enabled);
       END_MENU();
     }
   #endif
@@ -125,26 +121,13 @@ void menu_led() {
   BACK_ITEM(MSG_MAIN);
 
   #if ENABLED(LED_CONTROL_MENU)
-    #if ENABLED(PSU_CONTROL)
-      extern bool powersupply_on;
-    #else
-      constexpr bool powersupply_on = true;
-    #endif
-    if (powersupply_on) {
-      editable.state = leds.lights_on;
-      EDIT_ITEM(bool, MSG_LEDS, &editable.state, leds.toggle);
-    }
-
-    #if ENABLED(LED_COLOR_PRESETS)
-      ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds.set_default);
-    #endif
-
+    editable.state = leds.lights_on;
+    EDIT_ITEM(bool, MSG_LEDS, &editable.state, leds.toggle);
+    ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds.set_default);
     #if ENABLED(NEOPIXEL2_SEPARATE)
       editable.state = leds2.lights_on;
       EDIT_ITEM(bool, MSG_LEDS2, &editable.state, leds2.toggle);
-      #if ENABLED(NEO2_COLOR_PRESETS)
-        ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds2.set_default);
-      #endif
+      ACTION_ITEM(MSG_SET_LEDS_DEFAULT, leds2.set_default);
     #endif
     #if ENABLED(LED_COLOR_PRESETS)
       SUBMENU(MSG_LED_PRESETS, menu_led_presets);
@@ -159,14 +142,13 @@ void menu_led() {
   // Set Case light on/off/brightness
   //
   #if ENABLED(CASE_LIGHT_MENU)
-    #if CASELIGHT_USES_BRIGHTNESS
-      if (caselight.has_brightness())
+    #if DISABLED(CASE_LIGHT_NO_BRIGHTNESS)
+      if (TERN1(CASE_LIGHT_USE_NEOPIXEL, PWM_PIN(CASE_LIGHT_PIN)))
         SUBMENU(MSG_CASE_LIGHT, menu_case_light);
       else
     #endif
-        CASELIGHT_TOGGLE_ITEM();
+        EDIT_ITEM(bool, MSG_CASE_LIGHT, (bool*)&caselight.on, caselight.update_enabled);
   #endif
-
   END_MENU();
 }
 

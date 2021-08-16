@@ -25,10 +25,12 @@
  * PRINTRBOARD_G2
  */
 
-#include "env_validate.h"
+#if NOT_TARGET(__SAM3X8E__)
+  #error "Oops! Select 'Arduino Due' in 'Tools > Board.'"
+#endif
 
 #ifndef BOARD_INFO_NAME
-  #define BOARD_INFO_NAME "Printrboard G2"
+  #define BOARD_INFO_NAME "PRINTRBOARD_G2"
 #endif
 
 //
@@ -149,9 +151,9 @@
 
 /////////////////////////////////////////////////////////
 
-#define SD_MISO_PIN                           68  // set to unused pins for now
-#define SD_MOSI_PIN                           69  // set to unused pins for now
-#define SD_SCK_PIN                            70  // set to unused pins for now
+#define MISO_PIN                              68  // set to unused pins for now
+#define MOSI_PIN                              69  // set to unused pins for now
+#define SCK_PIN                               70  // set to unused pins for now
 #define SDSS                                  71  // set to unused pins for now
 
 /**

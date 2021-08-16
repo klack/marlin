@@ -25,10 +25,9 @@
  * RUMBA pin assignments
  */
 
-#define REQUIRE_MEGA2560
-#include "env_validate.h"
-
-#if HOTENDS > 3 || E_STEPPERS > 3
+#if NOT_TARGET(__AVR_ATmega2560__)
+  #error "Oops! Select 'Arduino/Genuino Mega or Mega 2560' in 'Tools > Board.'"
+#elif HOTENDS > 3 || E_STEPPERS > 3
   #error "RUMBA supports up to 3 hotends / E-steppers. Comment out this line to continue."
 #endif
 
@@ -228,7 +227,7 @@
   #define SD_DETECT_PIN                       49
 #endif
 
-#if IS_NEWPANEL
+#if ENABLED(NEWPANEL)
   #define BTN_EN1                             11
   #define BTN_EN2                             12
   #define BTN_ENC                             43

@@ -107,7 +107,9 @@
  *       E DIR   35 a7  a3 31 Y DIR
  */
 
-#include "env_validate.h"
+#if NOT_TARGET(__AVR_AT90USB1286__)
+  #error "Oops! Select 'Teensy++ 2.0' or 'Printrboard' in 'Tools > Board.'"
+#endif
 
 #define BOARD_INFO_NAME "Teensy++2.0"
 
@@ -166,7 +168,7 @@
 //
 // LCD / Controller
 //
-#if IS_ULTIPANEL
+#if ENABLED(ULTIPANEL)
   #define LCD_PINS_RS                          8  // E0
   #define LCD_PINS_ENABLE                      9  // E1
   #define LCD_PINS_D4                         10  // C0

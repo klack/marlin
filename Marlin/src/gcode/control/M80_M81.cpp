@@ -25,7 +25,7 @@
 #include "../../module/temperature.h"
 #include "../../module/planner.h"       // for planner.finish_and_disable
 #include "../../module/printcounter.h"  // for print_job_timer.stop
-#include "../../lcd/marlinui.h"         // for LCD_MESSAGEPGM_P
+#include "../../lcd/ultralcd.h"         // for LCD_MESSAGEPGM_P
 
 #include "../../inc/MarlinConfig.h"
 
@@ -56,7 +56,7 @@
 
     // S: Report the current power supply state and exit
     if (parser.seen('S')) {
-      SERIAL_ECHOPGM_P(powersupply_on ? PSTR("PS:1\n") : PSTR("PS:0\n"));
+      serialprintPGM(powersupply_on ? PSTR("PS:1\n") : PSTR("PS:0\n"));
       return;
     }
 
@@ -89,9 +89,8 @@
  */
 void GcodeSuite::M81() {
   thermalManager.disable_all_heaters();
-  planner.finish_and_disable();
-
   print_job_timer.stop();
+  planner.finish_and_disable();
 
   #if HAS_FAN
     thermalManager.zero_fan_speeds();
@@ -106,7 +105,7 @@ void GcodeSuite::M81() {
   #if HAS_SUICIDE
     suicide();
   #elif ENABLED(PSU_CONTROL)
-    PSU_OFF_SOON();
+    PSU_OFF();
   #endif
 
   LCD_MESSAGEPGM_P(PSTR(MACHINE_NAME " " STR_OFF "."));

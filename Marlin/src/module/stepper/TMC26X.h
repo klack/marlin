@@ -31,7 +31,11 @@
 // TMC26X drivers have STEP/DIR on normal pins, but ENABLE via SPI
 
 #include <SPI.h>
-#include <TMC26XStepper.h>
+#if defined(STM32GENERIC) && defined(STM32F7)
+  #include "../../HAL/STM32_F4_F7/STM32F7/TMC2660.h"
+#else
+  #include <TMC26XStepper.h>
+#endif
 
 void tmc26x_init_to_defaults();
 

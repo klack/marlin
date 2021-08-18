@@ -32,6 +32,20 @@
 #endif
 
 //
+// EEPROM
+//
+#if NO_EEPROM_SELECTED
+  //#define I2C_EEPROM                            // EEPROM on I2C-0
+  //#define SDCARD_EEPROM_EMULATION
+#endif
+
+#if ENABLED(I2C_EEPROM)
+  #define MARLIN_EEPROM_SIZE              0x8000  // 32Kb
+#elif ENABLED(SDCARD_EEPROM_EMULATION)
+  #define MARLIN_EEPROM_SIZE               0x800  // 2Kb
+#endif
+
+//
 // Servos
 //
 #define SERVO0_PIN                         P2_00
@@ -480,7 +494,7 @@
 #endif // HAS_WIRED_LCD
 
 #if HAS_ADC_BUTTONS
-  #error "ADC BUTTONS do not work unmodifed on SKR 1.4, The ADC ports cannot take more than 3.3v."
+  #error "ADC BUTTONS do not work unmodified on SKR 1.4, The ADC ports cannot take more than 3.3v."
 #endif
 
 //

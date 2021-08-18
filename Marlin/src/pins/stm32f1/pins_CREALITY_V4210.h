@@ -19,6 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
 /**
  * CREALITY 4.2.10 (STM32F103) board pin assignments
@@ -60,13 +61,13 @@
   // SPI
   //#define SPI_EEPROM                            // EEPROM on SPI-0
   //#define SPI_CHAN_EEPROM1  ?
-  //#define SPI_EEPROM1_CS    ?
+  //#define SPI_EEPROM1_CS_PIN    ?
 
   // 2K EEPROM
-  //#define SPI_EEPROM2_CS    ?
+  //#define SPI_EEPROM2_CS_PIN    ?
 
   // 32Mb FLASH
-  //#define SPI_FLASH_CS      ?
+  //#define SPI_FLASH_CS_PIN  ?
 #endif
 
 //

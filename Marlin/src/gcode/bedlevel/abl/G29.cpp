@@ -61,7 +61,7 @@
 #endif
 
 #if ENABLED(DWIN_CREALITY_LCD)
-  #include "../../../lcd/dwin/e3v2/dwin.h"
+  #include "../../../lcd/e3v2/creality/dwin.h"
 #endif
 
 #if HAS_MULTI_HOTEND
@@ -217,6 +217,8 @@ public:
  *     There's no extra effect if you have a fixed Z probe.
  */
 G29_TYPE GcodeSuite::G29() {
+  DEBUG_SECTION(log_G29, "G29", DEBUGGING(LEVELING));
+
   TERN_(PROBE_MANUALLY, static) G29_State abl;
 
   TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_PROBE));
@@ -227,11 +229,7 @@ G29_TYPE GcodeSuite::G29() {
 
   // G29 Q is also available if debugging
   #if ENABLED(DEBUG_LEVELING_FEATURE)
-    const uint8_t old_debug_flags = marlin_debug_flags;
-    if (seenQ) marlin_debug_flags |= MARLIN_DEBUG_LEVELING;
-    DEBUG_SECTION(log_G29, "G29", DEBUGGING(LEVELING));
-    if (DEBUGGING(LEVELING)) log_machine_info();
-    marlin_debug_flags = old_debug_flags;
+    if (seenQ || DEBUGGING(LEVELING)) log_machine_info();
     if (DISABLED(PROBE_MANUALLY) && seenQ) G29_RETURN(false);
   #endif
 
@@ -246,7 +244,7 @@ G29_TYPE GcodeSuite::G29() {
 
   // Send 'N' to force homing before G29 (internal only)
   if (parser.seen_test('N'))
-    process_subcommands_now_P(TERN(G28_L0_ENSURES_LEVELING_OFF, PSTR("G28L0"), G28_STR));
+    process_subcommands_now_P(TERN(CAN_SET_LEVELING_AFTER_G28, PSTR("G28L0"), G28_STR));
 
   // Don't allow auto-leveling without homing first
   if (homing_needed_error()) G29_RETURN(false);
@@ -472,10 +470,8 @@ G29_TYPE GcodeSuite::G29() {
     // Query G29 status
     if (abl.verbose_level || seenQ) {
       SERIAL_ECHOPGM("Manual G29 ");
-      if (g29_in_progress) {
-        SERIAL_ECHOPAIR("point ", _MIN(abl.abl_probe_index + 1, abl.abl_points));
-        SERIAL_ECHOLNPAIR(" of ", abl.abl_points);
-      }
+      if (g29_in_progress)
+        SERIAL_ECHOLNPAIR("point ", _MIN(abl.abl_probe_index + 1, abl.abl_points), " of ", abl.abl_points);
       else
         SERIAL_ECHOLNPGM("idle");
     }
@@ -568,7 +564,7 @@ G29_TYPE GcodeSuite::G29() {
 
       // Probe at 3 arbitrary points
       if (abl.abl_probe_index < abl.abl_points) {
-        abl.probePos = points[abl.abl_probe_index];
+        abl.probePos = xy_pos_t(points[abl.abl_probe_index]);
         _manual_goto_xy(abl.probePos);
         // Disable software endstops to allow manual adjustment
         // If G29 is not completed, they will not be re-enabled
@@ -689,7 +685,7 @@ G29_TYPE GcodeSuite::G29() {
         TERN_(HAS_STATUS_MESSAGE, ui.status_printf_P(0, PSTR(S_FMT " %i/3"), GET_TEXT(MSG_PROBING_MESH), int(i + 1)));
 
         // Retain the last probe position
-        abl.probePos = points[i];
+        abl.probePos = xy_pos_t(points[i]);
         abl.measured_z = faux ? 0.001 * random(-100, 101) : probe.probe_at_point(abl.probePos, raise_after, abl.verbose_level);
         if (isnan(abl.measured_z)) {
           set_bed_leveling_enabled(abl.reenable);
@@ -795,7 +791,7 @@ G29_TYPE GcodeSuite::G29() {
               const int ind = abl.indexIntoAB[xx][yy];
               xyz_float_t tmp = { abl.eqnAMatrix[ind + 0 * abl.abl_points],
                                   abl.eqnAMatrix[ind + 1 * abl.abl_points], 0 };
-              planner.bed_level_matrix.apply_rotation_xyz(tmp);
+              planner.bed_level_matrix.apply_rotation_xyz(tmp.x, tmp.y, tmp.z);
               if (get_min) NOMORE(min_diff, abl.eqnBVector[ind] - tmp.z);
               const float subval = get_min ? abl.mean : tmp.z + min_diff,
                             diff = abl.eqnBVector[ind] - subval;

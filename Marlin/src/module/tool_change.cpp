@@ -49,7 +49,9 @@
   bool toolchange_extruder_ready[EXTRUDERS];
 #endif
 
-#if EITHER(MAGNETIC_PARKING_EXTRUDER, TOOL_SENSOR) || defined(EVENT_GCODE_AFTER_TOOLCHANGE) || (ENABLED(PARKING_EXTRUDER) && PARKING_EXTRUDER_SOLENOIDS_DELAY > 0)
+#if EITHER(MAGNETIC_PARKING_EXTRUDER, TOOL_SENSOR) \
+  || defined(EVENT_GCODE_TOOLCHANGE_T0) || defined(EVENT_GCODE_TOOLCHANGE_T1) || defined(EVENT_GCODE_AFTER_TOOLCHANGE) \
+  || (ENABLED(PARKING_EXTRUDER) && PARKING_EXTRUDER_SOLENOIDS_DELAY > 0)
   #include "../gcode/gcode.h"
 #endif
 
@@ -952,11 +954,11 @@ void fast_line_to_current(const AxisEnum fr_axis) { _line_to_current(fr_axis, 0.
       #if ENABLED(TOOLCHANGE_PARK)
         if (ok) {
           #if ENABLED(TOOLCHANGE_NO_RETURN)
-            destination.set(current_position.x, current_position.y);
-            prepare_internal_move_to_destination(planner.settings.max_feedrate_mm_s[Z_AXIS]);
-          #else
-            prepare_internal_move_to_destination(MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE));
+            const float temp = destination.z;
+            destination = current_position;
+            destination.z = temp.z;
           #endif
+          prepare_internal_move_to_destination(TERN(TOOLCHANGE_NO_RETURN, planner.settings.max_feedrate_mm_s[Z_AXIS], MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE)));
         }
       #endif
 
@@ -1311,10 +1313,22 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
 
     TERN_(HAS_FANMUX, fanmux_switch(active_extruder));
 
-    #ifdef EVENT_GCODE_AFTER_TOOLCHANGE
-      if (!no_move && TERN1(DUAL_X_CARRIAGE, dual_x_carriage_mode == DXC_AUTO_PARK_MODE))
-        gcode.process_subcommands_now_P(PSTR(EVENT_GCODE_AFTER_TOOLCHANGE));
-    #endif
+    if (!no_move) {
+      #ifdef EVENT_GCODE_TOOLCHANGE_T0
+        if (new_tool == 0)
+          gcode.process_subcommands_now_P(PSTR(EVENT_GCODE_TOOLCHANGE_T0));
+      #endif
+
+      #ifdef EVENT_GCODE_TOOLCHANGE_T1
+        if (new_tool == 1)
+          gcode.process_subcommands_now_P(PSTR(EVENT_GCODE_TOOLCHANGE_T1));
+      #endif
+
+      #ifdef EVENT_GCODE_AFTER_TOOLCHANGE
+        if (TERN1(DUAL_X_CARRIAGE, dual_x_carriage_mode == DXC_AUTO_PARK_MODE))
+          gcode.process_subcommands_now_P(PSTR(EVENT_GCODE_AFTER_TOOLCHANGE));
+      #endif
+    }
 
     SERIAL_ECHO_MSG(STR_ACTIVE_EXTRUDER, active_extruder);
 

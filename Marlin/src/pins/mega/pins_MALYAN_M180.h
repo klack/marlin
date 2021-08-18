@@ -72,6 +72,7 @@
 #define TEMP_BED_PIN                          15  // Analog Input
 
 // Extruder thermocouples 0 and 1 are read out by two separate ICs using
+<<<<<<< HEAD
 // SPI for Max6675 Thermocouple
 // Uses a separate SPI bus
 #define THERMO_SCK_PIN                        78  // E2 - SCK
@@ -83,6 +84,19 @@
 #define MAX6675_SS2_PIN           THERMO_CS2_PIN
 #define MAX6675_SCK_PIN           THERMO_SCK_PIN
 #define MAX6675_DO_PIN             THERMO_DO_PIN
+=======
+// SPI for MAX Thermocouple
+// Uses a separate SPI bus
+#define TEMP_0_CS_PIN                          5  // E3 - CS0
+#define TEMP_0_SCK_PIN                        78  // E2 - SCK
+#define TEMP_0_MISO_PIN                        3  // E5 - MISO
+//#define TEMP_0_MOSI_PIN                    ...  // For MAX31865
+
+#define TEMP_1_CS_PIN                          2  // E4 - CS1
+#define TEMP_1_SCK_PIN            TEMP_0_SCK_PIN
+#define TEMP_1_MISO_PIN          TEMP_0_MISO_PIN
+//#define TEMP_1_MOSI_PIN        TEMP_0_MOSI_PIN
+>>>>>>> bugfix-2.0.x
 
 //
 // Heaters / Fans

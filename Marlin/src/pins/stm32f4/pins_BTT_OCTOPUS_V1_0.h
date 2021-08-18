@@ -21,8 +21,9 @@
  */
 #pragma once
 
-#include "env_validate.h"
+#define BOARD_INFO_NAME "BTT OCTOPUS V1.0"
 
+<<<<<<< HEAD
 #ifndef BOARD_INFO_NAME
   #define BOARD_INFO_NAME "BTT OCTOPUS V1.0"
 #endif
@@ -480,3 +481,6 @@
 #define ESP_WIFI_MODULE_ENABLE_PIN          PG8
 #define ESP_WIFI_MODULE_GPIO0_PIN           PD7
 #define ESP_WIFI_MODULE_GPIO4_PIN           PD10
+=======
+#include "pins_BTT_OCTOPUS_V1_common.h"
+>>>>>>> bugfix-2.0.x

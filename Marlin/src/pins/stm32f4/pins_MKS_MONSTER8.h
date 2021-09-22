@@ -210,24 +210,32 @@
 //
 // Misc. Functions
 //
-#define PW_DET                              PC5   // Y+
-#define PW_OFF                              PB12  // Z+
-#define MT_DET_1_PIN                      PW_DET
-#define MT_DET_2_PIN                      PW_OFF
+#define MT_DET_1                            PC5   // Y+
+#define MT_DET_2                            PB12  // Z+
+
 #ifndef FIL_RUNOUT_PIN
-  #define FIL_RUNOUT_PIN            MT_DET_1_PIN
+  #define FIL_RUNOUT_PIN                MT_DET_1
 #endif
 #ifndef FIL_RUNOUT2_PIN
-  #define FIL_RUNOUT2_PIN           MT_DET_2_PIN
+  #define FIL_RUNOUT2_PIN               MT_DET_2
 #endif
 
 //
 // Power Supply Control
 //
-#if ENABLED(MKS_PWC)
-  #define PS_ON_PIN                         PW_OFF
-  #define KILL_PIN                          PW_DET
-  #define KILL_PIN_STATE                    HIGH
+#if ENABLED(PSU_CONTROL)                          // MKSPWC
+  #ifndef PS_ON_PIN
+    #define PS_ON_PIN                   MT_DET_2  // Z+
+  #endif
+  #ifndef KILL_PIN
+    #define KILL_PIN                    MT_DET_1  // Y+
+    #define KILL_PIN_STATE                  HIGH
+  #endif
+#else
+  #define PW_DET                        MT_DET_1
+  #define PW_OFF                        MT_DET_2
+  #define POWER_LOSS_PIN                  PW_DET
+  #define PS_ON_PIN                       PW_OFF
 #endif
 
 // Random Info

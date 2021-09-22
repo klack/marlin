@@ -1202,49 +1202,10 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
             xyze_pos_t new_pos = pos_now;
             if (dual_x_carriage_mode == DXC_DUPLICATION_MODE)
               new_pos.x += duplicate_extruder_x_offset;
-<<<<<<< HEAD
-            else
-              new_pos.x = inactive_extruder_x;
-              			// 26/04/2021 Murdock Z Safety Unpark for duplication mode (For avoid bed clips. Fix issue #36).
-			if (SAFETY_Z_UNPARK > 0)
-			{
-				#define CUR_Z    current_position.z
-				#undef RAISED_Z
-				#define RAISED_Z     current_position.z
-
-				if (current_position.z <= SAFETY_Z_UNPARK) {  
-					if (current_position.y <= SAFETY_Y_UNPARK) {
-						RAISED_Z = SAFETY_Z_UNPARK;
-						new_pos.z = SAFETY_Z_UNPARK;
-					}
-				}  
-
-				
-				// move duplicate extruder into correct duplication position.
-				if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
-				if ( planner.buffer_line(current_position.x, current_position.y, RAISED_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) {
-					planner.set_position_mm(inactive_extruder_x, current_position.y, current_position.z, current_position.e);
-					if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) {
-						planner.synchronize();
-						planner.buffer_line(new_pos.x, new_pos.y, CUR_Z, current_position.e, planner.settings.max_feedrate_mm_s[Z_AXIS], 1);
-						break;
-					}
-				}
-			}
-			else
-			{
-				// move duplicate extruder into correct duplication position.
-				if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
-				planner.set_position_mm(inactive_extruder_x, current_position.y, current_position.z, current_position.e);
-				if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
-			}
-			// End fix #36.
-=======
 
             // Move duplicate extruder into the correct position
             if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
             if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
->>>>>>> bugfix-2.0.x
             planner.synchronize();
 
             sync_plan_position();             // Extra sync for good measure

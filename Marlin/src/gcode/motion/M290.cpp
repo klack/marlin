@@ -38,12 +38,11 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
-#if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-
-  FORCE_INLINE void mod_probe_offset(const_float_t &offs) {
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET) //LUXUI
+  FORCE_INLINE void mod_probe_offset(const_float_t offs) {
     if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
-      hotend_offset[active_extruder].z += offs;
-      SERIAL_ECHO_MSG(STR_PROBE_OFFSET " " STR_Z, hotend_offset[active_extruder].z);
+      probe.offset.z += offs;
+      SERIAL_ECHO_MSG(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
     }
     else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
@@ -52,8 +51,7 @@
       #endif
     }
   }
-
-#endif
+#endif//LUXUI
 
 /**
  * M290: Babystepping
@@ -74,16 +72,16 @@ void GcodeSuite::M290() {
       if (parser.seenval(AXIS_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
         const float offs = constrain(parser.value_axis_units((AxisEnum)a), -2, 2);
         babystep.add_mm((AxisEnum)a, offs);
-        #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-          if (a == Z_AXIS && (!parser.seen('P') || parser.value_bool())) mod_probe_offset(offs);
+        #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+          if (a == Z_AXIS && parser.boolval('P', true)) mod_probe_offset(offs);
         #endif
       }
   #else
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-        if (!parser.seen('P') || parser.value_bool()) mod_probe_offset(offs);
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+        if (parser.boolval('P', true)) mod_probe_offset(offs);
       #endif
     }
   #endif
@@ -92,9 +90,7 @@ void GcodeSuite::M290() {
     SERIAL_ECHO_START();
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-      SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, hotend_offset[active_extruder].z);
-    #else
-      SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
+      SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
     #endif
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
@@ -111,7 +107,7 @@ void GcodeSuite::M290() {
           #endif
         );
       }
- }
+  }
  #endif
 
     #if ENABLED(MESH_BED_LEVELING)

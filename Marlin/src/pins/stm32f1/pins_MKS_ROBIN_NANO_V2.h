@@ -194,18 +194,26 @@
 //
 // Power Supply Control
 //
-#if ENABLED(MKS_PWC)
-  #if ENABLED(TFT_LVGL_UI)
-    #undef PSU_CONTROL
-    #undef MKS_PWC
-    #define SUICIDE_PIN                     PB2
-    #define SUICIDE_PIN_STATE               LOW
-  #else
-    #define PS_ON_PIN                       PB2   // PW_OFF
+#if ENABLED(PSU_CONTROL)                          // MKSPWC
+  #if HAS_TFT_LVGL_UI
+    #error "PSU_CONTROL cannot be used with TFT_LVGL_UI. Disable PSU_CONTROL to continue."
   #endif
-  #define KILL_PIN                          PA2
-  #define KILL_PIN_STATE                    HIGH
+  #ifndef PS_ON_PIN
+    #define PS_ON_PIN                       PB2   // SUICIDE
+  #endif
+  #ifndef KILL_PIN
+    #define KILL_PIN                        PA2
+    #define KILL_PIN_STATE                  HIGH
+  #endif
+#else
+  #define SUICIDE_PIN                       PB2
+  #define SUICIDE_PIN_INVERTING            false
 #endif
+
+//
+// Power Supply Control
+//
+#if HAS_TFT_LVGL_UI
 
 //
 // Misc. Functions

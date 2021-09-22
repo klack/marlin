@@ -236,10 +236,6 @@
   #include "feature/stepper_driver_safety.h"
 #endif
 
-#if ENABLED(PSU_CONTROL)
-  #include "feature/power.h"
-#endif
-
 PGMSTR(M112_KILL_STR, "M112 Shutdown");
 
 MarlinState marlin_state = MF_INITIALIZING;
@@ -268,13 +264,11 @@ bool wait_for_heatup = true;
  * ******************************** FUNCTIONS ********************************
  * ***************************************************************************
  */
-
-void setup_poweroff() {
+void setup_poweroff() { //LUXUI
   #ifdef POWER_LOSS_TRIGGER_BY_PIN
     SET_INPUT_PULLDOWN(POWER_OFF_PIN);
   #endif
-}
-
+}//LUXUI
 /**
  * Stepper Reset (RigidBoard, et.al.)
  */
@@ -800,8 +794,7 @@ void idle(bool no_stepper_sleep/*=false*/) {
     static uint16_t idle_depth = 0;
     if (++idle_depth > 5) SERIAL_ECHOLNPAIR("idle() call depth: ", idle_depth);
   #endif
-  
-  #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
+    #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)//LUXUI
     //Poweroff Pin dectection
     static bool hadPower = false;
     if (power_off_state() == false) { //Power is on
@@ -839,8 +832,7 @@ void idle(bool no_stepper_sleep/*=false*/) {
         hadPower = false;
       }
     }
-  #endif
-
+  #endif //LUXUI
   // Core Marlin activities
   manage_inactivity(no_stepper_sleep);
 
@@ -914,7 +906,6 @@ void idle(bool no_stepper_sleep/*=false*/) {
       TERN_(AUTO_REPORT_TEMPERATURES, thermalManager.auto_reporter.tick());
       TERN_(AUTO_REPORT_SD_STATUS, card.auto_reporter.tick());
       TERN_(AUTO_REPORT_POSITION, position_auto_reporter.tick());
-      TERN_(BUFFER_MONITORING, queue.auto_report_buffer_statistics());
     }
   #endif
 
@@ -944,9 +935,9 @@ void kill(PGM_P const lcd_error/*=nullptr*/, PGM_P const lcd_component/*=nullptr
 
   TERN_(HAS_CUTTER, cutter.kill()); // Full cutter shutdown including ISR control
 
-  SERIAL_ERROR_MSG(STR_ERR_KILLED);
+  SERIAL_ERROR_MSG(STR_ERR_KILLED); //LUXUI
   MYSERIAL1.print("Error:");
-  MYSERIAL1.print(STR_ERR_KILLED);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+  MYSERIAL1.print(STR_ERR_KILLED);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13); //LUXUI
 
   // Echo the LCD message to serial for extra context
   if (lcd_error) { SERIAL_ECHO_START(); SERIAL_ECHOLNPGM_P(lcd_error); }
@@ -987,7 +978,7 @@ void minkill(const bool steppers_off/*=false*/) {
   // Power off all steppers (for M112) or just the E steppers
   steppers_off ? disable_all_steppers() : disable_e_steppers();
 
-  TERN_(PSU_CONTROL, powerManager.power_off());
+  TERN_(PSU_CONTROL, PSU_OFF());
 
   TERN_(HAS_SUICIDE, suicide());
 
@@ -1242,7 +1233,7 @@ void setup() {
 
   #if HAS_SUICIDE
     SETUP_LOG("SUICIDE_PIN");
-    OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_STATE);
+    OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_INVERTING);
   #endif
 
   #ifdef JTAGSWD_RESET
@@ -1269,10 +1260,10 @@ void setup() {
   SETUP_RUN(HAL_init());
 
   // Init and disable SPI thermocouples; this is still needed
-  #if TEMP_SENSOR_0_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && REDUNDANT_TEMP_MATCH(SOURCE, E0))
+  #if TEMP_SENSOR_0_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && TEMP_SENSOR_REDUNDANT_SOURCE == 0)
     OUT_WRITE(TEMP_0_CS_PIN, HIGH);  // Disable
   #endif
-  #if TEMP_SENSOR_1_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && REDUNDANT_TEMP_MATCH(SOURCE, E1))
+  #if TEMP_SENSOR_1_IS_MAX_TC || (TEMP_SENSOR_REDUNDANT_IS_MAX_TC && TEMP_SENSOR_REDUNDANT_SOURCE == 1)
     OUT_WRITE(TEMP_1_CS_PIN, HIGH);
   #endif
 
@@ -1283,15 +1274,15 @@ void setup() {
   #if HAS_FILAMENT_SENSOR
     SETUP_RUN(runout.setup());
   #endif
-
-  SETUP_RUN(setup_poweroff());
+  SETUP_RUN(setup_poweroff()); //LUXUI
   #if HAS_TMC220x
     SETUP_RUN(tmc_serial_begin());
   #endif
 
   #if ENABLED(PSU_CONTROL)
     SETUP_LOG("PSU_CONTROL");
-    powerManager.init();
+    powersupply_on = ENABLED(PSU_DEFAULT_OFF);
+    if (ENABLED(PSU_DEFAULT_OFF)) PSU_OFF(); else PSU_ON();
   #endif
 
   #if ENABLED(POWER_LOSS_RECOVERY)
@@ -1457,7 +1448,7 @@ void setup() {
   #if EITHER(Z_PROBE_SLED, SOLENOID_PROBE) && HAS_SOLENOID_1
     OUT_WRITE(SOL1_PIN, LOW); // OFF
   #endif
-  
+
   #if HAS_HOME
     SET_INPUT_PULLUP(HOME_PIN);
   #endif

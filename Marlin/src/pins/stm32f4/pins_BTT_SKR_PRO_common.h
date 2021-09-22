@@ -25,7 +25,7 @@
 
 // If you have the BigTreeTech driver expansion module, enable BTT_MOTOR_EXPANSION
 // https://github.com/bigtreetech/BTT-Expansion-module/tree/master/BTT%20EXP-MOT
-#define BTT_MOTOR_EXPANSION
+//#define BTT_MOTOR_EXPANSION
 
 #if BOTH(HAS_WIRED_LCD, BTT_MOTOR_EXPANSION)
   #if EITHER(CR10_STOCKDISPLAY, ENDER2_STOCKDISPLAY)
@@ -294,13 +294,9 @@
 // Fans
 //
 #define FAN_PIN                             PC8   // Fan0
-<<<<<<< HEAD
 #define FAN1_PIN                            PE6   // Fan1
 #define FAN2_PIN                            PE6   // Fan2
 #define FAN3_PIN                            HEATER_2_PIN
-=======
-#define FAN1_PIN                            PE5   // Fan1
->>>>>>> bugfix-2.0.x
 
 #ifndef E0_AUTO_FAN_PIN
   #define E0_AUTO_FAN_PIN               FAN1_PIN
@@ -414,6 +410,18 @@
     #endif
   #else
     #define E1_ENABLE_PIN            EXP2_04_PIN
+  #define E4_STEP_PIN                EXP2_08_PIN
+  #define E4_DIR_PIN                 EXP2_07_PIN
+  #if !EXP_MOT_USE_EXP2_ONLY
+    #define E4_ENABLE_PIN            EXP1_03_PIN
+    #define E4_DIAG_PIN              EXP1_08_PIN
+    #define E4_CS_PIN                EXP1_07_PIN
+    #if HAS_TMC_UART
+      #define E4_SERIAL_TX_PIN       EXP1_07_PIN
+      #define E4_SERIAL_RX_PIN       EXP1_07_PIN
+    #endif
+  #else
+    #define E4_ENABLE_PIN            EXP2_04_PIN
   #endif
 
   // M3 on Driver Expansion Module

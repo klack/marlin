@@ -123,10 +123,10 @@
 
     // Disallow Z homing if X or Y homing is needed
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
-
-    sync_plan_position();
     const float currentSafeXpos = current_position.x; // Used in tenlog config
     const float currentSafeYpos = current_position.y; // Used in tenlog config
+    sync_plan_position();
+
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
      * (Z is already at the right height)
@@ -157,7 +157,7 @@
       destination.set(currentSafeXpos, currentSafeYpos, current_position.z); // Used in tenlog config
       if (position_is_reachable(destination)) { // Used in tenlog config
 	      do_blocking_move_to_xy(destination); // Used in tenlog config
-      }
+      } // Used in tenlog config
     }
     else {
       LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
@@ -273,7 +273,7 @@ void GcodeSuite::G28() {
   #endif
 
   #if HAS_HOMING_CURRENT
-    auto debug_current = [](PGM_P const s, const int16_t a, const int16_t b) {
+    auto debug_current = [](PGM_P const s, const int16_t a, const int16_t b){
       DEBUG_ECHOPGM_P(s); DEBUG_ECHOLNPAIR(" current: ", a, " -> ", b);
     };
     #if HAS_CURRENT_HOME(X)
@@ -473,7 +473,7 @@ void GcodeSuite::G28() {
       idex_set_parked();
 
       dual_x_carriage_mode = IDEX_saved_mode;
-      //set_duplication_enabled(IDEX_saved_duplication_state); // 30/06/2021 Murdock Bug Fix #104 & #33
+      //set_duplication_enabled(IDEX_saved_duplication_state); // 30/06/2021 Murdock Bug Fix #104 & #33 LUXURI
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(saved_motion_state));
     }

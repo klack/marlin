@@ -29,16 +29,24 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if ENABLED(PSU_CONTROL)
-  #include "../queue.h"
-  #include "../../feature/power.h"
-#endif
-
 #if HAS_SUICIDE
   #include "../../MarlinCore.h"
 #endif
 
 #if ENABLED(PSU_CONTROL)
+
+  #if ENABLED(AUTO_POWER_CONTROL)
+    #include "../../feature/power.h"
+  #else
+    void restore_stepper_drivers();
+  #endif
+
+  // Could be moved to a feature, but this is all the data
+  bool powersupply_on;
+
+  #if HAS_TRINAMIC_CONFIG
+    #include "../../feature/tmc_util.h"
+  #endif
 
   /**
    * M80   : Turn on the Power Supply
@@ -48,11 +56,11 @@
 
     // S: Report the current power supply state and exit
     if (parser.seen('S')) {
-      SERIAL_ECHOPGM_P(powerManager.psu_on ? PSTR("PS:1\n") : PSTR("PS:0\n"));
+      SERIAL_ECHOPGM_P(powersupply_on ? PSTR("PS:1\n") : PSTR("PS:0\n"));
       return;
     }
 
-    powerManager.power_on();
+    PSU_ON();
 
     /**
      * If you have a switch on suicide pin, this is useful
@@ -60,7 +68,13 @@
      * a print without suicide...
      */
     #if HAS_SUICIDE
-      OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_STATE);
+      OUT_WRITE(SUICIDE_PIN, !SUICIDE_PIN_INVERTING);
+    #endif
+
+    #if DISABLED(AUTO_POWER_CONTROL)
+      safe_delay(PSU_POWERUP_DELAY);
+      restore_stepper_drivers();
+      TERN_(HAS_TRINAMIC_CONFIG, safe_delay(PSU_POWERUP_DELAY));
     #endif
 
     TERN_(HAS_LCD_MENU, ui.reset_status());
@@ -92,7 +106,7 @@ void GcodeSuite::M81() {
   #if HAS_SUICIDE
     suicide();
   #elif ENABLED(PSU_CONTROL)
-    powerManager.power_off_soon();
+    PSU_OFF_SOON();
   #endif
 
   LCD_MESSAGEPGM_P(PSTR(MACHINE_NAME " " STR_OFF "."));

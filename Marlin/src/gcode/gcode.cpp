@@ -1125,18 +1125,18 @@ void GcodeSuite::process_subcommands_now(char * gcode) {
         case IN_HANDLER:
         case IN_PROCESS:
           SERIAL_ECHO_MSG(STR_BUSY_PROCESSING);
-          MYSERIAL1.print(STR_BUSY_PROCESSING);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-        break;
+          TERN_(FULL_REPORT_TO_HOST_FEATURE, report_current_position_moving());
+          break;
         case PAUSED_FOR_USER:
           SERIAL_ECHO_MSG(STR_BUSY_PAUSED_FOR_USER);
-          MYSERIAL1.print(STR_BUSY_PAUSED_FOR_USER);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-        break;
+          TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_HOLD));
+          break;
         case PAUSED_FOR_INPUT:
           SERIAL_ECHO_MSG(STR_BUSY_PAUSED_FOR_INPUT);
-          MYSERIAL1.print(STR_BUSY_PAUSED_FOR_INPUT);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-        break;
+          TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_HOLD));
+          break;
         default:
-        break;
+          break;
       }
     }
     next_busy_signal_ms = ms + SEC_TO_MS(host_keepalive_interval);

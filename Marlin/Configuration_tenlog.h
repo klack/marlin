@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "bugfix 2.0.8.2.20210529 for Luxuri 0.8.x"
+#define SHORT_BUILD_VERSION "2.0.9.1 for Luxuri 0.8.x"
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -11,7 +11,7 @@
 #define MIN_SOFTWARE_ENDSTOP_Y
 #define MIN_SOFTWARE_ENDSTOP_Z
 #define TOOLCHANGE_NO_RETURN
-#define HOST_ACTION_COMMANDS
+//#define HOST_ACTION_COMMANDS
 // #define HOST_PROMPT_SUPPORT  
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0

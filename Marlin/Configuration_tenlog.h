@@ -224,6 +224,13 @@
   #define TEMP_SENSOR_BED 11
 #endif
 
+#if ENABLED(ATCSemitec100K)
+  #undef TEMP_SENSOR_0
+  #undef TEMP_SENSOR_1
+  #define TEMP_SENSOR_0 1
+  #define TEMP_SENSOR_1 1
+#endif
+
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 " " verS2 " " verS3
 #define X_DRIVER_TYPE  DriverType

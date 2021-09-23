@@ -90,6 +90,22 @@
   #define verS3 "OCTOPUS"
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
 #endif
+#if ENABLED(LCDmini12864)
+  #define RGB_LED
+  #define NEOPIXEL_LED
+  #define LED_CONTROL_MENU
+  #define FYSETC_MINI_12864_2_1
+  #define PROBE_OFFSET_WIZARD
+  #define LCD_INFO_MENU
+  #define STATUS_MESSAGE_SCROLLING
+  #define LCD_SHOW_E_TOTAL
+  #define SHOW_REMAINING_TIME 
+  #define PRINT_PROGRESS_SHOW_DECIMALS
+  #define BOOT_MARLIN_LOGO_ANIMATED
+  #define MARLIN_BRICKOUT
+  #define MARLIN_INVADERS
+  #define MARLIN_SNAKE
+#endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
   #define DriverType A4988

@@ -96,9 +96,9 @@
 //
 // NeoPixel LED
 //
-#ifndef NEOPIXEL_PIN
-  #define NEOPIXEL_PIN                      PB0
-#endif
+//#ifndef NEOPIXEL_PIN
+//  #define NEOPIXEL_PIN                      PB0
+//#endif
 
 //
 // Steppers

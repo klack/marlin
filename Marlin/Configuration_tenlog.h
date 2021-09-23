@@ -11,7 +11,7 @@
 #define MIN_SOFTWARE_ENDSTOP_Y
 #define MIN_SOFTWARE_ENDSTOP_Z
 #define TOOLCHANGE_NO_RETURN
-//#define HOST_ACTION_COMMANDS
+#define HOST_ACTION_COMMANDS
 // #define HOST_PROMPT_SUPPORT  
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
@@ -33,6 +33,7 @@
   #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
   #define DUAL_X_CARRIAGE
   #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
+  #define BED_CENTER_AT_155_155
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
   #define TOOL_CHANGE_AREA  14
@@ -96,6 +97,8 @@
   #define LED_CONTROL_MENU
   #define FYSETC_MINI_12864_2_1
   #define PROBE_OFFSET_WIZARD
+  #define PROBE_OFFSET_WIZARD_START_Z -4.0
+  #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
   #define LCD_INFO_MENU
   #define STATUS_MESSAGE_SCROLLING
   #define LCD_SHOW_E_TOTAL
@@ -105,6 +108,7 @@
   #define MARLIN_BRICKOUT
   #define MARLIN_INVADERS
   #define MARLIN_SNAKE
+  #define SOUND_MENU_ITEM
 #endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"

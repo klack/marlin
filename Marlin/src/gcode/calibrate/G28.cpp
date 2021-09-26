@@ -223,7 +223,7 @@ void GcodeSuite::G28() {
   TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_HOMING));
 
   #if ENABLED(DUAL_X_CARRIAGE)
-    bool IDEX_saved_duplication_state = extruder_duplication_enabled;
+    //bool IDEX_saved_duplication_state = extruder_duplication_enabled;
     DualXMode IDEX_saved_mode = dual_x_carriage_mode;
   #endif
 

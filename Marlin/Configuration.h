@@ -105,13 +105,12 @@
 	#if ENABLED(BTTSKRPRO)
 	  #define SERIAL_PORT -1
 	  #define SERIAL_PORT_2 1
-    #define BAUDRATE_2 250000
+    #define BAUDRATE_2 115200
     #define BAUDRATE 9600 
   #elif ENABLED(OCTOPUS)
   	#define SERIAL_PORT 1
 	  #define SERIAL_PORT_2 -1
     #define SERIAL_PORT_3 2
-    #define BAUDRATE 9600
     #define BAUDRATE_2 115200
     #define BAUDRATE_3 115200
 	#else

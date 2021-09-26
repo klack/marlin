@@ -91,11 +91,10 @@
   #define verS3 "OCTOPUS"
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
 #endif
-#if ENABLED(LCDmini12864)
-  #define RGB_LED
-  #define NEOPIXEL_LED
-  #define LED_CONTROL_MENU
-  #define FYSETC_MINI_12864_2_1
+#if ENABLED(LCDmini12864) || ENABLED(LCD_BTT_TFT)
+  #define AUTO_REPORT_POSITION
+  #define M115_GEOMETRY_REPORT
+  #define M114_DETAIL  
   #define PROBE_OFFSET_WIZARD
   #define PROBE_OFFSET_WIZARD_START_Z -4.0
   #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
@@ -109,6 +108,22 @@
   #define MARLIN_INVADERS
   #define MARLIN_SNAKE
   #define SOUND_MENU_ITEM
+  #define AUTO_REPORT_POSITION
+  #define M115_GEOMETRY_REPORT
+  #define M114_DETAIL  
+  #define SERIAL_FLOAT_PRECISION 4
+  #define FILAMENT_LOAD_UNLOAD_GCODES
+  #define PARK_HEAD_ON_PAUSE 
+#endif
+#if ENABLED(LCDmini12864)
+  #define RGB_LED
+  #define NEOPIXEL_LED
+  #define LED_CONTROL_MENU
+  #define FYSETC_MINI_12864_2_1
+#endif
+#if ENABLED(LCD_BTT_TFT)
+  #define SDCARD_CONNECTION            ONBOARD
+  #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
@@ -321,6 +336,11 @@
     #define Z_MIN_PROBE_PIN                   PA2
     #define XY_PROBE_FEEDRATE 16000
   #elif ENABLED(OCTOPUS)
+    #if ENABLED(LCD_BTT_TFT)
+      #define BAUDRATE 115200 // Set serial 1 TFT port baudrate
+    #else
+      #define BAUDRATE 9600 // Set serial 1 TFT port baudrate
+    #endif
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PB7

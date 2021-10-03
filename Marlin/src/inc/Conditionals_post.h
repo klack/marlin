@@ -422,7 +422,7 @@
 #endif
 
 /**
- * Override the SD_DETECT_STATE set in Configuration_adv.h
+ * Override the _STATE set in Configuration_adv.h
  * and enable sharing of onboard SD host drives (all platforms but AGCM4)
  */
 #if ENABLED(SDSUPPORT)

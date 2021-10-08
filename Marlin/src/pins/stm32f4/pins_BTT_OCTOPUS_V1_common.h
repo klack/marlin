@@ -52,7 +52,7 @@
 #define Z_DIAG_PIN                          PG6  // Z-STOP
 #define Z2_DIAG_PIN                         PG9  // Z2-STOP
 #define E0_DIAG_PIN                         PG10  // E0DET
-#define E1_DIAG_PIN                         PG13  // E1DET
+#define E1_DIAG_PIN                         PG11  // E1DET
 #define X2_DIAG_PIN                         PG14  // E2DET
 #define E3_DIAG_PIN                         PG15  // E3DET
 
@@ -419,6 +419,7 @@
           #define RGB_LED_B_PIN      EXP1_03_PIN
         #endif
       #elif ENABLED(FYSETC_MINI_12864_2_1)
+        #undef NEOPIXEL_PIN
         #define NEOPIXEL_PIN         EXP1_05_PIN
       #endif
     #endif // !FYSETC_MINI_12864

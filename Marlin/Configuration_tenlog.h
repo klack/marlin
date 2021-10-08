@@ -147,6 +147,22 @@
 	#define INVERT_E1_DIR false
   #undef LIN_ADVANCE 
   #undef LIN_ADVANCE_K
+  #define STEALTHCHOP_XY
+  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_E
+#elif ENABLED(Driver2208_UART)
+  #define verS2 "2208_UART"
+  #define DriverType TMC2208
+	#define INVERT_X_DIR false
+  #define INVERT_Y_DIR true
+	#define INVERT_Z_DIR false  
+	#define INVERT_E0_DIR false
+	#define INVERT_E1_DIR true
+  #define STEALTHCHOP_XY
+  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_E
+  #define TMC_DEBUG
+  #define MONITOR_DRIVER_STATUS
 #elif ENABLED(Driver2209)
   #define verS2 "2209"
   #define DriverType TMC2209_STANDALONE
@@ -159,6 +175,11 @@
   #else
     #define INVERT_E1_DIR false
 	#endif
+  #define STEALTHCHOP_XY
+  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_E
+  #define MONITOR_DRIVER_STATUS
+  #define TMC_DEBUG
 #elif ENABLED(Driver2209BTTSKRPRO)
   #define verS2 "2209BTTSKRPRO"
   #define DriverType TMC2209
@@ -172,6 +193,9 @@
   #define Z_MAX_ENDSTOP_INVERTING true
   #define X_MAX_ENDSTOP_INVERTING true
   #define TMC_DEBUG
+  #define STEALTHCHOP_XY
+  #define STEALTHCHOP_Z
+  //#define STEALTHCHOP_E
   #if ENABLED(BTTSKRPRO)
     #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z" // Enable stealthchop for all steppers except extruders
     #define INVERT_X_DIR true
@@ -298,8 +322,14 @@
   #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
+  #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
+  #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
+  #define MULTIPLE_PROBING 2
+  #define EXTRA_PROBING    1
 #elif ENABLED(EZabl)
   #define HAS_PROBE
+  #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
+  #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
   #define FIX_MOUNTED_PROBE
   #if ENABLED(BMGExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { +29, -46, -1.2 }
@@ -334,7 +364,7 @@
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PA2
-    #define XY_PROBE_FEEDRATE 16000
+    #define XY_PROBE_FEEDRATE 12000
   #elif ENABLED(OCTOPUS)
     #if ENABLED(LCD_BTT_TFT)
       #define BAUDRATE 115200 // Set serial 1 TFT port baudrate
@@ -344,10 +374,10 @@
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PB7
-    #define XY_PROBE_FEEDRATE 16000
+    #define XY_PROBE_FEEDRATE 12000
     #define USE_PROBE_FOR_Z_HOMING
   #else
-    #define XY_PROBE_FEEDRATE (133*60)
+    #define XY_PROBE_FEEDRATE 12000
     #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #endif
   #undef MIN_SOFTWARE_ENDSTOP_Z

@@ -311,15 +311,15 @@
   #if ENABLED(BMGExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { +20, -57, -3.35 }
     #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (16000) }
+    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
     #define Z_HOMING_HEIGHT  7 
     #define Z_AFTER_HOMING  2 
   #else
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #endif
   #define AUTO_BED_LEVELING_UBL
-  #define PROBING_MARGIN 15
-  #define MESH_INSET 15 
+  #define PROBING_MARGIN 5
+  #define MESH_INSET 5 
   #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
@@ -339,7 +339,7 @@
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
   #undef HOMING_FEEDRATE_MM_M
-  #define HOMING_FEEDRATE_MM_M { (80*60), (80*60), (16000) }
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
   #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
   #define EXTRA_PROBING    1

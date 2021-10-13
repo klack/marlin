@@ -1,4 +1,4 @@
-/**
+ /**
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
@@ -33,8 +33,15 @@
 void GcodeSuite::M117() {
 
   if (parser.string_arg && parser.string_arg[0])
-  ui.set_status(parser.string_arg);
-  { SERIAL_ECHO_START();SERIAL_ECHOPGM("//lux:M117 ");SERIAL_ECHOLN(parser.string_arg); MYSERIAL1.print("//lux:M117 ");MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13); }
-  }
+    {
+      ui.set_status(parser.string_arg);
+
+      SERIAL_ECHO_START();SERIAL_ECHOPGM("//lux:M117 ");SERIAL_ECHOLN(parser.string_arg);
+      MYSERIAL1.print("//lux:M117 ");MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+    }
+  else
+    ui.reset_status();
+
+}
 
 #endif // HAS_STATUS_MESSAGE

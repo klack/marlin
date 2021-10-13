@@ -26,7 +26,6 @@
 
 #include "../gcode.h"
 #include "../../feature/babystep.h"
-#include "../../module/motion.h"
 #include "../../module/probe.h"
 #include "../../module/planner.h"
 
@@ -38,7 +37,8 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
-#if ENABLED(BABYSTEP_ZPROBE_OFFSET) //LUXUI
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+
   FORCE_INLINE void mod_probe_offset(const_float_t offs) {
     if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
       probe.offset.z += offs;
@@ -51,7 +51,8 @@
       #endif
     }
   }
-#endif//LUXUI
+
+#endif
 
 /**
  * M290: Babystepping
@@ -90,33 +91,32 @@ void GcodeSuite::M290() {
     SERIAL_ECHO_START();
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-      SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
+      SERIAL_ECHOLNPGM(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
     #endif
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
     {
-      if(active_extruder!=0){
-        SERIAL_ECHOLNPAIR_P(
-          PSTR("Hotend "), int(active_extruder) 
-          #if ENABLED(BABYSTEP_XY)
-            , PSTR("Offset X"), hotend_offset[active_extruder].x
-            , SP_Y_STR, hotend_offset[active_extruder].y
-            , SP_Z_STR, hotend_offset[active_extruder].z
-          #else
-            , PSTR("Offset Z"), hotend_offset[active_extruder].z
-          #endif
-        );
-      }
-  }
- #endif
+      SERIAL_ECHOLNPGM_P(
+        PSTR("Hotend "), active_extruder
+        #if ENABLED(BABYSTEP_XY)
+          , PSTR("Offset X"), hotend_offset[active_extruder].x
+          , SP_Y_STR, hotend_offset[active_extruder].y
+          , SP_Z_STR
+        #else
+          , PSTR("Offset Z")
+        #endif
+        , hotend_offset[active_extruder].z
+      );
+    }
+    #endif
 
     #if ENABLED(MESH_BED_LEVELING)
-      SERIAL_ECHOLNPAIR("MBL Adjust Z", mbl.z_offset);
+      SERIAL_ECHOLNPGM("MBL Adjust Z", mbl.z_offset);
     #endif
 
     #if ENABLED(BABYSTEP_DISPLAY_TOTAL)
     {
-      SERIAL_ECHOLNPAIR_P(
+      SERIAL_ECHOLNPGM_P(
         #if ENABLED(BABYSTEP_XY)
             PSTR("Babystep X"), babystep.axis_total[X_AXIS]
           , SP_Y_STR, babystep.axis_total[Y_AXIS]
@@ -126,8 +126,6 @@ void GcodeSuite::M290() {
         #endif
         , babystep.axis_total[BS_TOTAL_IND(Z_AXIS)]
       );
-      constexpr float default_axis_steps_per_unit[] = DEFAULT_AXIS_STEPS_PER_UNIT;
-      SERIAL_ECHOLNPAIR("Babystep mm Z", babystep.axis_total[BS_TOTAL_IND(Z_AXIS)] / default_axis_steps_per_unit[2]);
     }
     #endif
   }

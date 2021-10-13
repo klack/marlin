@@ -146,10 +146,6 @@
   //#define E0_HARDWARE_SERIAL MSerial1
   //#define E1_HARDWARE_SERIAL MSerial1
 
-  //
-  // Software serial
-  //
-
   #define X_SERIAL_TX_PIN                   PD5
   #define X_SERIAL_RX_PIN                   PD5
 
@@ -194,26 +190,18 @@
 //
 // Power Supply Control
 //
-#if ENABLED(PSU_CONTROL)                          // MKSPWC
-  #if HAS_TFT_LVGL_UI
-    #error "PSU_CONTROL cannot be used with TFT_LVGL_UI. Disable PSU_CONTROL to continue."
+#if ENABLED(MKS_PWC)
+  #if ENABLED(TFT_LVGL_UI)
+    #undef PSU_CONTROL
+    #undef MKS_PWC
+    #define SUICIDE_PIN                     PB2
+    #define SUICIDE_PIN_STATE               LOW
+  #else
+    #define PS_ON_PIN                       PB2   // PW_OFF
   #endif
-  #ifndef PS_ON_PIN
-    #define PS_ON_PIN                       PB2   // SUICIDE
-  #endif
-  #ifndef KILL_PIN
-    #define KILL_PIN                        PA2
-    #define KILL_PIN_STATE                  HIGH
-  #endif
-#else
-  #define SUICIDE_PIN                       PB2
-  #define SUICIDE_PIN_INVERTING            false
+  #define KILL_PIN                          PA2
+  #define KILL_PIN_STATE                    HIGH
 #endif
-
-//
-// Power Supply Control
-//
-#if HAS_TFT_LVGL_UI
 
 //
 // Misc. Functions
@@ -361,7 +349,7 @@
     #if SD_CONNECTION_IS(ONBOARD)
       #define FORCE_SOFT_SPI
     #endif
-	//#define LCD_SCREEN_ROT_180
+    //#define LCD_SCREEN_ROT_180
 
   #else                                           // !MKS_MINI_12864
 
@@ -377,14 +365,10 @@
 
     #endif
 
-    #ifndef BOARD_ST7920_DELAY_1
-      #define BOARD_ST7920_DELAY_1 DELAY_NS(125)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_2
-      #define BOARD_ST7920_DELAY_2 DELAY_NS(125)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_3
-      #define BOARD_ST7920_DELAY_3 DELAY_NS(125)
+    #if IS_U8GLIB_ST7920
+      #define BOARD_ST7920_DELAY_1           125
+      #define BOARD_ST7920_DELAY_2           125
+      #define BOARD_ST7920_DELAY_3           125
     #endif
 
   #endif // !MKS_MINI_12864

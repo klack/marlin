@@ -145,10 +145,6 @@
   //#define E3_HARDWARE_SERIAL Serial1
   //#define E4_HARDWARE_SERIAL Serial1
 
-  //
-  // Software serial
-  //
-
   #define X_SERIAL_TX_PIN                   PD5
   #define X_SERIAL_RX_PIN                   PD5
 
@@ -183,10 +179,10 @@
 // Misc. Functions
 //
 #if HAS_TFT_LVGL_UI
-  #if ENABLED(PSU_CONTROL)                        // MKSPWC
-    #define SUICIDE_PIN                     PB2   // PW_OFF
-    #define SUICIDE_PIN_INVERTING          false
-    #define KILL_PIN                        PA2   // PW_DET
+  #if ENABLED(MKS_PWC)
+    #define SUICIDE_PIN                     PB2
+    #define SUICIDE_PIN_STATE               LOW
+    #define KILL_PIN                        PA2
     #define KILL_PIN_STATE                  HIGH
   #endif
 
@@ -330,7 +326,7 @@
     #if SD_CONNECTION_IS(ONBOARD)
       #define FORCE_SOFT_SPI
     #endif
-	//#define LCD_SCREEN_ROT_180
+    //#define LCD_SCREEN_ROT_180
 
   #else                                           // !MKS_MINI_12864
 
@@ -346,15 +342,9 @@
 
     #endif
 
-    #ifndef BOARD_ST7920_DELAY_1
-      #define BOARD_ST7920_DELAY_1 DELAY_NS(125)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_2
-      #define BOARD_ST7920_DELAY_2 DELAY_NS(125)
-    #endif
-    #ifndef BOARD_ST7920_DELAY_3
-      #define BOARD_ST7920_DELAY_3 DELAY_NS(125)
-    #endif
+    #define BOARD_ST7920_DELAY_1             125
+    #define BOARD_ST7920_DELAY_2             125
+    #define BOARD_ST7920_DELAY_3             125
 
   #endif // !MKS_MINI_12864
 
@@ -367,10 +357,6 @@
   #define SPI_FLASH_MOSI_PIN                PB15
   #define SPI_FLASH_MISO_PIN                PB14
   #define SPI_FLASH_SCK_PIN                 PB13
-#endif
-
-#ifndef BEEPER_PIN
-  #define BEEPER_PIN                        PC5
 #endif
 
 #ifndef BEEPER_PIN

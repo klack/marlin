@@ -46,12 +46,13 @@
 #endif
 
 #include "../../lcd/marlinui.h"
-#if ENABLED(DWIN_CREALITY_LCD)
-  #include "../../lcd/e3v2/creality/dwin.h"
-#endif
 
 #if ENABLED(EXTENSIBLE_UI)
   #include "../../lcd/extui/ui_api.h"
+#elif ENABLED(DWIN_CREALITY_LCD)
+  #include "../../lcd/e3v2/creality/dwin.h"
+#elif ENABLED(DWIN_CREALITY_LCD_ENHANCED)
+  #include "../../lcd/e3v2/enhanced/dwin.h"
 #endif
 
 #if HAS_L64XX                         // set L6470 absolute position registers to counts
@@ -123,9 +124,10 @@
 
     // Disallow Z homing if X or Y homing is needed
     if (homing_needed_error(_BV(X_AXIS) | _BV(Y_AXIS))) return;
-    const float currentSafeXpos = current_position.x; // Used in tenlog config
-    const float currentSafeYpos = current_position.y; // Used in tenlog config
+
     sync_plan_position();
+    const float currentSafeXpos = current_position.x; // LUXURI Used in tenlog config
+    const float currentSafeYpos = current_position.y; // LUXURI Used in tenlog config
 
     /**
      * Move the Z probe (or just the nozzle) to the safe homing point
@@ -154,13 +156,14 @@
 
       do_blocking_move_to_xy(destination);
       homeaxis(Z_AXIS);
+
       destination.set(currentSafeXpos, currentSafeYpos, current_position.z); // Used in tenlog config
       if (position_is_reachable(destination)) { // Used in tenlog config
-	      do_blocking_move_to_xy(destination); // Used in tenlog config
+        do_blocking_move_to_xy(destination); // Used in tenlog config
       } // Used in tenlog config
     }
     else {
-      LCD_MESSAGEPGM(MSG_ZPROBE_OUT);
+      LCD_MESSAGE(MSG_ZPROBE_OUT);
       SERIAL_ECHO_MSG(STR_ZPROBE_OUT_SER);
     }
   }
@@ -223,7 +226,7 @@ void GcodeSuite::G28() {
   TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(M_HOMING));
 
   #if ENABLED(DUAL_X_CARRIAGE)
-    //bool IDEX_saved_duplication_state = extruder_duplication_enabled;
+    bool IDEX_saved_duplication_state = extruder_duplication_enabled;
     DualXMode IDEX_saved_mode = dual_x_carriage_mode;
   #endif
 
@@ -243,7 +246,7 @@ void GcodeSuite::G28() {
     return;
   }
 
-  TERN_(DWIN_CREALITY_LCD, DWIN_StartHoming());
+  TERN_(HAS_DWIN_E3V2_BASIC, DWIN_StartHoming());
   TERN_(EXTENSIBLE_UI, ExtUI::onHomingStart());
 
   planner.synchronize();          // Wait for planner moves to finish!
@@ -273,33 +276,33 @@ void GcodeSuite::G28() {
   #endif
 
   #if HAS_HOMING_CURRENT
-    auto debug_current = [](PGM_P const s, const int16_t a, const int16_t b){
-      DEBUG_ECHOPGM_P(s); DEBUG_ECHOLNPAIR(" current: ", a, " -> ", b);
+    auto debug_current = [](FSTR_P const s, const int16_t a, const int16_t b) {
+      DEBUG_ECHOF(s); DEBUG_ECHOLNPGM(" current: ", a, " -> ", b);
     };
     #if HAS_CURRENT_HOME(X)
       const int16_t tmc_save_current_X = stepperX.getMilliamps();
       stepperX.rms_current(X_CURRENT_HOME);
-      if (DEBUGGING(LEVELING)) debug_current(PSTR("X"), tmc_save_current_X, X_CURRENT_HOME);
+      if (DEBUGGING(LEVELING)) debug_current(F("X"), tmc_save_current_X, X_CURRENT_HOME);
     #endif
     #if HAS_CURRENT_HOME(X2)
       const int16_t tmc_save_current_X2 = stepperX2.getMilliamps();
       stepperX2.rms_current(X2_CURRENT_HOME);
-      if (DEBUGGING(LEVELING)) debug_current(PSTR("X2"), tmc_save_current_X2, X2_CURRENT_HOME);
+      if (DEBUGGING(LEVELING)) debug_current(F("X2"), tmc_save_current_X2, X2_CURRENT_HOME);
     #endif
     #if HAS_CURRENT_HOME(Y)
       const int16_t tmc_save_current_Y = stepperY.getMilliamps();
       stepperY.rms_current(Y_CURRENT_HOME);
-      if (DEBUGGING(LEVELING)) debug_current(PSTR("Y"), tmc_save_current_Y, Y_CURRENT_HOME);
+      if (DEBUGGING(LEVELING)) debug_current(F("Y"), tmc_save_current_Y, Y_CURRENT_HOME);
     #endif
     #if HAS_CURRENT_HOME(Y2)
       const int16_t tmc_save_current_Y2 = stepperY2.getMilliamps();
       stepperY2.rms_current(Y2_CURRENT_HOME);
-      if (DEBUGGING(LEVELING)) debug_current(PSTR("Y2"), tmc_save_current_Y2, Y2_CURRENT_HOME);
+      if (DEBUGGING(LEVELING)) debug_current(F("Y2"), tmc_save_current_Y2, Y2_CURRENT_HOME);
     #endif
     #if HAS_CURRENT_HOME(Z) && ENABLED(DELTA)
       const int16_t tmc_save_current_Z = stepperZ.getMilliamps();
       stepperZ.rms_current(Z_CURRENT_HOME);
-      if (DEBUGGING(LEVELING)) debug_current(PSTR("Z"), tmc_save_current_Z, Z_CURRENT_HOME);
+      if (DEBUGGING(LEVELING)) debug_current(F("Z"), tmc_save_current_Z, Z_CURRENT_HOME);
     #endif
   #endif
 
@@ -375,7 +378,7 @@ void GcodeSuite::G28() {
 
     if (z_homing_height && (LINEAR_AXIS_GANG(doX, || doY, || TERN0(Z_SAFE_HOMING, doZ), || doI, || doJ, || doK))) {
       // Raise Z before homing any other axes and z is not already high enough (never lower z)
-      if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Raise Z (before homing) by ", z_homing_height);
+      if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Raise Z (before homing) by ", z_homing_height);
       do_z_clearance(z_homing_height);
       TERN_(BLTOUCH, bltouch.init());
     }
@@ -473,7 +476,7 @@ void GcodeSuite::G28() {
       idex_set_parked();
 
       dual_x_carriage_mode = IDEX_saved_mode;
-      //set_duplication_enabled(IDEX_saved_duplication_state); // 30/06/2021 Murdock Bug Fix #104 & #33 LUXURI
+      set_duplication_enabled(IDEX_saved_duplication_state);
 
       TERN_(IMPROVE_HOMING_RELIABILITY, end_slow_homing(saved_motion_state));
     }
@@ -527,7 +530,7 @@ void GcodeSuite::G28() {
 
   ui.refresh();
 
-  TERN_(DWIN_CREALITY_LCD, DWIN_CompletedHoming());
+  TERN_(HAS_DWIN_E3V2_BASIC, DWIN_CompletedHoming());
   TERN_(EXTENSIBLE_UI, ExtUI::onHomingComplete());
 
   report_current_position();

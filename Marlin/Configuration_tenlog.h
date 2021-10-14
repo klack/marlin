@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "2.0.9.1 for Luxuri 0.8.x"
+#define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.8.x"
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -10,6 +10,7 @@
 #define MIN_SOFTWARE_ENDSTOP_X
 #define MIN_SOFTWARE_ENDSTOP_Y
 #define MIN_SOFTWARE_ENDSTOP_Z
+#define Z_MIN_ENDSTOP_INVERTING true
 #define TOOLCHANGE_NO_RETURN
 #define HOST_ACTION_COMMANDS
 // #define HOST_PROMPT_SUPPORT  
@@ -180,8 +181,8 @@
   //#define STEALTHCHOP_E
   #define MONITOR_DRIVER_STATUS
   #define TMC_DEBUG
-#elif ENABLED(Driver2209BTTSKRPRO)
-  #define verS2 "2209BTTSKRPRO"
+#elif ENABLED(Driver2209BTT)
+  #define verS2 "2209BTT"
   #define DriverType TMC2209
   #define INVERT_Z_DIR false
   #define INVERT_Z2_VS_Z_DIR false
@@ -206,7 +207,7 @@
     #define INVERT_Y_DIR true
   #endif
 #endif
-#if ENABLED(Driver2209BTTSKRPRO)
+#if ENABLED(Driver2209BTT)
   #define X_CURRENT       580 
   #define X2_CURRENT       580 
   #define Y_CURRENT       580 
@@ -318,8 +319,8 @@
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #endif
   #define AUTO_BED_LEVELING_UBL
-  #define PROBING_MARGIN 5
-  #define MESH_INSET 5 
+  #define PROBING_MARGIN 15
+  #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points

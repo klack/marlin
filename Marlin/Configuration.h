@@ -102,23 +102,23 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-	#if ENABLED(BTTSKRPRO)
-	  #define SERIAL_PORT -1
-	  #define SERIAL_PORT_2 1
-    #define BAUDRATE_2 115200
-    #define BAUDRATE 9600 
-  #elif ENABLED(OCTOPUS)
-  	#define SERIAL_PORT 1
-	  #define SERIAL_PORT_2 -1
-    #define SERIAL_PORT_3 2
-    #define BAUDRATE_2 115200
-    #define BAUDRATE_3 115200
-	#else
-	  #define SERIAL_PORT 0
-	  #define SERIAL_PORT_2 2
-    #define BAUDRATE 250000
-    #define BAUDRATE_2 9600 
-	#endif
+#if ENABLED(BTTSKRPRO)
+  #define SERIAL_PORT -1
+  #define SERIAL_PORT_2 1
+  #define BAUDRATE_2 115200
+  #define BAUDRATE 9600 
+#elif ENABLED(OCTOPUS)
+  #define SERIAL_PORT 1
+	#define SERIAL_PORT_2 -1
+  #define SERIAL_PORT_3 2
+  #define BAUDRATE_2 115200
+  #define BAUDRATE_3 115200
+#else
+	#define SERIAL_PORT 0
+	#define SERIAL_PORT_2 2
+  #define BAUDRATE 250000
+  #define BAUDRATE_2 9600 
+#endif
 
 /**
  * Serial Port Baud Rate
@@ -846,7 +846,7 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 //#define Y_MIN_ENDSTOP_INVERTING true // This is set in Configuration_tenlog.h // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+// #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop. // #defined in Configuration_tenlog.h
 #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
@@ -940,7 +940,8 @@
  * Override with M203
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_FEEDRATE          { 80, 80, 3, 25, 25 }
+#define DEFAULT_MAX_FEEDRATE          { 120.00, 120.00, 3, 25, 25 }
+
 
 //#define LIMITED_MAX_FR_EDITING        // Limit edit via M203 or LCD to DEFAULT_MAX_FEEDRATE * 2
 #if ENABLED(LIMITED_MAX_FR_EDITING)
@@ -953,7 +954,7 @@
  * Override with M201
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_MAX_ACCELERATION      {500, 500, 100, 1000, 1000} 
+#define DEFAULT_MAX_ACCELERATION      {800, 800, 100, 1000, 1000} 
 
 //#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
 #if ENABLED(LIMITED_MAX_ACCEL_EDITING)
@@ -970,7 +971,7 @@
  */
 #define DEFAULT_ACCELERATION          500    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  500    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   500    // X, Y, Z acceleration for travel (non printing) moves
+#define DEFAULT_TRAVEL_ACCELERATION   800    // X, Y, Z acceleration for travel (non printing) moves
 
 /**
  * Default Jerk limits (mm/s)
@@ -1258,7 +1259,7 @@
 //#define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
 //#define Z_AFTER_PROBING           5 // Z position after probing is done
 
-#define Z_PROBE_LOW_POINT          -5 // Farthest distance below the trigger-point to go before stopping
+#define Z_PROBE_LOW_POINT          -14 // Farthest distance below the trigger-point to go before stopping
 
 // For M851 give a range for adjusting the Z probe offset
 #define Z_PROBE_OFFSET_RANGE_MIN -20

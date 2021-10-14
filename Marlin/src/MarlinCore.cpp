@@ -63,6 +63,13 @@
   #include "lcd/touch/touch_buttons.h"
 #endif
 
+inline bool power_off_state() { 
+  #ifdef POWER_LOSS_TRIGGER_BY_PIN
+    return READ(POWER_OFF_PIN) == POWER_OFF_STATE; 
+  #endif
+  return false;
+}
+
 #if HAS_TFT_LVGL_UI
   #include "lcd/extui/mks_ui/tft_lvgl_configuration.h"
   #include "lcd/extui/mks_ui/draw_ui.h"
@@ -789,7 +796,7 @@ void idle(bool no_stepper_sleep/*=false*/) {
           suicide();
         #elif ENABLED(PSU_CONTROL)
           PSU_OFF();
-          kill(M112_KILL_STR, nullptr, true);
+          kill(FSTR_P(M112_KILL_STR), FSTR_P(NUL_STR), true);
         #endif
 
         hadPower = false;

@@ -179,8 +179,8 @@
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
   //#define STEALTHCHOP_E
-  #define MONITOR_DRIVER_STATUS
-  #define TMC_DEBUG
+  //#define MONITOR_DRIVER_STATUS
+  //#define TMC_DEBUG
 #elif ENABLED(Driver2209BTT)
   #define verS2 "2209BTT"
   #define DriverType TMC2209
@@ -307,6 +307,8 @@
   #define TEMP_SENSOR_BED 11
 #endif
 #if ENABLED(BL_Touch)
+  #undef Z_MIN_ENDSTOP_INVERTING
+  #define Z_MIN_ENDSTOP_INVERTING false
   #define HAS_PROBE
   #define BLTOUCH
   #if ENABLED(BMGExtruder)

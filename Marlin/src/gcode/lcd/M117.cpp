@@ -39,7 +39,6 @@ void GcodeSuite::M117() {
       #ifdef SERIAL_PORT_2
         MYSERIAL2.print("//lux:M117 "); MYSERIAL2.print(parser.string_arg);MYSERIAL2.write(13);
       #endif
-      
       #ifdef SERIAL_PORT_3
         MYSERIAL3.print("//lux:M117 "); MYSERIAL3.print(parser.string_arg);MYSERIAL3.write(13);
       #endif

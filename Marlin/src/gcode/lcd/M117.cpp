@@ -35,10 +35,7 @@ void GcodeSuite::M117() {
   if (parser.string_arg && parser.string_arg[0])
     { 
       ui.set_status(parser.string_arg);  
-      #ifdef SERIAL_PORT
-        MYSERIAL1.print("//lux:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-      #endif
-
+      MYSERIAL1.print("//lux:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
       #ifdef SERIAL_PORT_2
         MYSERIAL2.print("//lux:M117 "); MYSERIAL2.print(parser.string_arg);MYSERIAL2.write(13);
       #endif

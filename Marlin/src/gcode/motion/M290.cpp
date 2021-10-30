@@ -52,9 +52,7 @@
     }
   }
 
-#endif
-
-#if ENABLED(BABYSTEP_HOME_Z_OFFSET)
+#elif ENABLED(BABYSTEP_HOME_Z_OFFSET)
 
   FORCE_INLINE void mod_offset(const_float_t offs) {
     if (active_extruder==0) {
@@ -98,7 +96,7 @@ void GcodeSuite::M290() {
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET || BABYSTEP_HOME_Z_OFFSET)
         if (parser.boolval('P', true)) mod_offset(offs);
       #endif
     }

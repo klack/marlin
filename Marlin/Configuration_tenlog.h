@@ -407,10 +407,10 @@
   #endif
 #endif
 
-#if DISABLED(HAS_PROBE)
+// #if DISABLED(HAS_PROBE)
   #define BABYSTEP_HOME_Z_OFFSET
   #define BABYSTEP_HOTEND_Z_OFFSET
-#endif
+// #endif
 
 #if ENABLED(BTTSFR)
   #define FILAMENT_RUNOUT_DISTANCE_MM 7

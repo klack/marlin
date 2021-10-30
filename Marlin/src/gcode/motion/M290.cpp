@@ -43,7 +43,7 @@
     if (active_extruder==0) {
       #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
         probe.offset.z += offs;
-        SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);        
+        SERIAL_ECHO_MSG(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);        
       #else 
         home_offset[Z_AXIS] -= offs;
         SERIAL_ECHO_MSG("Home Offset Z", home_offset[Z_AXIS]);

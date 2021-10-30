@@ -16,7 +16,6 @@
 #define HAS_STATUS_MESSAGE 1
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
-#define BABYSTEP_HOTEND_Z_OFFSET 
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
@@ -406,6 +405,10 @@
       #define Z4_ENDSTOP_ADJUSTMENT 0
     #endif
   #endif
+#endif
+
+#if DISABLED(HAS_PROBE)
+  #define BABYSTEP_HOME_Z_OFFSET
 #endif
 
 #if ENABLED(BTTSFR)

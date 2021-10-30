@@ -25,6 +25,8 @@
 #define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
+#define BABYSTEP_HOME_Z_OFFSET
+#define BABYSTEP_HOTEND_Z_OFFSET
 #define verS3 ""
 
 #if ENABLED(MachineTLD3P)
@@ -406,11 +408,6 @@
     #endif
   #endif
 #endif
-
-// #if DISABLED(HAS_PROBE)
-  #define BABYSTEP_HOME_Z_OFFSET
-  #define BABYSTEP_HOTEND_Z_OFFSET
-// #endif
 
 #if ENABLED(BTTSFR)
   #define FILAMENT_RUNOUT_DISTANCE_MM 7

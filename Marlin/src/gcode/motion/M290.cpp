@@ -37,36 +37,24 @@
   #include "../../feature/bedlevel/bedlevel.h"
 #endif
 
-#if ENABLED(BABYSTEP_ZPROBE_OFFSET)
-
-  FORCE_INLINE void mod_offset(const_float_t offs) {
-    if (TERN1(BABYSTEP_HOTEND_Z_OFFSET, active_extruder == 0)) {
-      probe.offset.z += offs;
-      SERIAL_ECHO_MSG(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
-    }
-    else {
-      #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
-        hotend_offset[active_extruder].z -= offs;
-        SERIAL_ECHO_MSG(STR_PROBE_OFFSET STR_Z ": ", hotend_offset[active_extruder].z);
-      #endif
-    }
-  }
-
-#elif ENABLED(BABYSTEP_HOME_Z_OFFSET)
-
-  FORCE_INLINE void mod_offset(const_float_t offs) {
+#if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
+  FORCE_INLINE void mod_offset(const float &offs) {
+    SERIAL_ECHO_START();
     if (active_extruder==0) {
-      home_offset[Z_AXIS] -= offs;
-      SERIAL_ECHO_MSG("Home Offset Z", home_offset[Z_AXIS]);
-    } 
-    else {
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+        probe.offset.z += offs;
+        SERIAL_ECHOLNPAIR(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);        
+      #else 
+        home_offset[Z_AXIS] += offs;
+        SERIAL_ECHO_MSG("Home Offset Z", home_offset[Z_AXIS]);
+      #endif
+    } else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         hotend_offset[active_extruder].z -= offs;
         SERIAL_ECHO_MSG(STR_PROBE_OFFSET STR_Z ": ", hotend_offset[active_extruder].z);
       #endif
     }
   }
-
 #endif
 
 /**
@@ -88,7 +76,7 @@ void GcodeSuite::M290() {
       if (parser.seenval(AXIS_CHAR(a)) || (a == Z_AXIS && parser.seenval('S'))) {
         const float offs = constrain(parser.value_axis_units((AxisEnum)a), -2, 2);
         babystep.add_mm((AxisEnum)a, offs);
-        #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
+        #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
           if (a == Z_AXIS && parser.boolval('P', true)) mod_offset(offs);
         #endif
       }
@@ -96,7 +84,7 @@ void GcodeSuite::M290() {
     if (parser.seenval('Z') || parser.seenval('S')) {
       const float offs = constrain(parser.value_axis_units(Z_AXIS), -2, 2);
       babystep.add_mm(Z_AXIS, offs);
-      #if ENABLED(BABYSTEP_ZPROBE_OFFSET || BABYSTEP_HOME_Z_OFFSET)
+      #if ENABLED(BABYSTEP_ZPROBE_OFFSET) || ENABLED(BABYSTEP_HOTEND_Z_OFFSET)
         if (parser.boolval('P', true)) mod_offset(offs);
       #endif
     }
@@ -107,6 +95,8 @@ void GcodeSuite::M290() {
 
     #if ENABLED(BABYSTEP_ZPROBE_OFFSET)
       SERIAL_ECHOLNPGM(STR_PROBE_OFFSET " " STR_Z, probe.offset.z);
+    #else
+      SERIAL_ECHOLNPGM("Home Offset Z", home_offset[Z_AXIS]);
     #endif
 
     #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)

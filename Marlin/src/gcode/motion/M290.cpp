@@ -59,7 +59,7 @@
   FORCE_INLINE void mod_offset(const_float_t offs) {
     if (active_extruder==0) {
       home_offset[Z_AXIS] -= offs;
-      SERIAL_ECHOLNPAIR("Home Offset Z", home_offset[Z_AXIS]);
+      SERIAL_ECHO_MSG("Home Offset Z", home_offset[Z_AXIS]);
     } 
     else {
       #if ENABLED(BABYSTEP_HOTEND_Z_OFFSET)

@@ -33,19 +33,17 @@
 void GcodeSuite::M117() {
 
   if (parser.string_arg && parser.string_arg[0])
-    { ui.set_status(parser.string_arg);
-    SERIAL_ECHO_START();SERIAL_ECHOPGM("//lux:M117 ");SERIAL_ECHOLN(parser.string_arg);
-    
-  #if SERIAL_PORT_2 == 2
-    MYSERIAL1.print("//lux:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
-  #endif
-
-  #if SERIAL_PORT == 2
-    MYSERIAL0.print("//lux:M117 "); MYSERIAL0.print(parser.string_arg);MYSERIAL0.write(13);
-  #endif
-  }
+    { 
+      ui.set_status(parser.string_arg);  
+      MYSERIAL1.print("//lux:M117 "); MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+      #ifdef SERIAL_PORT_2
+        MYSERIAL2.print("//lux:M117 "); MYSERIAL2.print(parser.string_arg);MYSERIAL2.write(13);
+      #endif
+      #ifdef SERIAL_PORT_3
+        MYSERIAL3.print("//lux:M117 "); MYSERIAL3.print(parser.string_arg);MYSERIAL3.write(13);
+      #endif
+    }
 else
   ui.reset_status();
-
 }
 #endif

@@ -1,4 +1,4 @@
-#define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.8.x"
+#define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -13,10 +13,9 @@
 #define Z_MIN_ENDSTOP_INVERTING true
 #define TOOLCHANGE_NO_RETURN
 #define HOST_ACTION_COMMANDS
-// #define HOST_PROMPT_SUPPORT  
+#define HAS_STATUS_MESSAGE 1
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
-#define BABYSTEP_HOTEND_Z_OFFSET 
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
@@ -26,6 +25,8 @@
 #define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
+#define BABYSTEP_HOME_Z_OFFSET
+#define BABYSTEP_HOTEND_Z_OFFSET
 #define verS3 ""
 #define QUICK_HOME 
 
@@ -180,8 +181,8 @@
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
   //#define STEALTHCHOP_E
-  #define MONITOR_DRIVER_STATUS
-  #define TMC_DEBUG
+  //#define MONITOR_DRIVER_STATUS
+  //#define TMC_DEBUG
 #elif ENABLED(Driver2209BTT)
   #define verS2 "2209BTT"
   #define DriverType TMC2209
@@ -308,6 +309,8 @@
   #define TEMP_SENSOR_BED 11
 #endif
 #if ENABLED(BL_Touch)
+  #undef Z_MIN_ENDSTOP_INVERTING
+  #define Z_MIN_ENDSTOP_INVERTING false
   #define HAS_PROBE
   #define BLTOUCH
   #if ENABLED(BMGExtruder)

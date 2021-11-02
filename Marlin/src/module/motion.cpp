@@ -1207,10 +1207,31 @@ FORCE_INLINE void segment_idle(millis_t &next_idle_ms) {
             else
               new_pos.x = _MIN(X_BED_SIZE - x0_pos, X_MAX_POS);
 
-            // Move duplicate extruder into the correct position
-            if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
-            if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
-            planner.synchronize();
+            // 31/10/2021 Murdock Z Safety Unpark for duplication mode (For avoid bed clips. Fix issue #36).
+            if (SAFETY_Z_UNPARK > 0 && current_position.z <= SAFETY_Z_UNPARK && current_position.y <= SAFETY_Y_UNPARK) {
+                 float current_Z_Height = current_position.z;
+
+                // Raise Nozzle to SAFETY_Z_UNPARK height.
+                if (!planner.buffer_line(LOGICAL_AXIS_ARRAY(new_pos.e, inactive_extruder_x, new_pos.y, SAFETY_Z_UNPARK), planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) break;
+                planner.synchronize();
+
+                // Move duplicate extruder into the correct position
+                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
+                if (!planner.buffer_line(LOGICAL_AXIS_ARRAY(new_pos.e, new_pos.x, new_pos.y, SAFETY_Z_UNPARK), planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+                planner.synchronize();
+
+                // Restore Z height.
+                if (!planner.buffer_line(LOGICAL_AXIS_ARRAY(new_pos.e, new_pos.x, new_pos.y, current_Z_Height), planner.settings.max_feedrate_mm_s[Z_AXIS], 1)) break;
+                planner.synchronize();
+            } 
+            else
+            {
+                // Move duplicate extruder into the correct position
+                if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPGM("Set planner X", inactive_extruder_x, " ... Line to X", new_pos.x);
+                if (!planner.buffer_line(new_pos, planner.settings.max_feedrate_mm_s[X_AXIS], 1)) break;
+                planner.synchronize();
+            } 
+            // End fix #36.
 
             sync_plan_position();             // Extra sync for good measure
             set_duplication_enabled(true);    // Enable Duplication

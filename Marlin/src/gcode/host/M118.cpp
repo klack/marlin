@@ -55,8 +55,16 @@ void GcodeSuite::M118() {
   PORT_REDIRECT(WITHIN(port, 0, NUM_SERIAL) ? (port ? SERIAL_PORTMASK(port - 1) : SerialMask::All) : multiSerial.portMask);
 
   if (hasE) SERIAL_ECHO_START();
-  if (hasA) SERIAL_ECHOPGM("// ");
+  if (hasA) SERIAL_ECHOPGM("//");
   SERIAL_ECHOLN(p);
 
-  MYSERIAL1.print(p);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13); //LUXURI
+  //START LUXURI
+  MYSERIAL1.print(p);MYSERIAL1.print(parser.string_arg);MYSERIAL1.write(13);
+  #ifdef SERIAL_PORT_2
+    MYSERIAL2.print(p);MYSERIAL2.print(parser.string_arg);MYSERIAL2.write(13);
+  #endif
+  #ifdef SERIAL_PORT_3
+    MYSERIAL3.print(p);MYSERIAL3.print(parser.string_arg);MYSERIAL3.write(13);
+  #endif
+  //END LUXURI
 }

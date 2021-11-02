@@ -311,7 +311,7 @@
   #define HAS_PROBE
   #define BLTOUCH
   #if ENABLED(BMGExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { +10, -49, -3.5213 }
+    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
     #undef HOMING_FEEDRATE_MM_M
     #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
     #define Z_HOMING_HEIGHT  4 

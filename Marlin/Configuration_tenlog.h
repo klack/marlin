@@ -245,18 +245,7 @@
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
 #elif ENABLED(BMGExtruder)
-  #undef X2_MIN_POS
-  #undef X_MAX_POS
-  #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
-  #undef Y_MIN_POS
-  #undef X_MIN_POS 
-  #undef X1_MIN_POS
-  #define X_MIN_POS -50
-  #define X1_MIN_POS X_MIN_POS
-  #define X2_MIN_POS 10
-  #define X_MAX_POS 300
-  #define X2_MAX_POS 354
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
 #endif
 
@@ -276,9 +265,6 @@
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3
-  #define TOOL_CHANGE_AREA 18
 #elif ENABLED(OpticalY) 
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
@@ -304,6 +290,8 @@
   #undef THERMAL_PROTECTION_BED_PERIOD
   #undef WATCH_BED_TEMP_PERIOD
   #undef TEMP_SENSOR_BED
+  #undef BED_MAXTEMP
+  #define BED_MAXTEMP 140
   #define THERMAL_PROTECTION_BED_PERIOD 10
   #define WATCH_BED_TEMP_PERIOD 20
   #define TEMP_SENSOR_BED 11

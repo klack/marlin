@@ -28,6 +28,7 @@
 #define BABYSTEP_HOME_Z_OFFSET
 #define BABYSTEP_HOTEND_Z_OFFSET
 #define verS3 ""
+#define QUICK_HOME 
 
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
@@ -98,7 +99,7 @@
   #define M115_GEOMETRY_REPORT
   #define M114_DETAIL  
   #define PROBE_OFFSET_WIZARD
-  #define PROBE_OFFSET_WIZARD_START_Z -4.0
+  #define PROBE_OFFSET_WIZARD_START_Z 0
   #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
   #define LCD_INFO_MENU
   #define STATUS_MESSAGE_SCROLLING
@@ -199,11 +200,11 @@
   #define STEALTHCHOP_Z
   //#define STEALTHCHOP_E
   #if ENABLED(BTTSKRPRO)
-    #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z" // Enable stealthchop for all steppers except extruders
+    #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z \n M412 S0" // Enable stealthchop for all steppers except extruders
     #define INVERT_X_DIR true
     #define INVERT_Y_DIR false
   #elif ENABLED(OCTOPUS)
-    #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E" // Disable stealthchop for extruders
+    #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
   #endif
@@ -244,18 +245,7 @@
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
 #elif ENABLED(BMGExtruder)
-  #undef X2_MIN_POS
-  #undef X_MAX_POS
-  #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
-  #undef Y_MIN_POS
-  #undef X_MIN_POS 
-  #undef X1_MIN_POS
-  #define X_MIN_POS -49
-  #define X1_MIN_POS X_MIN_POS
-  #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
-  #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
-  #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
 #endif
 
@@ -275,9 +265,6 @@
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
-#elif ENABLED(BMGExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3
-  #define TOOL_CHANGE_AREA 18
 #elif ENABLED(OpticalY) 
   #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
@@ -315,10 +302,10 @@
   #define HAS_PROBE
   #define BLTOUCH
   #if ENABLED(BMGExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { +20, -57, -3.35 }
+    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
     #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
-    #define Z_HOMING_HEIGHT  7 
+    #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
+    #define Z_HOMING_HEIGHT  4 
     #define Z_AFTER_HOMING  2 
   #else
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
@@ -326,12 +313,21 @@
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
   #define MESH_INSET 15 
-  #define GRID_MAX_POINTS_X 15
+  #define GRID_MAX_POINTS_X 10
   #define G26_MESH_VALIDATION
-  #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
+  #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
-  #define MULTIPLE_PROBING 2
-  #define EXTRA_PROBING    1
+  //#define MULTIPLE_PROBING 2
+  //#define EXTRA_PROBING    1
+  //BLTouch Options. For details read BLTouch section in Configuration_adv.h
+  //Settings for BLTOUCH Classic 1.2, 1.3 or BLTouch Smart 1.0, 2.0, 2.2, 3.0, 3.1, and most clones
+  #define BLTOUCH_DELAY 200 // Default: 375, min 200
+  #define BLTOUCH_FORCE_SW_MODE // Default: Off
+  //Settings for BLTouch Smart 3.0 and 3.1
+  #define BLTOUCH_SET_5V_MODE // Default: Off
+  #define BLTOUCH_FORCE_MODE_SET // Default: Off
+  //#define BLTOUCH_HS_MODE // Default: Off
+  #define BLTOUCH_LCD_VOLTAGE_MENU // Default: Off
 #elif ENABLED(EZabl)
   #define HAS_PROBE
   #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
@@ -345,7 +341,7 @@
   #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
   #define Z_MIN_PROBE_ENDSTOP_INVERTING true
   #undef HOMING_FEEDRATE_MM_M
-  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
   #define USE_PROBE_FOR_Z_HOMING
   #define MULTIPLE_PROBING 2
   #define EXTRA_PROBING    1
@@ -361,16 +357,37 @@
   #define PROBING_MARGIN 45
   #define MESH_INSET 50 
   //#define ABL_BILINEAR_SUBDIVISION
+#elif ENABLED(IRPROBE)
+  #if ENABLED(BMGExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { +27.40, -18.90, 0 }
+    #undef HOMING_FEEDRATE_MM_M
+    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+    #define Z_HOMING_HEIGHT  5 
+    #define Z_AFTER_HOMING  2 
+  #else
+    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+  #endif
+  #define HAS_PROBE
+  #define FIX_MOUNTED_PROBE
+  #define AUTO_BED_LEVELING_UBL
+  #define PROBING_MARGIN 15
+  #define MESH_INSET 15 
+  #define GRID_MAX_POINTS_X 10
+  #define G26_MESH_VALIDATION
+  #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
+  #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
+  //#define MULTIPLE_PROBING 2
+  //#define EXTRA_PROBING    1
 #endif
 
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z  
+  #define XY_PROBE_FEEDRATE (50*60)
   #if ENABLED(BTTSKRPRO)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PA2
-    #define XY_PROBE_FEEDRATE 12000
   #elif ENABLED(OCTOPUS)
     #if ENABLED(LCD_BTT_TFT)
       #define BAUDRATE 115200 // Set serial 1 TFT port baudrate
@@ -380,10 +397,8 @@
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PB7
-    #define XY_PROBE_FEEDRATE 12000
     #define USE_PROBE_FOR_Z_HOMING
   #else
-    #define XY_PROBE_FEEDRATE 12000
     #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
   #endif
   #undef MIN_SOFTWARE_ENDSTOP_Z

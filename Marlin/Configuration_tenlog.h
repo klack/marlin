@@ -82,13 +82,6 @@
   #define DEFAULT_DUPLICATION_X_OFFSET 250
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #endif 
-#if ENABLED(BTTSKRPRO)
-  #undef verS3
-  #define verS3 "BTTSKRPRO"
-  #define POWER_OFF_PIN 32 // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
-  #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
-  #define USE_CONTROLLER_FAN
-#endif
 #if ENABLED(OCTOPUS)
   #undef verS3
   #define verS3 "OCTOPUS"
@@ -152,7 +145,6 @@
   #undef LIN_ADVANCE_K
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
@@ -163,7 +155,6 @@
 	#define INVERT_E1_DIR true
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
   #define TMC_DEBUG
   #define MONITOR_DRIVER_STATUS
 #elif ENABLED(Driver2209)
@@ -180,9 +171,6 @@
 	#endif
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
-  //#define MONITOR_DRIVER_STATUS
-  //#define TMC_DEBUG
 #elif ENABLED(Driver2209BTT)
   #define verS2 "2209BTT"
   #define DriverType TMC2209
@@ -198,12 +186,7 @@
   #define TMC_DEBUG
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
-  //#define STEALTHCHOP_E
-  #if ENABLED(BTTSKRPRO)
-    #define STARTUP_COMMANDS "M569 S0 I1 X Y Z T1 E \n M569 S0 X Y Z \n M412 S0" // Enable stealthchop for all steppers except extruders
-    #define INVERT_X_DIR true
-    #define INVERT_Y_DIR false
-  #elif ENABLED(OCTOPUS)
+  #if ENABLED(OCTOPUS)
     #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
@@ -266,7 +249,7 @@
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
 #elif ENABLED(OpticalY) 
-  #define Y_MIN_POS 3 + OPTICALY_Y_OFFSET
+  #define Y_MIN_POS 5 + OPTICALY_Y_OFFSET
   #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
 #endif
 
@@ -315,12 +298,10 @@
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
   #define MESH_INSET 15 
-  #define GRID_MAX_POINTS_X 10
+  #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
-  //#define MULTIPLE_PROBING 2
-  //#define EXTRA_PROBING    1
   //BLTouch Options. For details read BLTouch section in Configuration_adv.h
   //Settings for BLTOUCH Classic 1.2, 1.3 or BLTouch Smart 1.0, 2.0, 2.2, 3.0, 3.1, and most clones
   #define BLTOUCH_DELAY 200 // Default: 375, min 200
@@ -330,72 +311,13 @@
   #define BLTOUCH_FORCE_MODE_SET // Default: Off
   //#define BLTOUCH_HS_MODE // Default: Off
   #define BLTOUCH_LCD_VOLTAGE_MENU // Default: Off
-#elif ENABLED(EZabl)
-  #define HAS_PROBE
-  #define Z_CLEARANCE_BETWEEN_PROBES  5 // Z Clearance between probe points
-  #define Z_CLEARANCE_MULTI_PROBE     5 // Z Clearance between multiple probes
-  #define FIX_MOUNTED_PROBE
-  #if ENABLED(BMGExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { +29, -46, -1.2 }
-  #else
-    #define NOZZLE_TO_PROBE_OFFSET { -25, -55, -2 }
-  #endif
-  #undef  Z_MIN_PROBE_ENDSTOP_INVERTING
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING true
-  #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
-  #define USE_PROBE_FOR_Z_HOMING
-  #define MULTIPLE_PROBING 2
-  #define EXTRA_PROBING    1
-  #define Z_HOMING_HEIGHT  7 
-  #define Z_AFTER_HOMING  2 
-  #define PROBING_HEATERS_OFF
-  #define WAIT_FOR_BED_HEATER
-  #define AUTO_BED_LEVELING_UBL
-  //#define AUTO_BED_LEVELING_BILINEAR
-  #define GRID_MAX_POINTS_X 10
-  #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
-  #define EXTRAPOLATE_BEYOND_GRID
-  #define PROBING_MARGIN 45
-  #define MESH_INSET 50 
-  //#define ABL_BILINEAR_SUBDIVISION
-#elif ENABLED(IRPROBE)
-  #if ENABLED(BMGExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { +27.40, -18.90, 0 }
-    #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
-    #define Z_HOMING_HEIGHT  5 
-    #define Z_AFTER_HOMING  2 
-  #else
-    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
-  #endif
-  #define HAS_PROBE
-  #define FIX_MOUNTED_PROBE
-  #define AUTO_BED_LEVELING_UBL
-  #define PROBING_MARGIN 15
-  #define MESH_INSET 15 
-  #define GRID_MAX_POINTS_X 10
-  #define G26_MESH_VALIDATION
-  #define Z_CLEARANCE_BETWEEN_PROBES  2 // Z Clearance between probe points
-  #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
-  //#define MULTIPLE_PROBING 2
-  //#define EXTRA_PROBING    1
 #endif
 
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z  
   #define XY_PROBE_FEEDRATE (50*60)
-  #if ENABLED(BTTSKRPRO)
-    #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
-    #undef Z_MIN_PROBE_PIN
-    #define Z_MIN_PROBE_PIN                   PA2
-  #elif ENABLED(OCTOPUS)
-    #if ENABLED(LCD_BTT_TFT)
-      #define BAUDRATE 115200 // Set serial 1 TFT port baudrate
-    #else
-      #define BAUDRATE 9600 // Set serial 1 TFT port baudrate
-    #endif
+  #if ENABLED(OCTOPUS)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
     #define Z_MIN_PROBE_PIN                   PB7
@@ -436,13 +358,7 @@
 
 // Dynamic Variables
 #define CUSTOM_MACHINE_NAME verS1 verS2 verS3 
-#if ENABLED(BTTSKRPRO)
-  #define NUM_RUNOUT_SENSORS   2 
-  #define FIL_RUNOUT_STATE HIGH
-  #define FIL_RUNOUT_PULLUP
-  #define FIL_RUNOUT2_STATE HIGH
-  #define FIL_RUNOUT2_PULLUP
-#elif ENABLED(OCTOPUS)
+#if ENABLED(OCTOPUS)
   #define NUM_RUNOUT_SENSORS   2 
   #define FIL_RUNOUT_STATE HIGH
   #define FIL_RUNOUT_PULLUP

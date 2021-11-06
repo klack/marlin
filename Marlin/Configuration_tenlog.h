@@ -21,6 +21,7 @@
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
 #define Z_MIN_POS 0
 #define TEMP_SENSOR_BED 1
+#define BED_MAXTEMP      100
 #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
 #define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
@@ -269,16 +270,18 @@
   #undef verS3
   #define verS3 "PLR"
 #endif
-#if ENABLED(AC_Bed)
+
+#if ENABLED(ACBed)
   #undef THERMAL_PROTECTION_BED_PERIOD
   #undef WATCH_BED_TEMP_PERIOD
   #undef TEMP_SENSOR_BED
   #undef BED_MAXTEMP
-  #define BED_MAXTEMP 140
+  #define BED_MAXTEMP 145
   #define THERMAL_PROTECTION_BED_PERIOD 10
   #define WATCH_BED_TEMP_PERIOD 20
   #define TEMP_SENSOR_BED 11
 #endif
+
 #if ENABLED(BL_Touch)
   #ifndef OCTOPUS
     #undef Z_MIN_ENDSTOP_INVERTING
@@ -375,5 +378,17 @@
 #define Z2_DRIVER_TYPE DriverType
 #define Z3_DRIVER_TYPE DriverType
 #define Z4_DRIVER_TYPE DriverType
-#define E0_DRIVER_TYPE DriverType
-#define E1_DRIVER_TYPE DriverType
+
+#if ENABLED(A9EXT)
+  #define E0_DRIVER_TYPE A4988
+  #define E1_DRIVER_TYPE A4988
+  #define LIN_ADVANCE
+  #define LIN_ADVANCE_K 0
+  #undef INVERT_E0_DIR
+	#undef INVERT_E1_DIR
+	#define INVERT_E0_DIR false
+	#define INVERT_E1_DIR true
+#else
+  #define E0_DRIVER_TYPE DriverType
+  #define E1_DRIVER_TYPE DriverType
+#endif

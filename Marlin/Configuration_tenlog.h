@@ -30,7 +30,9 @@
 #define BABYSTEP_HOTEND_Z_OFFSET
 #define verS3 ""
 #define QUICK_HOME 
-
+//#define HOTEND_OFFSET_X { 0.0, 20.00 } // (mm) relative X-offset for each nozzle
+//#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
+//#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -40,7 +42,6 @@
   #define BED_CENTER_AT_155_155
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
-  #define TOOL_CHANGE_AREA  14
   #define X_MIN_POS -50
   #define X_MAX_POS 305
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
@@ -51,7 +52,7 @@
   #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
   #define Y_MIN_ENDSTOP_INVERTING false  
-  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Y_MAX_POS Y_BED_SIZE
   #define Z_MIN_POS 0
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
@@ -63,13 +64,13 @@
   #define MIN_SOFTWARE_ENDSTOP_Z
   #define TOOLCHANGE_NO_RETURN
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
+  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
   #undef verS3
   #define verS3 ""
   #define X_BED_SIZE        510
   #define Y_BED_SIZE        510
-  #define TOOL_CHANGE_AREA  0
   #define X_MIN_POS -50
   #define X_MAX_POS 505
   #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
@@ -78,7 +79,7 @@
   #define X2_MAX_POS 555.6
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define Y_MIN_POS 3
-  #define Y_MAX_POS Y_BED_SIZE + TOOL_CHANGE_AREA
+  #define Y_MAX_POS Y_BED_SIZE
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 250
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
@@ -216,6 +217,17 @@
 #define TITAN_Y_OFFSET 5
 #define TITAN_X_RIGHT_SPACING 3
 #define TITAN_X_LEFT_SPACING 6
+#define OPTICALY_Y_OFFSET 4
+
+#if ENABLED(OpticalY)
+  #undef    Y_MIN_ENDSTOP_INVERTING
+  #define   Y_MIN_ENDSTOP_INVERTING true
+  #undef    Y_MAX_POS
+  #define   Y_MAX_POS 305
+  #undef NOZZLE_PARK_POINT
+  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
+#endif
+
 #if ENABLED(TitanExtruder)
   #undef X_MIN_POS
   #undef X2_MIN_POS
@@ -228,30 +240,57 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
-#elif ENABLED(BMGExtruder)
+#elif ENABLED(BMGExtruderV2)
+  #undef X2_MIN_POS
+  #undef X_MAX_POS
+  #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #undef Y_MIN_POS
+  #undef X_MIN_POS 
+  #undef X1_MIN_POS
+  #define X_MIN_POS -49
+  #define X1_MIN_POS X_MIN_POS
+  #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
+  #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
+  #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
+#elif ENABLED(BMGExtruderV3)
+  #undef X_MIN_POS
+  #undef X2_MIN_POS
+  #undef X_MAX_POS
+  #undef X2_MAX_POS
+  #undef DEFAULT_AXIS_STEPS_PER_UNIT
+  #undef NOZZLE_PARK_POINT
+  #define X_MIN_POS   -53
+  #define X2_MIN_POS  5
+  #define X_MAX_POS   300
+  #define X2_MAX_POS  362
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
+  #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
+  //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
+  #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 #endif
-
-#define OPTICALY_Y_OFFSET 4
 #if ENABLED(OpticalY)
-  #undef Y_MIN_ENDSTOP_INVERTING
-  #define Y_MIN_ENDSTOP_INVERTING true
+  #undef X_BED_SIZE
+  #undef Y_BED_SIZE
+  #define X_BED_SIZE  305
+  #define Y_BED_SIZE  305
+  #undef    Y_MIN_ENDSTOP_INVERTING
+  #define   Y_MIN_ENDSTOP_INVERTING true
+  #undef    Y_MAX_POS
+  #define   Y_MAX_POS 300
+  #undef NOZZLE_PARK_POINT
+  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
 #endif
-
 #if ENABLED(TitanExtruder) || ENABLED(OpticalY)
-  #undef TOOL_CHANGE_AREA
   #undef Y_MIN_POS
 #endif
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET - OPTICALY_Y_OFFSET
 #elif ENABLED(TitanExtruder)
   #define Y_MIN_POS 3 + TITAN_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 + TITAN_Y_OFFSET
 #elif ENABLED(OpticalY) 
-  #define Y_MIN_POS 5 + OPTICALY_Y_OFFSET
-  #define TOOL_CHANGE_AREA 14 - OPTICALY_Y_OFFSET
+  #define Y_MIN_POS -7
 #endif
 
 #if ENABLED(TGCustom_2209_Titan)
@@ -289,12 +328,18 @@
   #endif
   #define HAS_PROBE
   #define BLTOUCH
-  #if ENABLED(BMGExtruder)
+  #if ENABLED(BMGExtruderV2)
+    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
+    #undef HOMING_FEEDRATE_MM_M
+    #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
+    #define Z_HOMING_HEIGHT  4 
+    #define Z_AFTER_HOMING  2
+  #elif ENABLED(BMGExtruderV3)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
     #undef HOMING_FEEDRATE_MM_M
     #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
     #define Z_HOMING_HEIGHT  4 
-    #define Z_AFTER_HOMING  2 
+    #define Z_AFTER_HOMING  2
   #else
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
   #endif

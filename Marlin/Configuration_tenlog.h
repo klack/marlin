@@ -219,7 +219,14 @@
 #define TITAN_X_LEFT_SPACING 6
 #define OPTICALY_Y_OFFSET 4
 
-#if ENABLED(OpticalY)
+#if ENABLED(TitanExtruder) && ENABLED(OpticalY)
+  #undef    Y_MIN_ENDSTOP_INVERTING
+  #define   Y_MIN_ENDSTOP_INVERTING true
+  #undef    Y_MAX_POS
+  #define   Y_MAX_POS 310
+  #undef NOZZLE_PARK_POINT
+  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
+#elif ENABLED(OpticalY)
   #undef    Y_MIN_ENDSTOP_INVERTING
   #define   Y_MIN_ENDSTOP_INVERTING true
   #undef    Y_MAX_POS
@@ -248,11 +255,10 @@
   #undef Y_MIN_POS
   #undef X_MIN_POS 
   #undef X1_MIN_POS
-  #define X_MIN_POS -49
-  #define X1_MIN_POS X_MIN_POS
-  #define X2_MIN_POS 10 + TITAN_X_LEFT_SPACING
-  #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
-  #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
+  #define X_MIN_POS   -53
+  #define X2_MIN_POS  5
+  #define X_MAX_POS   300
+  #define X2_MAX_POS  362
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
 #elif ENABLED(BMGExtruderV3)
   #undef X_MIN_POS
@@ -270,11 +276,18 @@
   //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 #endif
-#if ENABLED(OpticalY)
-  #undef X_BED_SIZE
-  #undef Y_BED_SIZE
-  #define X_BED_SIZE  305
-  #define Y_BED_SIZE  305
+#if ENABLED(TitanExtruder) && ENABLED(OpticalY)
+    #undef X_BED_SIZE
+    #undef Y_BED_SIZE
+    #define X_BED_SIZE  310
+    #define Y_BED_SIZE  300
+#elif ENABLED(OpticalY)
+  #if ENABLED(MachineTLD3P)
+    #undef X_BED_SIZE
+    #undef Y_BED_SIZE
+    #define X_BED_SIZE  305
+    #define Y_BED_SIZE  305
+  #endif
   #undef    Y_MIN_ENDSTOP_INVERTING
   #define   Y_MIN_ENDSTOP_INVERTING true
   #undef    Y_MAX_POS
@@ -286,9 +299,9 @@
   #undef Y_MIN_POS
 #endif
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET + OPTICALY_Y_OFFSET
+  #define Y_MIN_POS 0
 #elif ENABLED(TitanExtruder)
-  #define Y_MIN_POS 3 + TITAN_Y_OFFSET
+  #define Y_MIN_POS 0
 #elif ENABLED(OpticalY) 
   #define Y_MIN_POS -7
 #endif

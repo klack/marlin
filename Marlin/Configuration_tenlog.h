@@ -318,6 +318,14 @@
   #define X2_MIN_POS     15
 #endif
 
+#if ENABLED(AllMetalHotend)
+  #define HEATER_0_MAXTEMP 310
+  #define HEATER_1_MAXTEMP 310
+#else
+  #define HEATER_0_MAXTEMP 275
+  #define HEATER_1_MAXTEMP 275
+#endif
+
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #undef verS3
   #define verS3 "PLR"

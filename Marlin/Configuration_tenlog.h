@@ -1,3 +1,6 @@
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
 #define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
 
 //Common
@@ -458,3 +461,6 @@
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType
 #endif
+
+// Output bed size info
+#pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)

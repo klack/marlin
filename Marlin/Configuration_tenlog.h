@@ -4,7 +4,6 @@
 #define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
 
 //Common
-#define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
 #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
 #define DUAL_X_CARRIAGE
 #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
@@ -38,10 +37,6 @@
 //#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
-  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
-  #define NUM_Z_STEPPER_DRIVERS 2   // (1-4) Z options change based on how many
-  #define DUAL_X_CARRIAGE
-  #define DEFAULT_DUAL_X_CARRIAGE_MODE DXC_AUTO_PARK_MODE  
   #define BED_CENTER_AT_155_155
   #define X_BED_SIZE        310
   #define Y_BED_SIZE        310
@@ -61,12 +56,6 @@
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
   #define USE_ZMAX_PLUG
-  #define MIN_SOFTWARE_ENDSTOPS
-  #define MIN_SOFTWARE_ENDSTOP_X
-  #define MIN_SOFTWARE_ENDSTOP_Y
-  #define MIN_SOFTWARE_ENDSTOP_Z
-  #define TOOLCHANGE_NO_RETURN
-  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
   #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
@@ -250,6 +239,7 @@
   #define X_MAX_POS 305 + TITAN_X_RIGHT_SPACING
   #define X2_MAX_POS 353 + TITAN_X_RIGHT_SPACING
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #elif ENABLED(BMGExtruderV2)
   #undef X2_MIN_POS
   #undef X_MAX_POS
@@ -278,7 +268,12 @@
   #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
   //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
+#else
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #endif
+
+
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
     #undef X_BED_SIZE
     #undef Y_BED_SIZE

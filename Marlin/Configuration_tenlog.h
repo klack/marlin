@@ -40,11 +40,8 @@
   #define Y_BED_SIZE        310
   #define X_MIN_POS -50
   #define X_MAX_POS 305
-  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-  #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
   #define X2_MAX_POS 354
-  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define Y_MIN_POS 3
   #define Y_MAX_POS Y_BED_SIZE
   #define Z_MAX_POS 350
@@ -57,11 +54,8 @@
   #define Y_BED_SIZE        510
   #define X_MIN_POS -50
   #define X_MAX_POS 505
-  #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-  #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
   #define X2_MIN_POS 10
   #define X2_MAX_POS 555.6
-  #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
   #define Y_MIN_POS 3
   #define Y_MAX_POS Y_BED_SIZE
   #define Z_MAX_POS 350
@@ -443,15 +437,13 @@ Y_MIN_POS = LUX_DEFAULT_Y_MIN_POS + LUX_EXTRUDER_Y_OFFSET + LUX_ENDSTOP_Y_OFFSET
 Y_MAX_POS = LUX_MEASURED_Y_BED_SIZE + LUX_EXTRUDER_Y_OFFSET + LUX_ENDSTOP_Y_OFFSET
 Y_BED_SIZE = LUX_MEASURED_Y_BED_SIZE - Y_MIN_POS
 
-#define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
-#define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
-
 X2_MIN_POS = LUX_DEFAULT_X2_MIN_POS + LUX_EXTRUDER_X_SPACING_LEFT
 X2_MAX_POS = LUX_MEASURED_X_BED_SIZE + 44
-
-#define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-
 */
+
+#define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
+#define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
+#define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
 

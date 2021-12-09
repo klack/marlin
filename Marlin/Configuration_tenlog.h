@@ -13,11 +13,6 @@
 #define MIN_SOFTWARE_ENDSTOP_Y
 #define MIN_SOFTWARE_ENDSTOP_Z
 #define Z_MIN_ENDSTOP_INVERTING true
-#define TOOLCHANGE_NO_RETURN
-#define HOST_ACTION_COMMANDS
-#define HAS_STATUS_MESSAGE 1
-#define LIN_ADVANCE
-#define LIN_ADVANCE_K 0
 #define Y_MIN_ENDSTOP_INVERTING false  
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
@@ -30,11 +25,14 @@
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
 #define BABYSTEP_HOME_Z_OFFSET
 #define BABYSTEP_HOTEND_Z_OFFSET
+#define TOOLCHANGE_NO_RETURN
+#define HOST_ACTION_COMMANDS
+#define HAS_STATUS_MESSAGE 1
+#define LIN_ADVANCE
+#define LIN_ADVANCE_K 0
 #define verS3 ""
 #define QUICK_HOME 
-//#define HOTEND_OFFSET_X { 0.0, 20.00 } // (mm) relative X-offset for each nozzle
-//#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
-//#define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
+
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
   #define BED_CENTER_AT_155_155
@@ -47,15 +45,10 @@
   #define X2_MIN_POS 10
   #define X2_MAX_POS 354
   #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
-  #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
   #define Y_MIN_POS 3
-  #define Y_MIN_ENDSTOP_INVERTING false  
   #define Y_MAX_POS Y_BED_SIZE
-  #define Z_MIN_POS 0
-  #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
-  #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
   #undef verS3
@@ -172,7 +165,6 @@
   #define INVERT_E0_DIR true
   #define INVERT_E1_DIR true
   #define X_MIN_ENDSTOP_INVERTING true
-  #define Z_MIN_ENDSTOP_INVERTING true
   #define Z_MAX_ENDSTOP_INVERTING true
   #define X_MAX_ENDSTOP_INVERTING true
   #define TMC_DEBUG
@@ -275,23 +267,10 @@
 
 
 #if ENABLED(TitanExtruder) && ENABLED(OpticalY)
-    #undef X_BED_SIZE
-    #undef Y_BED_SIZE
-    #define X_BED_SIZE  310
-    #define Y_BED_SIZE  300
+
 #elif ENABLED(OpticalY)
-  #if ENABLED(MachineTLD3P)
-    #undef X_BED_SIZE
-    #undef Y_BED_SIZE
-    #define X_BED_SIZE  305
-    #define Y_BED_SIZE  305
-  #endif
   #undef    Y_MIN_ENDSTOP_INVERTING
   #define   Y_MIN_ENDSTOP_INVERTING true
-  #undef    Y_MAX_POS
-  #define   Y_MAX_POS 300
-  #undef NOZZLE_PARK_POINT
-  #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
 #endif
 #if ENABLED(TitanExtruder) || ENABLED(OpticalY)
   #undef Y_MIN_POS
@@ -302,18 +281,6 @@
   #define Y_MIN_POS 0
 #elif ENABLED(OpticalY) 
   #define Y_MIN_POS -7
-#endif
-
-#if ENABLED(TGCustom_2209_Titan)
-  #define verS2 "2209_Titan_TGCustom"
-  #define DriverType TMC2209_STANDALONE
-  #define INVERT_X_DIR true
-  #define INVERT_Y_DIR false
-  #define INVERT_Z_DIR true
-  #define INVERT_E0_DIR false
-  #define INVERT_E1_DIR true
-  #undef X2_MIN_POS
-  #define X2_MIN_POS     15
 #endif
 
 #if ENABLED(AllMetalHotend)
@@ -483,7 +450,10 @@ X2_MIN_POS = LUX_DEFAULT_X2_MIN_POS + LUX_EXTRUDER_X_SPACING_LEFT
 X2_MAX_POS = LUX_MEASURED_X_BED_SIZE + 44
 
 #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
+
 */
+
+#define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_MAX_POS), 20 }
 
 // Output bed size info
 #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)

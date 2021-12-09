@@ -55,7 +55,6 @@
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 150
-  #define USE_ZMAX_PLUG
   #define NOZZLE_PARK_POINT { (X_MIN_POS + 10), (Y_MAX_POS - 10), 20 }
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
@@ -74,7 +73,6 @@
   #define Y_MAX_POS Y_BED_SIZE
   #define Z_MAX_POS 350
   #define DEFAULT_DUPLICATION_X_OFFSET 250
-  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #endif 
 #if ENABLED(OCTOPUS)
   #undef verS3
@@ -253,6 +251,7 @@
   #define X_MAX_POS   300
   #define X2_MAX_POS  362
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
+  #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #elif ENABLED(BMGExtruderV3)
   #undef X_MIN_POS
   #undef X2_MIN_POS
@@ -268,6 +267,7 @@
   #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
   //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
+  #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #else
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
@@ -349,14 +349,10 @@
   #define BLTOUCH
   #if ENABLED(BMGExtruderV2)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
-    #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
     #define Z_HOMING_HEIGHT  4 
     #define Z_AFTER_HOMING  2
   #elif ENABLED(BMGExtruderV3)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
-    #undef HOMING_FEEDRATE_MM_M
-    #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
     #define Z_HOMING_HEIGHT  4 
     #define Z_AFTER_HOMING  2
   #else

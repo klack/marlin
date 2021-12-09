@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 #define SHORT_BUILD_VERSION "2.0.7.2 for Luxuri 0.8.x"
+=======
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+
+#define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
+>>>>>>> 256f596e5d (/ Output bed size info)
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
@@ -241,5 +248,20 @@
 #define Z2_DRIVER_TYPE DriverType
 #define Z3_DRIVER_TYPE DriverType
 #define Z4_DRIVER_TYPE DriverType
-#define E0_DRIVER_TYPE DriverType
-#define E1_DRIVER_TYPE DriverType
+
+#if ENABLED(A9EXT)
+  #define E0_DRIVER_TYPE A4988
+  #define E1_DRIVER_TYPE A4988
+  #define LIN_ADVANCE
+  #define LIN_ADVANCE_K 0
+  #undef INVERT_E0_DIR
+	#undef INVERT_E1_DIR
+	#define INVERT_E0_DIR false
+	#define INVERT_E1_DIR true
+#else
+  #define E0_DRIVER_TYPE DriverType
+  #define E1_DRIVER_TYPE DriverType
+#endif
+
+// Output bed size info
+#pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)

@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-#define SHORT_BUILD_VERSION "2.0.7.2 for Luxuri 0.8.x"
-=======
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
 #define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
->>>>>>> 256f596e5d (/ Output bed size info)
 
 //Common
 #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }

@@ -245,7 +245,7 @@
 #define Z3_DRIVER_TYPE DriverType
 #define Z4_DRIVER_TYPE DriverType
 
-#if ENABLED(A9EXT)
+#if ENABLED(A4EXT)
   #define E0_DRIVER_TYPE A4988
   #define E1_DRIVER_TYPE A4988
   #define LIN_ADVANCE

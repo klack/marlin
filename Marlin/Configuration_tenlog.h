@@ -1,4 +1,4 @@
-//C Helper functions
+//Helper functions
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
@@ -346,6 +346,8 @@
       #define Z4_ENDSTOP_ADJUSTMENT 0
     #endif
   #endif
+#define X_DRIVER_TYPE  DriverType
+#define Y_DRIVER_TYPE  DriverType
 #endif
 
 //Filament Sensor
@@ -374,20 +376,6 @@
 #define Z2_DRIVER_TYPE DriverType
 #define Z3_DRIVER_TYPE DriverType
 #define Z4_DRIVER_TYPE DriverType
-
-#if ENABLED(A4EXT)
-  #define E0_DRIVER_TYPE A4988
-  #define E1_DRIVER_TYPE A4988
-  #define LIN_ADVANCE
-  #define LIN_ADVANCE_K 0
-  #undef INVERT_E0_DIR
-	#undef INVERT_E1_DIR
-	#define INVERT_E0_DIR false
-	#define INVERT_E1_DIR true
-#else
-  #define E0_DRIVER_TYPE DriverType
-  #define E1_DRIVER_TYPE DriverType
-#endif
 
 /*
 INPUT PARAMETERS:LUX_EXTRUDER_X_SPACING_LEFT

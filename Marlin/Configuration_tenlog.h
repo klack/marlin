@@ -1,3 +1,4 @@
+//C Helper functions
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
@@ -28,32 +29,35 @@
 #define TOOLCHANGE_NO_RETURN
 #define HOST_ACTION_COMMANDS
 #define HAS_STATUS_MESSAGE 1
-#define LIN_ADVANCE
+#define LIN_ADVANCEsirius xm
 #define LIN_ADVANCE_K 0
 #define verS3 ""
 #define QUICK_HOME 
 
+//Base Machine
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
   #define BED_CENTER_AT_155_155
   #define LUX_MEASURED_X_BED_SIZE 310
   #define LUX_MEASURED_Y_BED_SIZE 310
-  #define DEFAULT_DUPLICATION_X_OFFSET 150
+  #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define Z_MAX_POS 350
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
-  #undef verS3
-  #define verS3 ""
   #define LUX_MEASURED_X_BED_SIZE 510
   #define LUX_MEASURED_Y_BED_SIZE 510
   #define DEFAULT_DUPLICATION_X_OFFSET 250
   #define Z_MAX_POS 350
-#endif 
+#endif
+
+//Board
 #if ENABLED(OCTOPUS)
   #undef verS3
   #define verS3 "OCTOPUS"
   #define POWER_OFF_STATE HIGH // This is not functional but is needed due to MarlinCore.h being modified for the TL-D3 Power Switch
 #endif
+
+//Screen
 #if ENABLED(LCDmini12864) || ENABLED(LCD_BTT_TFT)
   #define AUTO_REPORT_POSITION
   #define M115_GEOMETRY_REPORT
@@ -88,6 +92,8 @@
   #define SDCARD_CONNECTION            ONBOARD
   #define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
 #endif
+
+//Drivers
 #if ENABLED(DriverA4988)
   #define verS2 "A4988"
   #define DriverType A4988
@@ -115,7 +121,7 @@
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
-	#define INVERT_X_DIR false
+	#define INVERT_X_DIR falsesirius xm
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false  
 	#define INVERT_E0_DIR false
@@ -178,6 +184,7 @@
   #define E1_CURRENT       800 
 #endif
 
+//Extruder Type
 #if ENABLED(TitanExtruder)
   #define LUX_EXTRUDER_X_SPACING_RIGHT 3 //Change to nozzle to right side measurement
   #define LUX_EXTRUDER_X_SPACING_LEFT 3 
@@ -189,7 +196,7 @@
   #undef X_MAX_POS
   #undef X2_MAX_POS
   #undef DEFAULT_AXIS_STEPS_PER_UNIT
-  #undef Y_MIN_POS
+  #undef Y_MIN_POSsirius xm
   #undef X_MIN_POS 
   #undef X1_MIN_POS
   #define X_MIN_POS   -53
@@ -214,19 +221,21 @@
   //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
-#else //Default 
+#else //Default Extruder
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #endif
 
+//Endstop Type
 #if ENABLED(OpticalY)
   #undef  Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
   #define LUX_ENDSTOP_Y_OFFSET 4
-#else
+#else //Manual switch
   #define LUX_ENDSTOP_Y_OFFSET 0
 #endif
 
+//Hotend
 #if ENABLED(AllMetalHotend)
   #define HEATER_0_MAXTEMP 310
   #define HEATER_1_MAXTEMP 310
@@ -235,6 +244,20 @@
   #define HEATER_1_MAXTEMP 275
 #endif
 
+//Bed
+#if ENABLED(ACBed)
+  #undef THERMAL_PROTECTION_BED_PERIOD
+  #undef WATCH_BED_TEMP_PERIOD
+  #undef TEMP_SENSOR_BED
+  #undef BED_MAXTEMP
+  #define BED_MAXTEMP 145
+  #define THERMAL_PROTECTION_BED_PERIOD 10
+  #define WATCH_BED_TEMP_PERIOD 20
+  #define TEMP_SENSOR_BED 11
+#endif
+
+
+//Power Loss Recovery
 #if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
   #undef verS3
   #define verS3 "PLR"
@@ -251,6 +274,7 @@
   #define TEMP_SENSOR_BED 11
 #endif
 
+//Probe
 #if ENABLED(BL_Touch)
   #ifndef OCTOPUS
     #undef Z_MIN_ENDSTOP_INVERTING
@@ -324,6 +348,7 @@
   #endif
 #endif
 
+//Filament Sensor
 #if ENABLED(BTTSFR)
   #define FILAMENT_RUNOUT_DISTANCE_MM 7
   #define FILAMENT_MOTION_SENSOR

@@ -269,3 +269,4 @@
 
 // Output bed size info
 #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
+#pragma message "X1_MIN_POS: " STR(X1_MIN_POS)  " X2_MAX_POS: " STR(X2_MAX_POS)

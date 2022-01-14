@@ -192,33 +192,17 @@
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #elif ENABLED(BMGExtruderV2)
-  #undef X2_MIN_POS
-  #undef X_MAX_POS
-  #undef X2_MAX_POS
-  #undef DEFAULT_AXIS_STEPS_PER_UNIT
-  #undef Y_MIN_POSsirius xm
-  #undef X_MIN_POS 
-  #undef X1_MIN_POS
-  #define X_MIN_POS   -53
-  #define X2_MIN_POS  5
-  #define X_MAX_POS   300
-  #define X2_MAX_POS  362
+  #define LUX_EXTRUDER_X_OFFSET 0
+  #define LUX_EXTRUDER_X2_OFFSET 0
+  #define LUX_EXTRUDER_Y_OFFSET 0
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #elif ENABLED(BMGExtruderV3)
-  #undef X_MIN_POS
-  #undef X2_MIN_POS
-  #undef X_MAX_POS
-  #undef X2_MAX_POS
-  #undef DEFAULT_AXIS_STEPS_PER_UNIT
-  #undef NOZZLE_PARK_POINT
-  #define X_MIN_POS   -53
-  #define X2_MIN_POS  5
-  #define X_MAX_POS   300
-  #define X2_MAX_POS  362
+  #define LUX_EXTRUDER_X_OFFSET 0
+  #define LUX_EXTRUDER_X2_OFFSET 0
+  #define LUX_EXTRUDER_Y_OFFSET 0
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 413, 413 }
   #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
-  //#define HOTEND_OFFSET_Y { 0.0, 5.00 }  // (mm) relative Y-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #else //Default Extruder

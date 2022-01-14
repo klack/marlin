@@ -267,7 +267,7 @@
   #define PROBING_MARGIN 15
   #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 15
-  #define G26_MESH_VALIDATIONLUX_EXTRUDER_X_OFFSET
+  #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
   //BLTouch Options. For details read BLTouch section in Configuration_adv.h

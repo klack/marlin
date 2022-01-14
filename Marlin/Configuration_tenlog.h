@@ -186,9 +186,7 @@
 
 //Extruder Type
 #if ENABLED(TitanExtruder)
-  #define LUX_EXTRUDER_X_SPACING_RIGHT 3 //Change to nozzle to right side measurement
-  #define LUX_EXTRUDER_X_SPACING_LEFT 3 
-  #define LUX_EXTRUDER_Y_OFFSET 8
+  #define LUX_EXTRUDER_Y_OFFSET 2
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #elif ENABLED(BMGExtruderV2)
@@ -222,6 +220,9 @@
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #else //Default Extruder
+  #define LUX_EXTRUDER_X_OFFSET -1
+  #define LUX_EXTRUDER_X2_OFFSET -3
+  #define LUX_EXTRUDER_Y_OFFSET -4
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 92.6, 92.6 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #endif
@@ -233,36 +234,20 @@
   #define LUX_ENDSTOP_Y_OFFSET 4
 #else //Manual switch
   #define LUX_ENDSTOP_Y_OFFSET 0
+  #define LUX_ENDSTOP_X_OFFSET 3
 #endif
 
 //Hotend
 #if ENABLED(AllMetalHotend)
   #define HEATER_0_MAXTEMP 310
   #define HEATER_1_MAXTEMP 310
+
 #else
   #define HEATER_0_MAXTEMP 275
   #define HEATER_1_MAXTEMP 275
 #endif
 
 //Bed
-#if ENABLED(ACBed)
-  #undef THERMAL_PROTECTION_BED_PERIOD
-  #undef WATCH_BED_TEMP_PERIOD
-  #undef TEMP_SENSOR_BED
-  #undef BED_MAXTEMP
-  #define BED_MAXTEMP 145
-  #define THERMAL_PROTECTION_BED_PERIOD 10
-  #define WATCH_BED_TEMP_PERIOD 20
-  #define TEMP_SENSOR_BED 11
-#endif
-
-
-//Power Loss Recovery
-#if ENABLED(POWER_LOSS_TRIGGER_BY_PIN)
-  #undef verS3
-  #define verS3 "PLR"
-#endif
-
 #if ENABLED(ACBed)
   #undef THERMAL_PROTECTION_BED_PERIOD
   #undef WATCH_BED_TEMP_PERIOD
@@ -297,7 +282,7 @@
   #define PROBING_MARGIN 15
   #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 15
-  #define G26_MESH_VALIDATION
+  #define G26_MESH_VALIDATIONLUX_EXTRUDER_X_OFFSET
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
   //BLTouch Options. For details read BLTouch section in Configuration_adv.h
@@ -383,21 +368,21 @@ LUX_ENDSTOP_Y_OFFSET
 */
 
 // DEFAULT VALS:
-#define LUX_DEFAULT_Y_MIN_POS 3
-#define LUX_DEFAULT_X_MIN_POS -50
-#define LUX_DEFAULT_X2_MIN_POS 10
+#define LUX_REFERENCE_Y_MIN_POS 0
+#define LUX_REFERENCE_X1_MIN_POS -50
+#define LUX_REFERENCE_X2_MAX_POS 360
 
-#define X_MIN_POS -49
+#define X_MIN_POS LUX_REFERENCE_X1_MIN_POS -(LUX_EXTRUDER_X_OFFSET) //-49
 #define X_MAX_POS LUX_MEASURED_X_BED_SIZE - 25
 
 #define Y_MIN_POS 0 //Always 0
-#define Y_MAX_POS LUX_MEASURED_Y_BED_SIZE - 4
+#define Y_MAX_POS LUX_MEASURED_Y_BED_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
 
 #define X2_MIN_POS 25
-#define X2_MAX_POS 357
+#define X2_MAX_POS LUX_REFERENCE_X2_MAX_POS +(LUX_EXTRUDER_X2_OFFSET) //357
 
-#define X_BED_SIZE LUX_MEASURED_X_BED_SIZE 
-#define Y_BED_SIZE LUX_MEASURED_Y_BED_SIZE - 4 //LUX_MEASURED_Y_BED_SIZE -(ACTUAL_Y_MIN_POS)
+#define X_BED_SIZE LUX_MEASURED_X_BED_SIZE
+#define Y_BED_SIZE Y_MAX_POS
 
 #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
 #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
@@ -406,6 +391,6 @@ LUX_ENDSTOP_Y_OFFSET
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
 // Output bed size info
+#pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
+#pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
 #pragma message "X2_MAX_POS: " STR(X2_MAX_POS)
-// #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
-// #pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)

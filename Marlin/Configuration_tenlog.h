@@ -121,7 +121,7 @@
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
-	#define INVERT_X_DIR falsesirius xm
+	#define INVERT_X_DIR false
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false  
 	#define INVERT_E0_DIR false

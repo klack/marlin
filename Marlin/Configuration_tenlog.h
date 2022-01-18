@@ -121,7 +121,7 @@
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
-	#define INVERT_X_DIR false
+	#define INVERT_X_DIR falsesirius xm
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false  
 	#define INVERT_E0_DIR false
@@ -218,7 +218,6 @@
   #undef  Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
   #define LUX_ENDSTOP_Y_OFFSET -8
-  #define LUX_REFERENCE_Y_MIN_POS -5
 #else //Manual switch
   #define LUX_ENDSTOP_Y_OFFSET 0
 #endif
@@ -361,9 +360,8 @@
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType
 #endif
-#ifndef LUX_REFERENCE_Y_MIN_POS
-  #define LUX_REFERENCE_Y_MIN_POS 0
-#endif
+
+#define LUX_REFERENCE_Y_MIN_POS 0
 #define LUX_REFERENCE_X1_MIN_POS -50
 #define LUX_REFERENCE_X2_MAX_POS 360
 #define LUX_REFERENCE_EXTRUDER_WIDTH 15
@@ -371,7 +369,7 @@
 #define X_MIN_POS LUX_REFERENCE_X1_MIN_POS -(LUX_EXTRUDER_X_OFFSET)
 #define X_MAX_POS LUX_MEASURED_X_BED_SIZE - LUX_REFERENCE_EXTRUDER_WIDTH
 
-#define Y_MIN_POS LUX_REFERENCE_Y_MIN_POS //Always 0
+#define Y_MIN_POS 0 //Always 0
 #define Y_MAX_POS LUX_MEASURED_Y_BED_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
 
 #define X2_MIN_POS LUX_REFERENCE_EXTRUDER_WIDTH

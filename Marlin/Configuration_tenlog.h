@@ -218,7 +218,6 @@
   #undef  Y_MIN_ENDSTOP_INVERTING
   #define Y_MIN_ENDSTOP_INVERTING true
   #define LUX_ENDSTOP_Y_OFFSET -8
-  #define LUX_REFERENCE_Y_MIN_POS -5
 #else //Manual switch
   #define LUX_ENDSTOP_Y_OFFSET 0
 #endif
@@ -361,9 +360,7 @@
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType
 #endif
-#ifndef LUX_REFERENCE_Y_MIN_POS
-  #define LUX_REFERENCE_Y_MIN_POS 0
-#endif
+#define LUX_REFERENCE_Y_MIN_POS 0
 #define LUX_REFERENCE_X1_MIN_POS -50
 #define LUX_REFERENCE_X2_MAX_POS 360
 #define LUX_REFERENCE_EXTRUDER_WIDTH 15

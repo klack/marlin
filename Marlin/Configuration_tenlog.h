@@ -18,10 +18,6 @@
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
 #define Z_MIN_POS 0
-#define TEMP_SENSOR_BED 1
-#define BED_MAXTEMP      100
-#define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
-#define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
 #define BABYSTEP_HOME_Z_OFFSET
@@ -264,14 +260,19 @@
 
 //Bed
 #if ENABLED(ACBed)
-  #undef THERMAL_PROTECTION_BED_PERIOD
-  #undef WATCH_BED_TEMP_PERIOD
-  #undef TEMP_SENSOR_BED
-  #undef BED_MAXTEMP
   #define BED_MAXTEMP 145
   #define THERMAL_PROTECTION_BED_PERIOD 10
   #define WATCH_BED_TEMP_PERIOD 20
   #define TEMP_SENSOR_BED 11
+#else
+  #define BED_MAXTEMP      100
+  #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
+  #define TEMP_SENSOR_BED 1
+  #if ENABLED(MachineTLD6)
+    #define WATCH_BED_TEMP_PERIOD                120 // Seconds    
+  #else
+    #define WATCH_BED_TEMP_PERIOD                60 // Seconds
+  #endif
 #endif
 
 //Probe
@@ -415,6 +416,6 @@
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
 // Output bed size info
-#pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
-#pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
-#pragma message "X2_MAX_POS: " STR(X2_MAX_POS)
+// #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
+// #pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
+// #pragma message "X2_MAX_POS: " STR(X2_MAX_POS)

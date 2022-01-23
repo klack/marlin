@@ -394,7 +394,7 @@
 
 #define LUX_REFERENCE_X1_MIN_POS -50
 ////#define LUX_REFERENCE_X2_MAX_POS 360 #Moved to Machine specific settings above A.S.
-#define LUX_REFERENCE_EXTRUDER_WIDTH 15
+#define LUX_REFERENCE_EXTRUDER_WIDTH 25
 
 #define X_MIN_POS LUX_REFERENCE_X1_MIN_POS -(LUX_EXTRUDER_X_OFFSET)
 #define X_MAX_POS LUX_MEASURED_X_BED_SIZE - LUX_REFERENCE_EXTRUDER_WIDTH
@@ -415,6 +415,6 @@
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
 // Output bed size info
-// #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
-// #pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
-// #pragma message "X2_MAX_POS: " STR(X2_MAX_POS)
+#pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
+#pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
+#pragma message "X2_MAX_POS: " STR(X2_MAX_POS)

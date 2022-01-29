@@ -96,11 +96,11 @@
 // Fans
 //
 #if ENABLED(TitanExtruder)
-  #define FAN_PIN             9
-  #define FAN2_PIN            5
-#else
   #define FAN_PIN             5
   #define FAN2_PIN            9
+#else
+  #define FAN_PIN             9
+  #define FAN2_PIN            5
 #endif
 
 //

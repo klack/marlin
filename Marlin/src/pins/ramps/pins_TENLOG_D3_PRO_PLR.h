@@ -95,8 +95,13 @@
 //
 // Fans
 //
-#define FAN_PIN             9
-#define FAN2_PIN            5
+#if ENABLED(TitanExtruder)
+  #define FAN_PIN             5
+  #define FAN2_PIN            9
+#else
+  #define FAN_PIN             9
+  #define FAN2_PIN            5
+#endif
 
 //
 // PSU and Powerloss Recovery

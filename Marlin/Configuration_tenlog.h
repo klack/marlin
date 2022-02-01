@@ -18,10 +18,6 @@
 #define Z_MIN_PROBE_ENDSTOP_INVERTING false
 #define X2_HOME_DIR    1       // Set to 1. The second X-carriage always homes to the maximum endstop position
 #define Z_MIN_POS 0
-#define TEMP_SENSOR_BED 1
-#define BED_MAXTEMP      100
-#define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
-#define WATCH_BED_TEMP_PERIOD                60 // Seconds
 #define SAFETY_Z_UNPARK 4.00 // 26/04/2021 Murdock avoid bed clips (Height to raise. Set to 0 for disable).
 #define SAFETY_Y_UNPARK 15.00 // 26/04/2021 Murdock avoid bed clips (Distance to move on Y axis for avoid bed clips).
 #define BABYSTEP_HOME_Z_OFFSET
@@ -40,14 +36,44 @@
   #define BED_CENTER_AT_155_155
   #define LUX_MEASURED_X_BED_SIZE 310
   #define LUX_MEASURED_Y_BED_SIZE 310
+  #define LUX_REFERENCE_X2_MAX_POS 360
   #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define Z_MAX_POS 350
+#elif ENABLED(MachineTLD4)
+  #define verS1 "Tenlog TL-D4"
+  #define LUX_MEASURED_X_BED_SIZE 405
+  #define LUX_MEASURED_Y_BED_SIZE 420
+  #define LUX_REFERENCE_X2_MAX_POS 454
+  #define DEFAULT_DUPLICATION_X_OFFSET 205
+  #define Z_MAX_POS 410
 #elif ENABLED(MachineTLD5)
   #define verS1 "Tenlog TL-D5"
-  #define LUX_MEASURED_X_BED_SIZE 510
-  #define LUX_MEASURED_Y_BED_SIZE 510
-  #define DEFAULT_DUPLICATION_X_OFFSET 250
-  #define Z_MAX_POS 350
+  #define LUX_MEASURED_X_BED_SIZE 505
+  #define LUX_MEASURED_Y_BED_SIZE 520
+  #define LUX_REFERENCE_X2_MAX_POS 554
+  #define DEFAULT_DUPLICATION_X_OFFSET 255
+  #define Z_MAX_POS 610
+#elif ENABLED(MachineTLD6)
+  #define verS1 "Tenlog TL-D6"
+  #define LUX_MEASURED_X_BED_SIZE 605
+  #define LUX_MEASURED_Y_BED_SIZE 620
+  #define LUX_REFERENCE_X2_MAX_POS 654
+  #define DEFAULT_DUPLICATION_X_OFFSET 305
+  #define Z_MAX_POS 610
+#elif ENABLED(MachineTLD2P)
+  #define verS1 "Tenlog HANDS2"
+  #define LUX_MEASURED_X_BED_SIZE 220
+  #define LUX_MEASURED_Y_BED_SIZE 225
+  #define LUX_REFERENCE_X2_MAX_POS 264
+  #define DEFAULT_DUPLICATION_X_OFFSET 115
+  #define Z_MAX_POS 260
+#elif ENABLED(MachineTLH2P)
+  #define verS1 "Tenlog HANDS2 Pro"
+  #define LUX_MEASURED_X_BED_SIZE 235
+  #define LUX_MEASURED_Y_BED_SIZE 240
+  #define LUX_REFERENCE_X2_MAX_POS 279
+  #define DEFAULT_DUPLICATION_X_OFFSET 167
+  #define Z_MAX_POS 260
 #endif
 
 //Board
@@ -121,7 +147,7 @@
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
-	#define INVERT_X_DIR falsesirius xm
+	#define INVERT_X_DIR false
   #define INVERT_Y_DIR true
 	#define INVERT_Z_DIR false  
 	#define INVERT_E0_DIR false
@@ -234,14 +260,19 @@
 
 //Bed
 #if ENABLED(ACBed)
-  #undef THERMAL_PROTECTION_BED_PERIOD
-  #undef WATCH_BED_TEMP_PERIOD
-  #undef TEMP_SENSOR_BED
-  #undef BED_MAXTEMP
   #define BED_MAXTEMP 145
   #define THERMAL_PROTECTION_BED_PERIOD 10
   #define WATCH_BED_TEMP_PERIOD 20
   #define TEMP_SENSOR_BED 11
+#else
+  #define BED_MAXTEMP      100
+  #define THERMAL_PROTECTION_BED_PERIOD        20 // Seconds
+  #define TEMP_SENSOR_BED 1
+  #if ENABLED(MachineTLD6)
+    #define WATCH_BED_TEMP_PERIOD                120 // Seconds    
+  #else
+    #define WATCH_BED_TEMP_PERIOD                60 // Seconds
+  #endif
 #endif
 
 //Probe
@@ -360,16 +391,16 @@
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType
 #endif
-
 #define LUX_REFERENCE_Y_MIN_POS 0
+
 #define LUX_REFERENCE_X1_MIN_POS -50
-#define LUX_REFERENCE_X2_MAX_POS 360
-#define LUX_REFERENCE_EXTRUDER_WIDTH 15
+////#define LUX_REFERENCE_X2_MAX_POS 360 #Moved to Machine specific settings above A.S.
+#define LUX_REFERENCE_EXTRUDER_WIDTH 25
 
 #define X_MIN_POS LUX_REFERENCE_X1_MIN_POS -(LUX_EXTRUDER_X_OFFSET)
 #define X_MAX_POS LUX_MEASURED_X_BED_SIZE - LUX_REFERENCE_EXTRUDER_WIDTH
 
-#define Y_MIN_POS 0 //Always 0
+#define Y_MIN_POS LUX_REFERENCE_Y_MIN_POS //Always 0
 #define Y_MAX_POS LUX_MEASURED_Y_BED_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
 
 #define X2_MIN_POS LUX_REFERENCE_EXTRUDER_WIDTH
@@ -384,7 +415,7 @@
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
-// Output bed size info
+// Output bed size in
 // #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
 // #pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)
 // #pragma message "X2_MAX_POS: " STR(X2_MAX_POS)

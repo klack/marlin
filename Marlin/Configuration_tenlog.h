@@ -25,7 +25,7 @@
 #define TOOLCHANGE_NO_RETURN
 #define HOST_ACTION_COMMANDS
 #define HAS_STATUS_MESSAGE 1
-#define LIN_ADVANCEsirius xm
+#define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
 #define verS3 ""
 #define QUICK_HOME 

@@ -585,6 +585,9 @@
 #if ENABLED(OCTOPUS)
   #define E0_AUTO_FAN_PIN PA8
   #define E1_AUTO_FAN_PIN PE5
+#elif ENABLED(SPIDER11)
+  #define E0_AUTO_FAN_PIN PB2
+  #define E1_AUTO_FAN_PIN PB2
 #else 
   #define E0_AUTO_FAN_PIN FAN2_PIN
   #define E1_AUTO_FAN_PIN FAN2_PIN
@@ -616,6 +619,10 @@
 #if ENABLED(OCTOPUS)
   #define FANMUX0_PIN PD12
   #define FANMUX1_PIN PD13
+  #define FANMUX2_PIN -1
+#elif ENABLED(SPIDER11)
+  #define FANMUX0_PIN PB0
+  #define FANMUX1_PIN PB1
   #define FANMUX2_PIN -1
 #else
   #define FANMUX0_PIN -1

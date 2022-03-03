@@ -2,6 +2,10 @@
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
+#if __has_include("Configuration_overide.h") && __has_include(<stdint.h>)
+  #include "Configuration_overide.h"
+#endif
+
 #define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"
 
 //Common
@@ -88,9 +92,11 @@
   #define AUTO_REPORT_POSITION
   #define M115_GEOMETRY_REPORT
   #define M114_DETAIL  
-  #define PROBE_OFFSET_WIZARD
-  #define PROBE_OFFSET_WIZARD_START_Z 0
-  #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
+  #if ENABLED(HAS_PROBE)
+    #define PROBE_OFFSET_WIZARD
+    #define PROBE_OFFSET_WIZARD_START_Z 0
+    #define PROBE_OFFSET_WIZARD_XY_POS { X_CENTER, Y_CENTER }
+  #endif
   #define LCD_INFO_MENU
   #define STATUS_MESSAGE_SCROLLING
   #define LCD_SHOW_E_TOTAL
@@ -366,7 +372,16 @@
   #define FIL_RUNOUT_PULLUP
   #define FIL_RUNOUT2_STATE HIGH
   #define FIL_RUNOUT2_PULLUP
-#else 
+#elif ENABLED(SPIDER11)
+  #define NUM_RUNOUT_SENSORS   2 
+  #define FIL_RUNOUT_STATE HIGH
+  #define FIL_RUNOUT_PULLUP
+  #define FIL_RUNOUT2_STATE HIGH
+  #define FIL_RUNOUT2_PULLUP
+  #ifndef FIL_RUNOUT2_PIN
+    #define FIL_RUNOUT2_PIN    PA2
+  #endif
+#else
   #define NUM_RUNOUT_SENSORS   1
 #endif
 #define X_DRIVER_TYPE  DriverType

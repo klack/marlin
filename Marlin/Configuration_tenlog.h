@@ -2,8 +2,8 @@
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 
-#if __has_include("Configuration_overide.h") && __has_include(<stdint.h>)
-  #include "Configuration_overide.h"
+#if __has_include("Machine_overide.h") && __has_include(<stdint.h>)
+  #include "Machine_overide.h"
 #endif
 
 #define SHORT_BUILD_VERSION "2.0.9.2 for Luxuri 0.9.x"

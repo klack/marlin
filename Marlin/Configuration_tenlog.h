@@ -430,6 +430,16 @@
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
+//#define MESH_MIN_X (MESH_INSET - 5)
+//#define MESH_MAX_X (X_BED_SIZE - (MESH_INSET + 5))
+#define MESH_MIN_Y (MESH_INSET + 45)
+#define MESH_MAX_Y (Y_BED_SIZE - (MESH_INSET))
+
+//#define PROBING_MARGIN_LEFT PROBING_MARGIN
+//#define PROBING_MARGIN_RIGHT PROBING_MARGIN
+//#define PROBING_MARGIN_FRONT (PROBING_MARGIN - 10)
+//#define PROBING_MARGIN_BACK (PROBING_MARGIN + 10)
+
 // Output bed size in
 // #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)
 // #pragma message "X_MIN_POS: " STR(X_MIN_POS)  " X_MAX_POS: " STR(X_MAX_POS)  " X_BED_SIZE: " STR(X_BED_SIZE)

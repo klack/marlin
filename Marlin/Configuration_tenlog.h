@@ -298,12 +298,12 @@
     #define Z_HOMING_HEIGHT  4 
     #define Z_AFTER_HOMING  2
   #else
-    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+    #define NOZZLE_TO_PROBE_OFFSET { 6, -47, -2.5 }
   #endif
   #define AUTO_BED_LEVELING_UBL
   //#define PROBING_MARGIN 15
   #define MESH_INSET 15 
-  #define GRID_MAX_POINTS_X 3
+  #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
@@ -434,9 +434,9 @@
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
-#define LUX_MESH_MIN_X 2 //15 for clips
-#define LUX_MESH_MAX_X 308 // 310 - 15 for clips
-#define LUX_MESH_MIN_Y 1 // TRUE YMIN POS IS 5  3 default + 2 FOR TENLOG
+#define LUX_MESH_MIN_X 15 //15 for clips
+#define LUX_MESH_MAX_X 295 // 310 - 15 for clips
+#define LUX_MESH_MIN_Y 10 // TRUE YMIN POS IS 5  3 default + 2 FOR Titan
 #define LUX_MESH_MAX_Y 280 //YMAXPOS - EXTRUDER TO PROBE Y OFFSET
 
 // Output bed size in

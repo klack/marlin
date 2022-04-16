@@ -298,7 +298,7 @@
     #define Z_HOMING_HEIGHT  4 
     #define Z_AFTER_HOMING  2
   #else
-    #define NOZZLE_TO_PROBE_OFFSET { 6, -47, -2.5 }
+    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -1.34 }
   #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15

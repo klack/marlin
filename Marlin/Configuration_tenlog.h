@@ -321,7 +321,7 @@
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z  
-  #define XY_PROBE_FEEDRATE (100*60)
+  #define XY_PROBE_FEEDRATE (200*60)
   #if ENABLED(OCTOPUS)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
@@ -434,10 +434,10 @@
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
-#define LUX_MESH_MIN_X 15
-#define LUX_MESH_MAX_X 295
-#define LUX_MESH_MIN_Y 11
-#define LUX_MESH_MAX_Y 280
+#define LUX_MESH_MIN_X 15 //15 for clips
+#define LUX_MESH_MAX_X 295 // 310 - 15 for clips
+#define LUX_MESH_MIN_Y 10 // TRUE YMIN POS IS 5  3 default + 2 FOR TENLOG
+#define LUX_MESH_MAX_Y 280 //YMAXPOS - EXTRUDER TO PROBE Y OFFSET
 
 // Output bed size in
 // #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)

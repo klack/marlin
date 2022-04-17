@@ -225,7 +225,7 @@
 //Extruder Type
 #if ENABLED(TitanExtruder)
   #define LUX_EXTRUDER_X_OFFSET -3
-  #define LUX_EXTRUDER_X2_OFFSET 12 
+  #define LUX_EXTRUDER_X2_OFFSET 12
   #define LUX_EXTRUDER_Y_OFFSET -2
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
@@ -295,7 +295,7 @@
   #endif
   #define HAS_PROBE
   #define BLTOUCH
-  #define Z_HOMING_HEIGHT  5 
+  #define Z_HOMING_HEIGHT  5
   #define Z_AFTER_HOMING  5
   #if ENABLED(BMGExtruderV2)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
@@ -312,7 +312,6 @@
   #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
-  // #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 3
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
@@ -444,8 +443,8 @@
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
 
 #define LUX_BED_CLIP_SIZE 15
-#define LUX_MESH_MIN_X LUX_BED_CLIP_SIZE 
-#define LUX_MESH_MAX_X LUX_MEASURED_X_BED_SIZE - LUX_BED_CLIP_SIZE 
+#define LUX_MESH_MIN_X LUX_BED_CLIP_SIZE
+#define LUX_MESH_MAX_X LUX_MEASURED_X_BED_SIZE - LUX_BED_CLIP_SIZE
 #define LUX_MESH_MIN_Y LUX_BED_CLIP_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
 #define LUX_MESH_MAX_Y Y_MAX_POS + (LUX_NOZZLE_TO_PROBE_Y)
 

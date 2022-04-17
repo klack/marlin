@@ -312,7 +312,7 @@
   #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
-  #define GRID_MAX_POINTS_X 3
+  #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes

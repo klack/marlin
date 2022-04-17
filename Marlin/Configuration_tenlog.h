@@ -306,7 +306,7 @@
   #elif ENABLED(TitanExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -1.34 }
     #define LUX_NOZZLE_TO_PROBE_Y -47
-  #elif
+  #else
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
     #define LUX_NOZZLE_TO_PROBE_Y -42
   #endif

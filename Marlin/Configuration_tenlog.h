@@ -420,7 +420,6 @@
   #define E1_DRIVER_TYPE DriverType
 #endif
 
-
 #define LUX_REFERENCE_X1_MIN_POS -50
 #define LUX_REFERENCE_X2_MIN_POS 15
 

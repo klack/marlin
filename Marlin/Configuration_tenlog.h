@@ -243,6 +243,7 @@
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
 #elif ENABLED(H2Extruder)
+  #define AllMetalHotend
   #define LUX_EXTRUDER_X_OFFSET -3 //Adjust so that E1 hits the left edge of the bed exactly
   #define LUX_EXTRUDER_X2_OFFSET 12 //Adjust so that E2 hits the right edge of the bed exactly
   #define LUX_EXTRUDER_Y_OFFSET -2 //Adjust so that E1 hits the rear edge of the bed exactly

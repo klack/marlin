@@ -247,8 +247,8 @@
   #define LUX_EXTRUDER_X_OFFSET -3 //Adjust so that E1 hits the left edge of the bed exactly
   #define LUX_EXTRUDER_X2_OFFSET 12 //Adjust so that E2 hits the right edge of the bed exactly
   #define LUX_EXTRUDER_Y_OFFSET -2 //Adjust so that E1 hits the rear edge of the bed exactly
-  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 932, 932 }
+  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #else //Default Extruder
   #define LUX_EXTRUDER_X_OFFSET -1
   #define LUX_EXTRUDER_X2_OFFSET -3

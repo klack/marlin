@@ -228,7 +228,6 @@
   #define LUX_EXTRUDER_X2_OFFSET 12
   #define LUX_EXTRUDER_Y_OFFSET -2
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
-  #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
 #elif ENABLED(BMGExtruderV2)
   #define LUX_EXTRUDER_X_OFFSET 0
   #define LUX_EXTRUDER_X2_OFFSET 0
@@ -243,6 +242,11 @@
   #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
+#elif ENABLED(H2Extruder)
+  #define LUX_EXTRUDER_X_OFFSET -3 //Adjust so that E1 hits the left edge of the bed exactly
+  #define LUX_EXTRUDER_X2_OFFSET 12 //Adjust so that E2 hits the right edge of the bed exactly
+  #define LUX_EXTRUDER_Y_OFFSET -2 //Adjust so that E1 hits the rear edge of the bed exactly
+  #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 932, 932 }
 #else //Default Extruder
   #define LUX_EXTRUDER_X_OFFSET -1
   #define LUX_EXTRUDER_X2_OFFSET -3
@@ -306,6 +310,9 @@
   #elif ENABLED(TitanExtruder)
     #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -1.34 }
     #define LUX_NOZZLE_TO_PROBE_Y -47
+  #elif ENABLED(H2Extruder)
+    #define NOZZLE_TO_PROBE_OFFSET { -34.5, -3, -1.34 }
+    #define LUX_NOZZLE_TO_PROBE_Y -3
   #else
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
     #define LUX_NOZZLE_TO_PROBE_Y -42

@@ -197,21 +197,12 @@
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
   #if ENABLED(OCTOPUS)
-    #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     //#define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
   #endif
 #endif
 #if ENABLED(Driver2209BTT)
-  #define X_CURRENT       580 
-  #define X2_CURRENT       580 
-  #define Y_CURRENT       580 
-  #define Y2_CURRENT       580 
-  #define Z_CURRENT       580 
-  #define Z2_CURRENT       580 
-  #define E0_CURRENT       580 
-  #define E1_CURRENT       580 
   #define X_CURRENT       650 
   #define X2_CURRENT       650 
   #define Y_CURRENT       650 
@@ -325,10 +316,6 @@
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
-  #define BLTOUCH_DELAY 200 // Default: 375, min 200
-  #define BLTOUCH_FORCE_MODE_SET // Default: Off
-  //#define BLTOUCH_HS_MODE // Default: Off
-  #define BLTOUCH_LCD_VOLTAGE_MENU // Default: Off
 #endif
 
 #if ENABLED(HAS_PROBE)

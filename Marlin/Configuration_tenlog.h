@@ -40,13 +40,15 @@
   #define BED_CENTER_AT_155_155
   #define LUX_MEASURED_X_BED_SIZE 310
   #define LUX_MEASURED_Y_BED_SIZE 310
-  #define LUX_REFERENCE_X2_MAX_POS 360
+  #define LUX_REFERENCE_Y_MAX_POS 333
+  #define LUX_REFERENCE_X2_MAX_POS 359
   #define DEFAULT_DUPLICATION_X_OFFSET 155
   #define Z_MAX_POS 350
 #elif ENABLED(MachineTLD4)
   #define verS1 "Tenlog TL-D4"
   #define LUX_MEASURED_X_BED_SIZE 405
   #define LUX_MEASURED_Y_BED_SIZE 420
+  #define LUX_REFERENCE_Y_MAX_POS 433
   #define LUX_REFERENCE_X2_MAX_POS 454
   #define DEFAULT_DUPLICATION_X_OFFSET 205
   #define Z_MAX_POS 410
@@ -54,6 +56,7 @@
   #define verS1 "Tenlog TL-D5"
   #define LUX_MEASURED_X_BED_SIZE 505
   #define LUX_MEASURED_Y_BED_SIZE 520
+  #define LUX_REFERENCE_Y_MAX_POS 533
   #define LUX_REFERENCE_X2_MAX_POS 554
   #define DEFAULT_DUPLICATION_X_OFFSET 255
   #define Z_MAX_POS 610
@@ -61,6 +64,7 @@
   #define verS1 "Tenlog TL-D6"
   #define LUX_MEASURED_X_BED_SIZE 605
   #define LUX_MEASURED_Y_BED_SIZE 620
+  #define LUX_REFERENCE_Y_MAX_POS 633
   #define LUX_REFERENCE_X2_MAX_POS 654
   #define DEFAULT_DUPLICATION_X_OFFSET 305
   #define Z_MAX_POS 610
@@ -68,6 +72,7 @@
   #define verS1 "Tenlog HANDS2"
   #define LUX_MEASURED_X_BED_SIZE 220
   #define LUX_MEASURED_Y_BED_SIZE 225
+  #define LUX_REFERENCE_Y_MAX_POS 238
   #define LUX_REFERENCE_X2_MAX_POS 264
   #define DEFAULT_DUPLICATION_X_OFFSET 115
   #define Z_MAX_POS 260
@@ -75,6 +80,7 @@
   #define verS1 "Tenlog HANDS2 Pro"
   #define LUX_MEASURED_X_BED_SIZE 235
   #define LUX_MEASURED_Y_BED_SIZE 240
+  #define LUX_REFERENCE_Y_MAX_POS 253
   #define LUX_REFERENCE_X2_MAX_POS 279
   #define DEFAULT_DUPLICATION_X_OFFSET 167
   #define Z_MAX_POS 260
@@ -219,7 +225,7 @@
 //Extruder Type
 #if ENABLED(TitanExtruder)
   #define LUX_EXTRUDER_X_OFFSET -3
-  #define LUX_EXTRUDER_X2_OFFSET -9 
+  #define LUX_EXTRUDER_X2_OFFSET 12
   #define LUX_EXTRUDER_Y_OFFSET -2
   #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 800, 382.17, 382.17 }
   #define HOMING_FEEDRATE_MM_M { (50*60), (50*60), (4*60) }
@@ -251,7 +257,7 @@
   #define Y_MIN_ENDSTOP_INVERTING true
   #define LUX_ENDSTOP_Y_OFFSET -8
 #else //Manual switch
-  #define LUX_ENDSTOP_Y_OFFSET 0
+  #define LUX_ENDSTOP_Y_OFFSET -3
 #endif
 
 //Hotend
@@ -289,20 +295,23 @@
   #endif
   #define HAS_PROBE
   #define BLTOUCH
+  #define Z_HOMING_HEIGHT  5
+  #define Z_AFTER_HOMING  5
   #if ENABLED(BMGExtruderV2)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
-    #define Z_HOMING_HEIGHT  4 
-    #define Z_AFTER_HOMING  2
+    #define LUX_NOZZLE_TO_PROBE_Y -42
   #elif ENABLED(BMGExtruderV3)
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
-    #define Z_HOMING_HEIGHT  4 
-    #define Z_AFTER_HOMING  2
+    #define LUX_NOZZLE_TO_PROBE_Y -42
+  #elif ENABLED(TitanExtruder)
+    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -1.34 }
+    #define LUX_NOZZLE_TO_PROBE_Y -47
   #else
-    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -2.5 }
+    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
+    #define LUX_NOZZLE_TO_PROBE_Y -42
   #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
-  #define MESH_INSET 15 
   #define GRID_MAX_POINTS_X 15
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
@@ -321,7 +330,7 @@
 #if ENABLED(HAS_PROBE)
   #undef USE_ZMAX_PLUG
   #undef MIN_SOFTWARE_ENDSTOP_Z  
-  #define XY_PROBE_FEEDRATE (50*60)
+  #define XY_PROBE_FEEDRATE (200*60)
   #if ENABLED(OCTOPUS)
     #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
     #undef Z_MIN_PROBE_PIN
@@ -410,29 +419,33 @@
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType
 #endif
-#define LUX_REFERENCE_Y_MIN_POS 0
 
 #define LUX_REFERENCE_X1_MIN_POS -50
-////#define LUX_REFERENCE_X2_MAX_POS 360 #Moved to Machine specific settings above A.S.
-#define LUX_REFERENCE_EXTRUDER_WIDTH 25
+#define LUX_REFERENCE_X2_MIN_POS 15
 
 #define X_MIN_POS LUX_REFERENCE_X1_MIN_POS -(LUX_EXTRUDER_X_OFFSET)
-#define X_MAX_POS LUX_MEASURED_X_BED_SIZE - LUX_REFERENCE_EXTRUDER_WIDTH
+#define X_MAX_POS LUX_MEASURED_X_BED_SIZE
 
-#define Y_MIN_POS LUX_REFERENCE_Y_MIN_POS //Always 0
-#define Y_MAX_POS LUX_MEASURED_Y_BED_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
+#define Y_MIN_POS 0 //Always 0
+#define Y_MAX_POS LUX_REFERENCE_Y_MAX_POS + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET) //328
 
-#define X2_MIN_POS LUX_REFERENCE_EXTRUDER_WIDTH
-#define X2_MAX_POS LUX_REFERENCE_X2_MAX_POS +(LUX_EXTRUDER_X2_OFFSET)
+#define X2_MIN_POS LUX_REFERENCE_X2_MIN_POS
+#define X2_MAX_POS LUX_REFERENCE_X2_MAX_POS + (LUX_EXTRUDER_X2_OFFSET)
 
 #define X_BED_SIZE LUX_MEASURED_X_BED_SIZE
-#define Y_BED_SIZE Y_MAX_POS
+#define Y_BED_SIZE LUX_MEASURED_Y_BED_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
 
 #define X1_MIN_POS X_MIN_POS   // Set to X_MIN_POS
 #define X1_MAX_POS X_MAX_POS  // Set a maximum so the first X-carriage can't hit the parked second X-carriage
 #define X2_HOME_POS X2_MAX_POS // Default X2 home position. Set to X2_MAX_POS.
 
 #define NOZZLE_PARK_POINT { (X_MIN_POS), (Y_BED_SIZE), 20 }  //??
+
+#define LUX_BED_CLIP_SIZE 15
+#define LUX_MESH_MIN_X LUX_BED_CLIP_SIZE
+#define LUX_MESH_MAX_X LUX_MEASURED_X_BED_SIZE - LUX_BED_CLIP_SIZE
+#define LUX_MESH_MIN_Y LUX_BED_CLIP_SIZE + (LUX_ENDSTOP_Y_OFFSET) + (LUX_EXTRUDER_Y_OFFSET)
+#define LUX_MESH_MAX_Y Y_MAX_POS + (LUX_NOZZLE_TO_PROBE_Y)
 
 // Output bed size in
 // #pragma message "Y_MIN_POS: " STR(Y_MIN_POS)  " Y_MAX_POS: " STR(Y_MAX_POS)  " Y_BED_SIZE: " STR(Y_BED_SIZE)

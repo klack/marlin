@@ -198,6 +198,7 @@
   #define STEALTHCHOP_Z
   #if ENABLED(OCTOPUS)
     #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
+    //#define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
   #endif
@@ -211,6 +212,14 @@
   #define Z2_CURRENT       580 
   #define E0_CURRENT       580 
   #define E1_CURRENT       580 
+  #define X_CURRENT       650 
+  #define X2_CURRENT       650 
+  #define Y_CURRENT       650 
+  #define Y2_CURRENT       650 
+  #define Z_CURRENT       650 
+  #define Z2_CURRENT       650 
+  #define E0_CURRENT       650 
+  #define E1_CURRENT       650 
 #else
   #define X_CURRENT       800 
   #define X2_CURRENT       800 
@@ -243,6 +252,7 @@
   #define HOTEND_OFFSET_X { 0.0, (X2_MAX_POS) } // (mm) relative X-offset for each nozzle
   #define HOTEND_OFFSET_Z { 0.0, 0.00 }  // (mm) relative Z-offset for each nozzle
   #define HOMING_FEEDRATE_MM_M { (70*60), (70*60), (8*60) }
+  #define MULTIPLE_PROBING 2
 #else //Default Extruder
   #define LUX_EXTRUDER_X_OFFSET -1
   #define LUX_EXTRUDER_X2_OFFSET -3
@@ -301,27 +311,21 @@
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
     #define LUX_NOZZLE_TO_PROBE_Y -42
   #elif ENABLED(BMGExtruderV3)
-    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -2.3837 }
-    #define LUX_NOZZLE_TO_PROBE_Y -42
-  #elif ENABLED(TitanExtruder)
-    #define NOZZLE_TO_PROBE_OFFSET { 7, -47, -1.34 }
-    #define LUX_NOZZLE_TO_PROBE_Y -47
+    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.5388 }
+    #define Z_HOMING_HEIGHT  4 
+    #define Z_AFTER_HOMING  2
   #else
     #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
     #define LUX_NOZZLE_TO_PROBE_Y -42
   #endif
   #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
-  #define GRID_MAX_POINTS_X 15
+  #define MESH_INSET 15 
+  #define GRID_MAX_POINTS_X 10
   #define G26_MESH_VALIDATION
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
-  //BLTouch Options. For details read BLTouch section in Configuration_adv.h
-  //Settings for BLTOUCH Classic 1.2, 1.3 or BLTouch Smart 1.0, 2.0, 2.2, 3.0, 3.1, and most clones
   #define BLTOUCH_DELAY 200 // Default: 375, min 200
-  #define BLTOUCH_FORCE_SW_MODE // Default: Off
-  //Settings for BLTouch Smart 3.0 and 3.1
-  #define BLTOUCH_SET_5V_MODE // Default: Off
   #define BLTOUCH_FORCE_MODE_SET // Default: Off
   //#define BLTOUCH_HS_MODE // Default: Off
   #define BLTOUCH_LCD_VOLTAGE_MENU // Default: Off

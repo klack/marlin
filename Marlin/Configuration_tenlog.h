@@ -316,7 +316,7 @@
     #define NOZZLE_TO_PROBE_OFFSET { -34.5, -3, -1.34 }
     #define LUX_NOZZLE_TO_PROBE_Y -3
   #else
-    #define NOZZLE_TO_PROBE_OFFSET { -1.75, -42, -1.125 }
+    #define NOZZLE_TO_PROBE_OFFSET { 34.5, -3, -2 }
     #define LUX_NOZZLE_TO_PROBE_Y -42
   #endif
   #define AUTO_BED_LEVELING_UBL

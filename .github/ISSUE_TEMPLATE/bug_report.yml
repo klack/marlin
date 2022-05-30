@@ -26,18 +26,6 @@ body:
         2. Fill out all sections of this bug report form.
         3. Always attach configuration files so we can build and test your setup.
 
-  - type: dropdown
-    attributes:
-      label: Did you test the latest `bugfix-2.0.x` code?
-      description: >-
-        Always try the latest code to make sure the issue you are reporting is not already fixed. To download
-        the latest code just [click this link](https://github.com/MarlinFirmware/Marlin/archive/bugfix-2.0.x.zip).
-      options:
-        - Yes, and the problem still exists.
-        - No, but I will test it now!
-    validations:
-      required: true
-
   - type: markdown
     attributes:
       value: |

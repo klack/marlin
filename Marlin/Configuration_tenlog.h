@@ -425,6 +425,19 @@
   #else
     #define INVERT_E1_DIR true
 	#endif
+#elif ENABLED(TMC2209EXT)
+  #define E0_DRIVER_TYPE TMC2209_STANDALONE
+  #define E1_DRIVER_TYPE TMC2209_STANDALONE
+  #define LIN_ADVANCE
+  #define LIN_ADVANCE_K 0
+  #undef INVERT_E0_DIR
+	#undef INVERT_E1_DIR
+  #define INVERT_E0_DIR false
+  #if ENABLED(TitanExtruder)
+    #define INVERT_E1_DIR false
+  #else
+    #define INVERT_E1_DIR true
+	#endif
 #else
   #define E0_DRIVER_TYPE DriverType
   #define E1_DRIVER_TYPE DriverType

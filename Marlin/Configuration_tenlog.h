@@ -32,7 +32,8 @@
 #define LIN_ADVANCE
 #define LIN_ADVANCE_K 0
 #define verS3 ""
-#define QUICK_HOME 
+#define QUICK_HOME
+#define M115_GEOMETRY_REPORT
 
 //Base Machine
 #if ENABLED(MachineTLD3P)
@@ -432,11 +433,11 @@
   #define LIN_ADVANCE_K 0
   #undef INVERT_E0_DIR
 	#undef INVERT_E1_DIR
-  #define INVERT_E0_DIR false
+  #define INVERT_E0_DIR true
   #if ENABLED(TitanExtruder)
-    #define INVERT_E1_DIR false
-  #else
     #define INVERT_E1_DIR true
+  #else
+    #define INVERT_E1_DIR false
 	#endif
 #else
   #define E0_DRIVER_TYPE DriverType

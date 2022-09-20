@@ -296,10 +296,11 @@
 #endif
 
 //Probe
+#define G26_MESH_VALIDATION
 #if ENABLED(BL_Touch)
   #ifndef OCTOPUS
     #undef Z_MIN_ENDSTOP_INVERTING
-    #define Z_MIN_ENDSTOP_INVERTING false
+    #define Z_MIN_ENDSTOP_INVERTING false`
   #endif
   #define HAS_PROBE
   #define BLTOUCH
@@ -321,10 +322,9 @@
     #define NOZZLE_TO_PROBE_OFFSET { 34.5, -3, -2 }
     #define LUX_NOZZLE_TO_PROBE_Y -42
   #endif
-  #define AUTO_BED_LEVELING_UBL
   #define PROBING_MARGIN 15
-  #define GRID_MAX_POINTS_X 15
-  #define G26_MESH_VALIDATION
+#define GRID_MAX_POINTS_X 15
+  #define AUTO_BED_LEVELING_UBL
   #define Z_CLEARANCE_BETWEEN_PROBES  3 // Z Clearance between probe points
   #define Z_CLEARANCE_MULTI_PROBE     2 // Z Clearance between multiple probes
   //BLTouch Options. For details read BLTouch section in Configuration_adv.h
@@ -359,22 +359,24 @@
   #endif
   #define Z_STEPPER_AUTO_ALIGN
   #define RESTORE_LEVELING_AFTER_G28
-#elif NUM_Z_STEPPER_DRIVERS > 1
-  #define Z_MULTI_ENDSTOPS
-  #if ENABLED(Z_MULTI_ENDSTOPS)
-    #define Z2_USE_ENDSTOP          _ZMAX_
-    #define Z2_ENDSTOP_ADJUSTMENT   0
-    #if NUM_Z_STEPPER_DRIVERS >= 3
-      #define Z3_USE_ENDSTOP        _YMAX_
-      #define Z3_ENDSTOP_ADJUSTMENT 0
-    #endif
-    #if NUM_Z_STEPPER_DRIVERS >= 4
-      #define Z4_USE_ENDSTOP        _ZMAX_
-      #define Z4_ENDSTOP_ADJUSTMENT 0
+#else
+  #define MESH_BED_LEVELING
+  #define LUX_NOZZLE_TO_PROBE_Y 0
+  #if NUM_Z_STEPPER_DRIVERS > 1
+    #define Z_MULTI_ENDSTOPS
+    #if ENABLED(Z_MULTI_ENDSTOPS)
+      #define Z2_USE_ENDSTOP          _ZMAX_
+      #define Z2_ENDSTOP_ADJUSTMENT   0
+      #if NUM_Z_STEPPER_DRIVERS >= 3
+        #define Z3_USE_ENDSTOP        _YMAX_
+        #define Z3_ENDSTOP_ADJUSTMENT 0
+      #endif
+      #if NUM_Z_STEPPER_DRIVERS >= 4
+        #define Z4_USE_ENDSTOP        _ZMAX_
+        #define Z4_ENDSTOP_ADJUSTMENT 0
+      #endif
     #endif
   #endif
-#define X_DRIVER_TYPE  DriverType
-#define Y_DRIVER_TYPE  DriverType
 #endif
 
 //Filament Sensor

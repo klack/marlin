@@ -300,7 +300,7 @@
 #if ENABLED(BL_Touch)
   #ifndef OCTOPUS
     #undef Z_MIN_ENDSTOP_INVERTING
-    #define Z_MIN_ENDSTOP_INVERTING false`
+    #define Z_MIN_ENDSTOP_INVERTING false
   #endif
   #define HAS_PROBE
   #define BLTOUCH

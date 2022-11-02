@@ -36,6 +36,13 @@
 #define QUICK_HOME
 #define M115_GEOMETRY_REPORT
 
+//Startup Commands
+#if ENABLED(OCTOPUS) && ENABLED(Driver2209BTT)
+  #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
+#else
+  #define STARTUP_COMMANDS "M111 S38\n" // Enable Debugging output
+#endif
+
 //Base Machine
 #if ENABLED(MachineTLD3P)
   #define verS1 "Tenlog TL-D3 Pro"
@@ -199,7 +206,6 @@
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
   #if ENABLED(OCTOPUS)
-    #define STARTUP_COMMANDS "M569 S0 I1 T1 E \n M569 S0 E \n M412 S0" // Disable stealthchop for extruders
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
   #endif

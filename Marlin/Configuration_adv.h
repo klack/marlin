@@ -3727,7 +3727,7 @@
  *
  * Execute certain G-code commands immediately after power-on.
  */
-#define STARTUP_COMMANDS "M111 S38\n"
+// #define STARTUP_COMMANDS "" // Defined in Configuration_tenlog.h
 
 /**
  * G-code Macros

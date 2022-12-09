@@ -165,6 +165,10 @@
   #undef LIN_ADVANCE_K
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
+  #define X_MICROSTEPS     16
+  #define Y_MICROSTEPS     16
+  #define Z_MICROSTEPS     16  
+  #define E0_MICROSTEPS    16
 #elif ENABLED(Driver2208_UART)
   #define verS2 "2208_UART"
   #define DriverType TMC2208
@@ -177,6 +181,10 @@
   #define STEALTHCHOP_Z
   #define TMC_DEBUG
   #define MONITOR_DRIVER_STATUS
+  #define X_MICROSTEPS     16
+  #define Y_MICROSTEPS     16 
+  #define Z_MICROSTEPS     16 
+  #define E0_MICROSTEPS    16
 #elif ENABLED(Driver2209)
   #define verS2 "2209"
   #define DriverType TMC2209_STANDALONE
@@ -191,6 +199,10 @@
 	#endif
   #define STEALTHCHOP_XY
   #define STEALTHCHOP_Z
+  #define X_MICROSTEPS     16
+  #define Y_MICROSTEPS     16 
+  #define Z_MICROSTEPS     16
+  #define E0_MICROSTEPS    16
 #elif ENABLED(Driver2209BTT)
   #define verS2 "2209BTT"
   #define DriverType TMC2209
@@ -209,6 +221,26 @@
     #define INVERT_X_DIR false
     #define INVERT_Y_DIR true
   #endif
+  #define X_MICROSTEPS     16
+  #define Y_MICROSTEPS     16 
+  #define Z_MICROSTEPS     16 
+  #define E0_MICROSTEPS    16
+#elif ENABLED(Driver2225)
+  #define verS2 "2225"
+  #define DriverType TMC2208_STANDALONE
+	#define INVERT_X_DIR false
+  #define INVERT_Y_DIR true
+	#define INVERT_Z_DIR false  
+	#define INVERT_E0_DIR true
+	#define INVERT_E1_DIR false
+  #undef LIN_ADVANCE 
+  #undef LIN_ADVANCE_K
+  #define STEALTHCHOP_XY
+  #define STEALTHCHOP_Z
+  #define X_MICROSTEPS     32
+  #define Y_MICROSTEPS     32 
+  #define Z_MICROSTEPS     32 
+  #define E0_MICROSTEPS    32
 #endif
 #if ENABLED(Driver2209BTT)
   #define X_CURRENT       580 
